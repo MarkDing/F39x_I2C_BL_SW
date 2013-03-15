@@ -1,0 +1,6 @@
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\F39x_TargetBL_Startup.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\Fxxx_TargetBL_Commands.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\Fxxx_TargetBL_Main.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\F39x_Flash.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\F39x_TargetBL_DevSpecific.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\F39x_Comm_SMB0.obj"  TO "C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\F39x_I2C_TargetBL" RS(256) PL(68) PW(132) 
