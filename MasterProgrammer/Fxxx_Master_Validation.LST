@@ -1,0 +1,249 @@
+C51 COMPILER V9.02   FXXX_MASTER_VALIDATION                                                03/19/2013 14:27:31 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE FXXX_MASTER_VALIDATION
+OBJECT MODULE PLACED IN Fxxx_Master_Validation.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe Fxxx_Master_Validation.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // Fxxx_Master_Validation.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright (C) 2010 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // 
+  10          //
+  11          // How To Test:
+  12          //
+  13          // 
+  14          //
+  15          //
+  16          // Target:         C8051Fxxx (Any Silicon Labs Flash MCU)
+  17          // Tool chain:     Generic
+  18          // Command Line:   None
+  19          //
+  20          //
+  21          // Release 1.0 / 01SEP2010 (PKC)
+  22          //    -Initial Revision
+  23          //
+  24          //-----------------------------------------------------------------------------
+  25          
+  26          //-----------------------------------------------------------------------------
+  27          // Includes
+  28          //-----------------------------------------------------------------------------
+  29          #include <compiler_defs.h>
+  30          #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
+  31                                                 // real MCU register definition file
+  32          
+  33          #include "Fxxx_Master_Config.h"
+  34          #include "Fxxx_Master_Interface.h"
+  35          #include "Fxxx_Target_Interface.h"
+  36          #include "Fxxx_DataSource_Interface.h"
+  37          #include "Fxxx_Master_Validation.h"
+  38          
+  39          //-----------------------------------------------------------------------------
+  40          // Global CONSTANTS
+  41          //-----------------------------------------------------------------------------
+  42          
+  43          
+  44          
+  45          //-----------------------------------------------------------------------------
+  46          // Global Variables
+  47          //-----------------------------------------------------------------------------
+  48          U8 Last_Error = 0;
+  49          
+  50          //-----------------------------------------------------------------------------
+  51          // Function Prototypes (Local)
+  52          //-----------------------------------------------------------------------------
+  53          
+  54          
+  55          //=============================================================================
+C51 COMPILER V9.02   FXXX_MASTER_VALIDATION                                                03/19/2013 14:27:31 PAGE 2   
+
+  56          // Function Definitions
+  57          //=============================================================================
+  58          
+  59          //-----------------------------------------------------------------------------
+  60          // TGT_Validate_Response
+  61          //-----------------------------------------------------------------------------
+  62          //
+  63          // Return Value:  None
+  64          // Parameters:    None
+  65          //
+  66          //
+  67          //
+  68          //-----------------------------------------------------------------------------
+  69          void TGT_Validate_Response (U8 response, U8 command)
+  70          {
+  71   1         switch (command)
+  72   1         {
+  73   2            case TGT_CMD_ENTER_BL_MODE:
+  74   2               if(response != TGT_RSP_BL_MODE) 
+  75   2               {
+  76   3                  Last_Error = ERR_TGT_BL_MODE;
+  77   3               }
+  78   2               break;
+  79   2            case TGT_CMD_GET_INFO:
+  80   2               // TODO: Add validation here to check TGT_Info
+  81   2               if (response != TGT_RSP_OK)
+  82   2               {
+  83   3                  Last_Error = ERR_TGT_UNEXPECTED_RSP;
+  84   3               }
+  85   2               break;
+  86   2            case TGT_RSP_OK:
+  87   2               if(response != TGT_RSP_OK)
+  88   2               {
+  89   3                  Last_Error = ERR_TGT_UNEXPECTED_RSP;
+  90   3               }
+  91   2               break;
+  92   2            case TGT_CMD_GET_PAGE_CRC:
+  93   2               if(response != TGT_RSP_OK)
+  94   2               {
+  95   3                  Last_Error = ERR_TGT_UNEXPECTED_RSP;
+  96   3               }
+  97   2               else if(SRC_Page_CRC != TGT_Page_CRC)
+  98   2               {
+  99   3                  Last_Error = ERR_TGT_CRC_MISMATCH;
+ 100   3               }
+ 101   2               break;
+ 102   2            default:
+ 103   2               break;
+ 104   2         }
+ 105   1      }
+ 106          
+ 107          //-----------------------------------------------------------------------------
+ 108          // SRC_Validate_Response
+ 109          //-----------------------------------------------------------------------------
+ 110          //
+ 111          // Return Value:  None
+ 112          // Parameters:    None
+ 113          //
+ 114          //
+ 115          //
+ 116          //-----------------------------------------------------------------------------
+ 117          void SRC_Validate_Response (U8 response, U8 command)
+C51 COMPILER V9.02   FXXX_MASTER_VALIDATION                                                03/19/2013 14:27:31 PAGE 3   
+
+ 118          {
+ 119   1         switch (command)
+ 120   1         {
+ 121   2            case SRC_CMD_GET_INFO:
+ 122   2               // TODO: Add validation here to check SRC_Get_Info
+ 123   2               if (response != SRC_RSP_OK)
+ 124   2               {
+ 125   3                  Last_Error = ERR_SRC_UNEXPECTED_RSP;
+ 126   3               }
+ 127   2               break;
+ 128   2            case SRC_CMD_GET_NEXTPAGE_INFO:
+ 129   2               if ( !((response == SRC_RSP_OK) || (response == SRC_RSP_DATA_END)) )
+ 130   2               {
+ 131   3                  Last_Error = ERR_SRC_UNEXPECTED_RSP;
+ 132   3               }
+ 133   2               break;
+ 134   2            case SRC_CMD_GET_NEXTPAGE:
+ 135   2               if (response != SRC_RSP_OK)
+ 136   2               {
+ 137   3                  Last_Error = ERR_SRC_UNEXPECTED_RSP;
+ 138   3               }
+ 139   2               else
+ 140   2               {
+ 141   3                  // TODO: [Optional] Add code here to check the CRC sent by SRC
+ 142   3               }
+ 143   2               break;
+ 144   2            default:
+ 145   2               break;
+ 146   2         }
+ 147   1      }
+ 148          
+ 149          //-----------------------------------------------------------------------------
+ 150          // Validate_TGT_SRC_Match
+ 151          //-----------------------------------------------------------------------------
+ 152          //
+ 153          // Return Value:  None
+ 154          // Parameters:    None
+ 155          //
+ 156          //
+ 157          //
+ 158          //-----------------------------------------------------------------------------
+ 159          void Validate_TGT_SRC_Match (response, U32 *page_addr)
+ 160          {
+ 161   1         UU32 TGT_app_fw_end_addr;
+ 162   1         UU32 SRC_app_fw_end_addr;
+ 163   1      
+ 164   1         if (response == SRC_RSP_OK)
+ 165   1         {
+ 166   2            TGT_app_fw_end_addr.U8[b0] = TGT_Info[TGT_APP_FW_END_ADDR0];
+ 167   2            TGT_app_fw_end_addr.U8[b1] = TGT_Info[TGT_APP_FW_END_ADDR1];
+ 168   2            TGT_app_fw_end_addr.U8[b2] = TGT_Info[TGT_APP_FW_END_ADDR2];
+ 169   2            TGT_app_fw_end_addr.U8[b3] = 0;
+ 170   2      
+ 171   2            SRC_app_fw_end_addr.U8[b0] = SRC_Info[SRC_APP_FW_END_ADDR0];
+ 172   2            SRC_app_fw_end_addr.U8[b1] = SRC_Info[SRC_APP_FW_END_ADDR1];
+ 173   2            SRC_app_fw_end_addr.U8[b2] = SRC_Info[SRC_APP_FW_END_ADDR2];
+ 174   2            SRC_app_fw_end_addr.U8[b3] = 0;
+ 175   2      
+ 176   2            if (  (TGT_Info[TGT_PRODUCT_CODE] == SRC_Info[SRC_APP_PRODUCT_CODE]) &&
+ 177   2                  (TGT_app_fw_end_addr.U32 == SRC_app_fw_end_addr.U32)
+ 178   2               )
+ 179   2            {
+C51 COMPILER V9.02   FXXX_MASTER_VALIDATION                                                03/19/2013 14:27:31 PAGE 4   
+
+ 180   3               // Use the last page reported by the target MCU to ensure it gets
+ 181   3               // erased first in the bootloading process
+ 182   3               *page_addr = TGT_app_fw_end_addr.U32;
+ 183   3               TGT_App_FW_End_Addr = TGT_app_fw_end_addr.U32;
+ 184   3            }
+ 185   2            else
+ 186   2            {
+ 187   3               Last_Error = ERR_TGT_SRC_INFO_MISMATCH;
+ 188   3            }
+ 189   2         }
+ 190   1         else if (response == SRC_RSP_DATA_END)
+ 191   1         {
+ 192   2            Last_Error = ERR_USER_CANCELED_UPDATE;
+ 193   2         }
+ 194   1         else
+ 195   1         {
+ 196   2            Last_Error = ERR_SRC_UNEXPECTED_RSP;
+ 197   2         }
+ 198   1      }
+ 199          
+ 200          //-----------------------------------------------------------------------------
+ 201          // Validate_Pages_Written
+ 202          //-----------------------------------------------------------------------------
+ 203          //
+ 204          // Return Value:  None
+ 205          // Parameters:    None
+ 206          //
+ 207          //
+ 208          //
+ 209          //-----------------------------------------------------------------------------
+ 210          void Validate_Pages_Written (U8 num_pages_from_source)
+ 211          {
+ 212   1         if (Pages_Written != num_pages_from_source)
+ 213   1         {
+ 214   2            Last_Error = ERR_NUM_PAGES_MISMATCH;
+ 215   2         }
+ 216   1      }
+ 217          
+ 218          //-----------------------------------------------------------------------------
+ 219          // End Of File
+ 220          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    247    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

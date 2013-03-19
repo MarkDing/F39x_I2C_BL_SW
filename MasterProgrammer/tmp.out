@@ -1,0 +1,135 @@
+
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1PEF-TAKEAD
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_Main.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_SRC_Commands.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_Validation.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Comm_SMBUS0.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Comm_UART0.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Master_DevSpecific.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_SMBUS_Master.obj"  TO "C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F50x_LIN0_Master.OMF" RS(256) PL(68) PW(78) 
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LAUNCH_EXAMPLE_MASTER_APPLICATION?F39X_SMBUS_MASTER
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>> 
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>> 
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 09BDH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 09C9H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0521H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0532H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0A49H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0A50H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 036DH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0374H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 03BCH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 03FBH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0411H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 06D7H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 06EAH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 06FFH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0B01H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0B08H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0C61H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+>>     ADDRESS: 0C68H
+
+Program Size: data=68.2 xdata=2360 code=3287
+LINK/LOCATE RUN COMPLETE.  21 WARNING(S),  0 ERROR(S)

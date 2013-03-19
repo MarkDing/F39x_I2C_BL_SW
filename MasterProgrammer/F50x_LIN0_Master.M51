@@ -1,0 +1,1505 @@
+BL51 BANKED LINKER/LOCATER V6.22              03/19/2013  14:50:00  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\Fxxx_Master_Main.obj, C:\Users\mading\SkyDrive\Wor
+>> k\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_SRC_Commands.
+>> obj, C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterPro
+>> grammer\Fxxx_Master_TGT_Commands.obj, C:\Users\mading\SkyDrive\Work\F390-bo
+>> otloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_Validation.obj, C:\Use
+>> rs\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39
+>> x_Comm_SMBUS0.obj, C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_B
+>> L_SW\MasterProgrammer\F39x_Comm_UART0.obj, C:\Users\mading\SkyDrive\Work\F3
+>> 90-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Master_DevSpecific.obj, 
+>> C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramm
+>> er\F39x_SMBUS_Master.obj TO C:\Users\mading\SkyDrive\Work\F390-bootloader\F
+>> 39x_I2C_BL_SW\MasterProgrammer\F50x_LIN0_Master.OMF RS (256) PL (68) PW (78
+>> )
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\Fxxx_Master_Main.obj (FXXX_MASTER_MAIN)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\Fxxx_Master_SRC_Commands.obj (FXXX_MASTER_SRC_COMMANDS)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\Fxxx_Master_Validation.obj (FXXX_MASTER_VALIDATION)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Comm_SMBUS0.obj (F39X_COMM_SMBUS0)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Comm_UART0.obj (F39X_COMM_UART0)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Master_DevSpecific.obj (F39X_MASTER_DEVSPECIFIC)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_SMBUS_Master.obj (F39X_SMBUS_MASTER)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULCMP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTXDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPDATA)
+
+
+LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
+>> _SW\MasterProgrammer\F50x_LIN0_Master.OMF (FXXX_MASTER_MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000BH     UNIT         ?DT?FXXX_MASTER_MAIN
+            DATA    0013H     000BH     UNIT         ?DT?FXXX_MASTER_TGT_COMMA
+>> NDS
+            DATA    001EH     0001H     UNIT         ?DT?FXXX_MASTER_VALIDATIO
+>> N
+                    001FH     0001H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?FXXX_MASTER_TGT_COMMA
+>> NDS
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 2
+
+
+            BIT     0020H.1   0000H.1   UNIT         ?BI?F39X_SMBUS_MASTER
+                    0020H.2   0000H.6                *** GAP ***
+            DATA    0021H     001CH     UNIT         _DATA_GROUP_
+            DATA    003DH     0004H     UNIT         ?DT?FXXX_MASTER_SRC_COMMA
+>> NDS
+            DATA    0041H     0004H     UNIT         ?DT?F39X_SMBUS_MASTER
+            IDATA   0045H     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     049EH     UNIT         ?XD?FXXX_MASTER_SRC_COMMA
+>> NDS
+            XDATA   049EH     049AH     UNIT         ?XD?FXXX_MASTER_TGT_COMMA
+>> NDS
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0044H     UNIT         ?PR?_SRC_DISP_TGT_INFO?FX
+>> XX_MASTER_SRC_COMMANDS
+            CODE    0047H     000BH     UNIT         ?PR?LIN0_OSCILLATOR_INIT?
+>> F39X_SMBUS_MASTER
+                    0052H     0001H                  *** GAP ***
+            CODE    0053H     0003H     ABSOLUTE     
+            CODE    0056H     001BH     UNIT         ?PR?SRC_GET_NEXTPAGE?FXXX
+>> _MASTER_SRC_COMMANDS
+                    0071H     0002H                  *** GAP ***
+            CODE    0073H     0003H     ABSOLUTE     
+            CODE    0076H     01EBH     UNIT         ?PR?MAIN?FXXX_MASTER_MAIN
+>> 
+            CODE    0261H     01B7H     UNIT         ?PR?_TGT_WRITE_FLASH?FXXX
+>> _MASTER_TGT_COMMANDS
+            CODE    0418H     00E8H     UNIT         ?PR?_SRC_GET_INFO?FXXX_MA
+>> STER_SRC_COMMANDS
+            CODE    0500H     00D7H     UNIT         ?PR?_TGT_GET_INFO?FXXX_MA
+>> STER_TGT_COMMANDS
+            CODE    05D7H     00B0H     UNIT         ?C?LIB_CODE
+            CODE    0687H     00A2H     UNIT         ?PR?_TGT_GET_PAGE_CRC?FXX
+>> X_MASTER_TGT_COMMANDS
+            CODE    0729H     0097H     UNIT         ?PR?PCA0_ISR?F39X_SMBUS_M
+>> ASTER
+            CODE    07C0H     008CH     UNIT         ?C_C51STARTUP
+            CODE    084CH     008AH     UNIT         ?PR?_VALIDATE_TGT_SRC_MAT
+>> CH?FXXX_MASTER_VALIDATION
+            CODE    08D6H     0083H     UNIT         ?PR?_SRC_GET_NEXTPAGE_INF
+>> O?FXXX_MASTER_SRC_COMMANDS
+            CODE    0959H     0081H     UNIT         ?PR?_TGT_ENTER_BL_MODE?FX
+>> XX_MASTER_TGT_COMMANDS
+            CODE    09DAH     0079H     UNIT         ?PR?_TGT_ERASE_PAGE?FXXX_
+>> MASTER_TGT_COMMANDS
+            CODE    0A53H     0067H     UNIT         ?PR?LIN0_ISR?F39X_SMBUS_M
+>> ASTER
+            CODE    0ABAH     0051H     UNIT         ?PR?_TGT_WRITE_SIGNATURE?
+>> FXXX_MASTER_TGT_COMMANDS
+            CODE    0B0BH     0043H     UNIT         ?PR?_TGT_VALIDATE_RESPONS
+>> E?FXXX_MASTER_VALIDATION
+            CODE    0B4EH     002CH     UNIT         ?PR?LIN0_MASTER_INIT?F39X
+>> _SMBUS_MASTER
+            CODE    0B7AH     0029H     UNIT         ?PR?_SRC_COMM_WAIT_FOR_RX
+>> _BYTES?F39X_COMM_UART0
+            CODE    0BA3H     0024H     UNIT         ?PR?_SRC_COMM_SEND_TX_BYT
+>> ES?F39X_COMM_UART0
+            CODE    0BC7H     0024H     UNIT         ?PR?LIN0_PCA0_INIT?F39X_S
+>> MBUS_MASTER
+            CODE    0BEBH     0021H     UNIT         ?PR?_SRC_VALIDATE_RESPONS
+>> E?FXXX_MASTER_VALIDATION
+            CODE    0C0CH     001AH     UNIT         ?PR?_SRC_DISP_ERROR?FXXX_
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 3
+
+
+>> MASTER_SRC_COMMANDS
+            CODE    0C26H     0018H     UNIT         ?PR?SRC_COMM_INIT?F39X_CO
+>> MM_UART0
+            CODE    0C3EH     0018H     UNIT         ?PR?LAUNCH_EXAMPLE_MASTER
+>> _APPLICATION?F39X_SMBUS_MASTER
+            CODE    0C56H     0015H     UNIT         ?PR?TGT_RESET_MCU?FXXX_MA
+>> STER_TGT_COMMANDS
+            CODE    0C6BH     0014H     UNIT         ?C_INITSEG
+            CODE    0C7FH     0014H     UNIT         ?PR?_SET_LED_STATE?F39X_M
+>> ASTER_DEVSPECIFIC
+            CODE    0C93H     0011H     UNIT         ?PR?LIN0_PORT_INIT?F39X_S
+>> MBUS_MASTER
+            CODE    0CA4H     000DH     UNIT         ?PR?PORT_INIT?F39X_MASTER
+>> _DEVSPECIFIC
+            CODE    0CB1H     000AH     UNIT         ?PR?OSCILLATOR_INIT?F39X_
+>> MASTER_DEVSPECIFIC
+            CODE    0CBBH     0009H     UNIT         ?PR?_VALIDATE_PAGES_WRITT
+>> EN?FXXX_MASTER_VALIDATION
+            CODE    0CC4H     0009H     UNIT         ?PR?INIT_DEVICE?F39X_MAST
+>> ER_DEVSPECIFIC
+            CODE    0CCDH     0009H     UNIT         ?PR?CHECK_PIN_STATE?F39X_
+>> MASTER_DEVSPECIFIC
+            CODE    0CD6H     0004H     UNIT         ?PR?DISABLE_WATCHDOG?F39X
+>> _MASTER_DEVSPECIFIC
+
+
+
+OVERLAY MAP OF MODULE:   C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\F50x_LIN0_Master.OMF (FXXX_MASTER_MAIN)
+
+
+SEGMENT                                            DATA_GROUP 
+  +--> CALLED SEGMENT                            START    LENGTH
+----------------------------------------------------------------
+?PR?LIN0_ISR?F39X_SMBUS_MASTER                   0021H    0001H
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                                    -----    -----
+  +--> ?PR?MAIN?FXXX_MASTER_MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?FXXX_MASTER_MAIN                        0022H    0006H
+  +--> ?PR?DISABLE_WATCHDOG?F39X_MASTER_DEVS...
+  +--> ?PR?INIT_DEVICE?F39X_MASTER_DEVSPECIFIC
+  +--> ?PR?_SET_LED_STATE?F39X_MASTER_DEVSPE...
+  +--> ?PR?CHECK_PIN_STATE?F39X_MASTER_DEVSP...
+  +--> ?PR?_SRC_GET_INFO?FXXX_MASTER_SRC_COM...
+  +--> ?PR?_SRC_VALIDATE_RESPONSE?FXXX_MASTE...
+  +--> ?PR?_TGT_ENTER_BL_MODE?FXXX_MASTER_TG...
+  +--> ?PR?_TGT_VALIDATE_RESPONSE?FXXX_MASTE...
+  +--> ?PR?_TGT_GET_INFO?FXXX_MASTER_TGT_COM...
+  +--> ?PR?_SRC_DISP_TGT_INFO?FXXX_MASTER_SR...
+  +--> ?PR?_VALIDATE_TGT_SRC_MATCH?FXXX_MAST...
+  +--> ?PR?_TGT_ERASE_PAGE?FXXX_MASTER_TGT_C...
+  +--> ?PR?_SRC_GET_NEXTPAGE_INFO?FXXX_MASTE...
+  +--> ?PR?SRC_GET_NEXTPAGE?FXXX_MASTER_SRC_...
+  +--> ?PR?_TGT_WRITE_FLASH?FXXX_MASTER_TGT_...
+  +--> ?PR?_TGT_GET_PAGE_CRC?FXXX_MASTER_TGT...
+  +--> ?PR?_VALIDATE_PAGES_WRITTEN?FXXX_MAST...
+  +--> ?PR?_TGT_WRITE_SIGNATURE?FXXX_MASTER_...
+  +--> ?PR?TGT_RESET_MCU?FXXX_MASTER_TGT_COM...
+  +--> ?PR?_SRC_DISP_ERROR?FXXX_MASTER_SRC_C...
+
+?PR?INIT_DEVICE?F39X_MASTER_DEVSPECIFIC          -----    -----
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 4
+
+
+  +--> ?PR?OSCILLATOR_INIT?F39X_MASTER_DEVSP...
+  +--> ?PR?PORT_INIT?F39X_MASTER_DEVSPECIFIC
+  +--> ?PR?SRC_COMM_INIT?F39X_COMM_UART0
+
+?PR?_SRC_GET_INFO?FXXX_MASTER_SRC_COM...         0028H    0005H
+  +--> ?PR?_SRC_COMM_SEND_TX_BYTES?F39X_COMM...
+  +--> ?PR?_SRC_COMM_WAIT_FOR_RX_BYTES?F39X_...
+
+?PR?_TGT_ENTER_BL_MODE?FXXX_MASTER_TG...         0028H    0007H
+
+?PR?_TGT_GET_INFO?FXXX_MASTER_TGT_COM...         0028H    0005H
+
+?PR?_SRC_DISP_TGT_INFO?FXXX_MASTER_SR...         0028H    0003H
+  +--> ?PR?_SRC_COMM_SEND_TX_BYTES?F39X_COMM...
+  +--> ?PR?_SRC_COMM_WAIT_FOR_RX_BYTES?F39X_...
+
+?PR?_VALIDATE_TGT_SRC_MATCH?FXXX_MAST...         0028H    000DH
+
+?PR?_TGT_ERASE_PAGE?FXXX_MASTER_TGT_C...         0028H    000AH
+
+?PR?_SRC_GET_NEXTPAGE_INFO?FXXX_MASTE...         0028H    000BH
+  +--> ?PR?_SRC_COMM_SEND_TX_BYTES?F39X_COMM...
+  +--> ?PR?_SRC_COMM_WAIT_FOR_RX_BYTES?F39X_...
+
+?PR?SRC_GET_NEXTPAGE?FXXX_MASTER_SRC_...         -----    -----
+  +--> ?PR?_SRC_COMM_SEND_TX_BYTES?F39X_COMM...
+  +--> ?PR?_SRC_COMM_WAIT_FOR_RX_BYTES?F39X_...
+
+?PR?_TGT_WRITE_FLASH?FXXX_MASTER_TGT_...         0028H    0015H
+
+?PR?_TGT_GET_PAGE_CRC?FXXX_MASTER_TGT...         0028H    000CH
+
+?PR?_TGT_WRITE_SIGNATURE?FXXX_MASTER_...         0028H    0004H
+
+?PR?_SRC_DISP_ERROR?FXXX_MASTER_SRC_C...         0028H    0001H
+  +--> ?PR?_SRC_COMM_SEND_TX_BYTES?F39X_COMM...
+  +--> ?PR?_SRC_COMM_WAIT_FOR_RX_BYTES?F39X_...
+
+
+
+UNRESOLVED EXTERNAL SYMBOLS:
+   _COMM_SEND_TX_BYTES
+   _COMM_WAIT_FOR_RX_BYTES
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\F50x_LIN0_Master.OMF (FXXX_MASTER_MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        FXXX_MASTER_MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0008H         PUBLIC        SRC_Page_CRC
+  B:00A8H.7       PUBLIC        EA
+  D:000CH         PUBLIC        TGT_Page_CRC
+  C:0076H         PUBLIC        main
+  D:0010H         PUBLIC        Delay_Counter
+  D:0012H         PUBLIC        Pages_Written
+  -------         PROC          MAIN
+  -------         DO            
+  D:0022H         SYMBOL        TGT_response
+  D:0023H         SYMBOL        SRC_response
+  D:0024H         SYMBOL        page_addr
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 5
+
+
+  -------         ENDDO         
+  C:0076H         LINE#         65
+  C:0076H         LINE#         66
+  C:0076H         LINE#         90
+  C:0079H         LINE#         91
+  C:007CH         LINE#         92
+  C:0081H         LINE#         93
+  C:0083H         LINE#         99
+  C:0083H         LINE#         100
+  C:0083H         LINE#         101
+  C:008AH         LINE#         102
+  C:008AH         LINE#         103
+  C:0090H         LINE#         105
+  C:0095H         LINE#         107
+  C:00A0H         LINE#         108
+  C:00A5H         LINE#         109
+  C:00ACH         LINE#         110
+  C:00ACH         LINE#         115
+  C:00B7H         LINE#         118
+  C:00BDH         LINE#         119
+  C:00CAH         LINE#         122
+  C:00D7H         LINE#         123
+  C:00DCH         LINE#         124
+  C:00E3H         LINE#         125
+  C:00E3H         LINE#         127
+  C:00EEH         LINE#         128
+  C:00F3H         LINE#         129
+  C:00FAH         LINE#         130
+  C:00FAH         LINE#         133
+  C:0104H         LINE#         134
+  C:0104H         LINE#         135
+  C:0106H         LINE#         136
+  C:0108H         LINE#         138
+  C:0108H         LINE#         140
+  C:0116H         LINE#         141
+  C:0116H         LINE#         143
+  C:0123H         LINE#         146
+  C:012AH         LINE#         147
+  C:012AH         LINE#         155
+  C:013FH         LINE#         156
+  C:0144H         LINE#         157
+  C:014BH         LINE#         158
+  C:014BH         LINE#         161
+  C:014EH         LINE#         163
+  C:014EH         LINE#         164
+  C:014EH         LINE#         166
+  C:0162H         LINE#         167
+  C:0167H         LINE#         168
+  C:016EH         LINE#         169
+  C:016EH         LINE#         172
+  C:0174H         LINE#         173
+  C:0174H         LINE#         176
+  C:0179H         LINE#         177
+  C:017EH         LINE#         178
+  C:0182H         LINE#         179
+  C:0182H         LINE#         185
+  C:0197H         LINE#         186
+  C:019CH         LINE#         187
+  C:01A0H         LINE#         188
+  C:01A0H         LINE#         191
+  C:01C1H         LINE#         192
+  C:01C6H         LINE#         193
+  C:01CAH         LINE#         194
+  C:01CAH         LINE#         196
+  C:01CCH         LINE#         198
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 6
+
+
+  C:01DFH         LINE#         199
+  C:01E4H         LINE#         200
+  C:01EBH         LINE#         201
+  C:01EBH         LINE#         204
+  C:01EFH         LINE#         205
+  C:01EFH         LINE#         210
+  C:01F6H         LINE#         211
+  C:01FAH         LINE#         212
+  C:01FAH         LINE#         215
+  C:0208H         LINE#         216
+  C:020DH         LINE#         217
+  C:0211H         LINE#         218
+  C:0211H         LINE#         221
+  C:0216H         LINE#         222
+  C:021BH         LINE#         224
+  C:0220H         LINE#         227
+  C:0225H         LINE#         228
+  C:0228H         LINE#         230
+  C:022FH         LINE#         231
+  C:022FH         LINE#         232
+  C:0233H         LINE#         234
+  C:0238H         LINE#         235
+  C:0238H         LINE#         236
+  C:023BH         LINE#         237
+  C:023BH         LINE#         240
+  C:0241H         LINE#         241
+  C:0241H         LINE#         242
+  C:0246H         LINE#         244
+  C:024CH         LINE#         245
+  C:025BH         LINE#         248
+  C:025EH         LINE#         249
+  C:025EH         LINE#         250
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        FXXX_MASTER_MAIN
+
+  -------         MODULE        FXXX_MASTER_SRC_COMMANDS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  X:0000H         PUBLIC        SRC_Rx_Buf
+  X:0402H         PUBLIC        SRC_Tx_Buf
+  C:0003H         PUBLIC        _SRC_Disp_TGT_Info
+  X:0482H         PUBLIC        SRC_Serial
+  D:003DH         PUBLIC        SRC_Page_Size
+  C:0C0CH         PUBLIC        _SRC_Disp_Error
+  D:003FH         PUBLIC        SRC_App_InfoBlock_Len
+  X:0484H         PUBLIC        SRC_Info
+  C:0418H         PUBLIC        _SRC_Get_Info
+  C:08D6H         PUBLIC        _SRC_Get_NextPage_Info
+  D:0040H         PUBLIC        SRC_CRC_Is32bit
+  C:0056H         PUBLIC        SRC_Get_NextPage
+  -------         PROC          _SRC_GET_INFO
+  D:0028H         SYMBOL        src_info
+  -------         DO            
+  D:002BH         SYMBOL        index
+  D:002CH         SYMBOL        retval
+  -------         ENDDO         
+  C:0418H         LINE#         77
+  C:041EH         LINE#         78
+  C:041EH         LINE#         96
+  C:0421H         LINE#         97
+  C:0423H         LINE#         99
+  C:0428H         LINE#         100
+  C:042EH         LINE#         102
+  C:0437H         LINE#         104
+  C:043EH         LINE#         105
+  C:043EH         LINE#         106
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 7
+
+
+  C:0444H         LINE#         108
+  C:0449H         LINE#         109
+  C:044FH         LINE#         111
+  C:045AH         LINE#         113
+  C:0465H         LINE#         115
+  C:047DH         LINE#         116
+  C:047DH         LINE#         117
+  C:049CH         LINE#         118
+  C:04A0H         LINE#         120
+  C:04C1H         LINE#         122
+  C:04CAH         LINE#         123
+  C:04CAH         LINE#         124
+  C:04CDH         LINE#         125
+  C:04CFH         LINE#         127
+  C:04CFH         LINE#         128
+  C:04D2H         LINE#         129
+  C:04D2H         LINE#         131
+  C:04D5H         LINE#         132
+  C:04D5H         LINE#         133
+  C:04F6H         LINE#         134
+  C:04FDH         LINE#         135
+  C:04FDH         LINE#         137
+  C:04FFH         LINE#         138
+  -------         ENDPROC       _SRC_GET_INFO
+  -------         PROC          _SRC_GET_NEXTPAGE_INFO
+  D:0028H         SYMBOL        addr
+  D:002BH         SYMBOL        src_page_crc
+  -------         DO            
+  D:002EH         SYMBOL        retval
+  D:002FH         SYMBOL        tempval
+  -------         ENDDO         
+  C:08D6H         LINE#         150
+  C:08DCH         LINE#         151
+  C:08DCH         LINE#         165
+  C:08DFH         LINE#         168
+  C:08E5H         LINE#         169
+  C:08ECH         LINE#         171
+  C:08F0H         LINE#         172
+  C:08F0H         LINE#         174
+  C:08F3H         LINE#         175
+  C:08F5H         LINE#         177
+  C:08F5H         LINE#         179
+  C:08FEH         LINE#         180
+  C:08FEH         LINE#         182
+  C:0907H         LINE#         187
+  C:090DH         LINE#         188
+  C:0911H         LINE#         189
+  C:0915H         LINE#         191
+  C:0926H         LINE#         193
+  C:092FH         LINE#         195
+  C:0935H         LINE#         196
+  C:0939H         LINE#         198
+  C:093DH         LINE#         199
+  C:093DH         LINE#         200
+  C:0941H         LINE#         201
+  C:0945H         LINE#         202
+  C:0945H         LINE#         204
+  C:0956H         LINE#         206
+  C:0958H         LINE#         207
+  -------         ENDPROC       _SRC_GET_NEXTPAGE_INFO
+  -------         PROC          SRC_GET_NEXTPAGE
+  -------         DO            
+  D:0007H         SYMBOL        retval
+  -------         ENDDO         
+  C:0056H         LINE#         219
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 8
+
+
+  C:0056H         LINE#         220
+  C:0056H         LINE#         231
+  C:0058H         LINE#         233
+  C:005EH         LINE#         234
+  C:0064H         LINE#         236
+  C:0070H         LINE#         239
+  C:0070H         LINE#         240
+  -------         ENDPROC       SRC_GET_NEXTPAGE
+  -------         PROC          _SRC_DISP_TGT_INFO
+  D:0007H         SYMBOL        buf_length
+  D:0028H         SYMBOL        buf
+  -------         DO            
+  D:0006H         SYMBOL        index
+  D:0005H         SYMBOL        retval
+  -------         ENDDO         
+  C:0003H         LINE#         252
+  C:0009H         LINE#         253
+  C:0009H         LINE#         268
+  C:000BH         LINE#         269
+  C:000CH         LINE#         271
+  C:0012H         LINE#         273
+  C:0017H         LINE#         274
+  C:0017H         LINE#         275
+  C:0032H         LINE#         276
+  C:0035H         LINE#         278
+  C:003FH         LINE#         280
+  C:0046H         LINE#         282
+  C:0046H         LINE#         283
+  -------         ENDPROC       _SRC_DISP_TGT_INFO
+  -------         PROC          _SRC_DISP_ERROR
+  D:0007H         SYMBOL        error_code
+  -------         DO            
+  D:0028H         SYMBOL        index
+  D:0006H         SYMBOL        retval
+  -------         ENDDO         
+  C:0C0CH         LINE#         295
+  C:0C0CH         LINE#         296
+  C:0C0CH         LINE#         300
+  C:0C0FH         LINE#         301
+  C:0C10H         LINE#         303
+  C:0C19H         LINE#         305
+  C:0C1EH         LINE#         307
+  C:0C25H         LINE#         309
+  C:0C25H         LINE#         310
+  -------         ENDPROC       _SRC_DISP_ERROR
+  -------         ENDMOD        FXXX_MASTER_SRC_COMMANDS
+
+  -------         MODULE        FXXX_MASTER_TGT_COMMANDS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0687H         PUBLIC        _TGT_Get_Page_CRC
+  D:0013H         PUBLIC        TGT_BL_Buffer_Size
+  C:0C56H         PUBLIC        TGT_Reset_MCU
+  C:09DAH         PUBLIC        _TGT_Erase_Page
+  C:0959H         PUBLIC        _TGT_Enter_BL_Mode
+  C:0261H         PUBLIC        _TGT_Write_Flash
+  D:0015H         PUBLIC        TGT_BL_InfoBlock_Len
+  D:0016H         PUBLIC        TGT_App_FW_End_Addr
+  X:049EH         PUBLIC        Rx_Buf
+  X:051EH         PUBLIC        Tx_Buf
+  D:001AH         PUBLIC        TGT_Page_Size
+  D:001CH         PUBLIC        TGT_App_InfoBlock_Len
+  X:091EH         PUBLIC        TGT_Info
+  C:0500H         PUBLIC        _TGT_Get_Info
+  D:001DH         PUBLIC        TGT_CRC_Is32bit
+  C:0ABAH         PUBLIC        _TGT_Write_Signature
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 9
+
+
+  B:0020H.0       PUBLIC        TGT_Write_Flash_Data_Bytes
+  -------         PROC          _TGT_ENTER_BL_MODE
+  D:0028H         SYMBOL        req_rsp_code
+  D:0029H         SYMBOL        dev_serial
+  -------         DO            
+  D:002CH         SYMBOL        index
+  D:002DH         SYMBOL        retval
+  D:002EH         SYMBOL        i
+  -------         ENDDO         
+  C:0959H         LINE#         83
+  C:0961H         LINE#         84
+  C:0961H         LINE#         97
+  C:0964H         LINE#         98
+  C:0966H         LINE#         101
+  C:0977H         LINE#         103
+  C:0988H         LINE#         105
+  C:098BH         LINE#         106
+  C:098BH         LINE#         107
+  C:09B1H         LINE#         108
+  C:09B8H         LINE#         110
+  C:09BFH         LINE#         112
+  C:09C4H         LINE#         113
+  C:09C4H         LINE#         114
+  C:09CDH         LINE#         115
+  C:09D3H         LINE#         116
+  C:09D7H         LINE#         117
+  C:09D7H         LINE#         119
+  C:09D9H         LINE#         120
+  -------         ENDPROC       _TGT_ENTER_BL_MODE
+  -------         PROC          _TGT_GET_INFO
+  D:0028H         SYMBOL        target_info
+  -------         DO            
+  D:002BH         SYMBOL        index
+  D:002CH         SYMBOL        retval
+  -------         ENDDO         
+  C:0500H         LINE#         132
+  C:0506H         LINE#         133
+  C:0506H         LINE#         149
+  C:0509H         LINE#         150
+  C:050BH         LINE#         152
+  C:051CH         LINE#         154
+  C:0523H         LINE#         156
+  C:0536H         LINE#         158
+  C:053DH         LINE#         159
+  C:053DH         LINE#         160
+  C:0554H         LINE#         161
+  C:0554H         LINE#         162
+  C:056FH         LINE#         163
+  C:0573H         LINE#         165
+  C:0577H         LINE#         166
+  C:0577H         LINE#         167
+  C:0585H         LINE#         168
+  C:0585H         LINE#         170
+  C:05A6H         LINE#         171
+  C:05C3H         LINE#         173
+  C:05CCH         LINE#         174
+  C:05CCH         LINE#         175
+  C:05CFH         LINE#         176
+  C:05D1H         LINE#         178
+  C:05D1H         LINE#         179
+  C:05D4H         LINE#         180
+  C:05D4H         LINE#         181
+  C:05D4H         LINE#         183
+  C:05D6H         LINE#         184
+  -------         ENDPROC       _TGT_GET_INFO
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 10
+
+
+  -------         PROC          _TGT_ERASE_PAGE
+  D:0001H         SYMBOL        flash_key0
+  D:0003H         SYMBOL        flash_key1
+  D:002AH         SYMBOL        addr
+  -------         DO            
+  D:0002H         SYMBOL        index
+  D:0007H         SYMBOL        retval
+  D:002EH         SYMBOL        addr_copy
+  -------         ENDDO         
+  C:09DAH         LINE#         196
+  C:09DEH         LINE#         197
+  C:09DEH         LINE#         211
+  C:09E0H         LINE#         212
+  C:09E0H         LINE#         215
+  C:09EFH         LINE#         217
+  C:09FCH         LINE#         218
+  C:0A0AH         LINE#         219
+  C:0A18H         LINE#         220
+  C:0A27H         LINE#         221
+  C:0A36H         LINE#         222
+  C:0A44H         LINE#         224
+  C:0A4BH         LINE#         226
+  C:0A52H         LINE#         228
+  C:0A52H         LINE#         229
+  -------         ENDPROC       _TGT_ERASE_PAGE
+  -------         PROC          _TGT_WRITE_FLASH
+  D:0028H         SYMBOL        buf
+  D:002BH         SYMBOL        numbytes
+  D:002DH         SYMBOL        flash_key0
+  D:002EH         SYMBOL        flash_key1
+  D:002FH         SYMBOL        addr
+  -------         DO            
+  D:0033H         SYMBOL        index
+  D:0034H         SYMBOL        retval
+  D:0035H         SYMBOL        addr_copy
+  D:0039H         SYMBOL        numbytes_this_write
+  D:003BH         SYMBOL        buf_index
+  -------         ENDDO         
+  C:0261H         LINE#         241
+  C:026BH         LINE#         242
+  C:026BH         LINE#         263
+  C:026EH         LINE#         266
+  C:0272H         LINE#         268
+  C:0281H         LINE#         270
+  C:02AAH         LINE#         271
+  C:02AAH         LINE#         272
+  C:02B6H         LINE#         273
+  C:02B6H         LINE#         275
+  C:02C4H         LINE#         276
+  C:02C4H         LINE#         277
+  C:02C7H         LINE#         278
+  C:02D8H         LINE#         279
+  C:02E9H         LINE#         280
+  C:02FAH         LINE#         281
+  C:030BH         LINE#         282
+  C:031CH         LINE#         283
+  C:032DH         LINE#         285
+  C:0338H         LINE#         286
+  C:0338H         LINE#         287
+  C:033EH         LINE#         288
+  C:0340H         LINE#         290
+  C:0340H         LINE#         291
+  C:0346H         LINE#         292
+  C:0346H         LINE#         294
+  C:0357H         LINE#         295
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 11
+
+
+  C:0368H         LINE#         297
+  C:036FH         LINE#         300
+  C:0378H         LINE#         302
+  C:037CH         LINE#         303
+  C:037CH         LINE#         304
+  C:037CH         LINE#         305
+  C:037FH         LINE#         306
+  C:037FH         LINE#         308
+  C:0381H         LINE#         310
+  C:038EH         LINE#         311
+  C:038EH         LINE#         312
+  C:03ABH         LINE#         313
+  C:03B3H         LINE#         314
+  C:03B7H         LINE#         316
+  C:03BEH         LINE#         318
+  C:03C0H         LINE#         320
+  C:03CDH         LINE#         322
+  C:03DBH         LINE#         323
+  C:03DBH         LINE#         325
+  C:03F6H         LINE#         328
+  C:03FFH         LINE#         330
+  C:0406H         LINE#         331
+  C:0406H         LINE#         332
+  C:0409H         LINE#         333
+  C:0409H         LINE#         334
+  C:0409H         LINE#         335
+  C:0409H         LINE#         336
+  C:0409H         LINE#         338
+  C:040DH         LINE#         339
+  C:040DH         LINE#         341
+  C:0415H         LINE#         342
+  C:0415H         LINE#         344
+  C:0417H         LINE#         345
+  -------         ENDPROC       _TGT_WRITE_FLASH
+  -------         PROC          _TGT_GET_PAGE_CRC
+  D:0004H         SYMBOL        addr
+  D:0028H         SYMBOL        target_page_crc
+  -------         DO            
+  D:0003H         SYMBOL        index
+  D:002BH         SYMBOL        retval
+  D:002CH         SYMBOL        addr_copy
+  D:0030H         SYMBOL        crc
+  -------         ENDDO         
+  C:0687H         LINE#         357
+  C:068DH         LINE#         358
+  C:068DH         LINE#         376
+  C:068FH         LINE#         377
+  C:0691H         LINE#         381
+  C:0699H         LINE#         383
+  C:06A6H         LINE#         384
+  C:06B5H         LINE#         385
+  C:06C4H         LINE#         386
+  C:06D2H         LINE#         388
+  C:06D9H         LINE#         390
+  C:06E2H         LINE#         392
+  C:06E6H         LINE#         393
+  C:06E6H         LINE#         394
+  C:06EEH         LINE#         395
+  C:06F4H         LINE#         396
+  C:06F8H         LINE#         397
+  C:06FAH         LINE#         399
+  C:06FAH         LINE#         400
+  C:0703H         LINE#         401
+  C:0709H         LINE#         402
+  C:070DH         LINE#         403
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 12
+
+
+  C:0711H         LINE#         404
+  C:0715H         LINE#         405
+  C:0715H         LINE#         407
+  C:0726H         LINE#         409
+  C:0728H         LINE#         410
+  -------         ENDPROC       _TGT_GET_PAGE_CRC
+  -------         PROC          _TGT_WRITE_SIGNATURE
+  D:0007H         SYMBOL        flash_key0
+  D:0005H         SYMBOL        flash_key1
+  D:0003H         SYMBOL        sig_byte0
+  D:002BH         SYMBOL        sig_byte1
+  -------         DO            
+  D:0006H         SYMBOL        index
+  D:0004H         SYMBOL        retval
+  -------         ENDDO         
+  C:0ABAH         LINE#         422
+  C:0ABAH         LINE#         423
+  C:0ABAH         LINE#         437
+  C:0ABBH         LINE#         438
+  C:0ABBH         LINE#         440
+  C:0AC7H         LINE#         441
+  C:0AD4H         LINE#         442
+  C:0AE1H         LINE#         443
+  C:0AEEH         LINE#         444
+  C:0AFCH         LINE#         446
+  C:0B03H         LINE#         448
+  C:0B0AH         LINE#         450
+  C:0B0AH         LINE#         451
+  -------         ENDPROC       _TGT_WRITE_SIGNATURE
+  -------         PROC          TGT_RESET_MCU
+  -------         DO            
+  D:0007H         SYMBOL        retval
+  -------         ENDDO         
+  C:0C56H         LINE#         463
+  C:0C56H         LINE#         464
+  C:0C56H         LINE#         474
+  C:0C5CH         LINE#         476
+  C:0C63H         LINE#         478
+  C:0C6AH         LINE#         480
+  C:0C6AH         LINE#         481
+  -------         ENDPROC       TGT_RESET_MCU
+  -------         ENDMOD        FXXX_MASTER_TGT_COMMANDS
+
+  -------         MODULE        FXXX_MASTER_VALIDATION
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:001EH         PUBLIC        Last_Error
+  C:084CH         PUBLIC        _Validate_TGT_SRC_Match
+  C:0BEBH         PUBLIC        _SRC_Validate_Response
+  C:0B0BH         PUBLIC        _TGT_Validate_Response
+  C:0CBBH         PUBLIC        _Validate_Pages_Written
+  -------         PROC          _TGT_VALIDATE_RESPONSE
+  D:0007H         SYMBOL        response
+  D:0005H         SYMBOL        command
+  C:0B0BH         LINE#         69
+  C:0B0BH         LINE#         70
+  C:0B0BH         LINE#         71
+  C:0B1AH         LINE#         72
+  C:0B1AH         LINE#         73
+  C:0B1AH         LINE#         74
+  C:0B1FH         LINE#         75
+  C:0B1FH         LINE#         76
+  C:0B22H         LINE#         77
+  C:0B22H         LINE#         78
+  C:0B23H         LINE#         79
+  C:0B23H         LINE#         81
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 13
+
+
+  C:0B26H         LINE#         82
+  C:0B26H         LINE#         83
+  C:0B26H         LINE#         84
+  C:0B26H         LINE#         85
+  C:0B28H         LINE#         86
+  C:0B28H         LINE#         87
+  C:0B2BH         LINE#         88
+  C:0B2BH         LINE#         89
+  C:0B2BH         LINE#         90
+  C:0B2BH         LINE#         91
+  C:0B2DH         LINE#         92
+  C:0B2DH         LINE#         93
+  C:0B30H         LINE#         94
+  C:0B30H         LINE#         95
+  C:0B33H         LINE#         96
+  C:0B34H         LINE#         97
+  C:0B4AH         LINE#         98
+  C:0B4AH         LINE#         99
+  C:0B4DH         LINE#         100
+  C:0B4DH         LINE#         101
+  C:0B4DH         LINE#         102
+  C:0B4DH         LINE#         103
+  C:0B4DH         LINE#         104
+  C:0B4DH         LINE#         105
+  -------         ENDPROC       _TGT_VALIDATE_RESPONSE
+  -------         PROC          _SRC_VALIDATE_RESPONSE
+  D:0007H         SYMBOL        response
+  D:0005H         SYMBOL        command
+  C:0BEBH         LINE#         117
+  C:0BEBH         LINE#         118
+  C:0BEBH         LINE#         119
+  C:0BF7H         LINE#         120
+  C:0BF7H         LINE#         121
+  C:0BF7H         LINE#         123
+  C:0BFAH         LINE#         124
+  C:0BFAH         LINE#         125
+  C:0BFAH         LINE#         126
+  C:0BFAH         LINE#         127
+  C:0BFCH         LINE#         128
+  C:0BFCH         LINE#         129
+  C:0C03H         LINE#         130
+  C:0C03H         LINE#         131
+  C:0C03H         LINE#         132
+  C:0C03H         LINE#         133
+  C:0C05H         LINE#         134
+  C:0C05H         LINE#         135
+  C:0C08H         LINE#         136
+  C:0C08H         LINE#         137
+  C:0C0BH         LINE#         138
+  C:0C0BH         LINE#         140
+  C:0C0BH         LINE#         142
+  C:0C0BH         LINE#         143
+  C:0C0BH         LINE#         144
+  C:0C0BH         LINE#         145
+  C:0C0BH         LINE#         146
+  C:0C0BH         LINE#         147
+  -------         ENDPROC       _SRC_VALIDATE_RESPONSE
+  -------         PROC          _VALIDATE_TGT_SRC_MATCH
+  D:0028H         SYMBOL        response
+  D:002AH         SYMBOL        page_addr
+  -------         DO            
+  D:002DH         SYMBOL        TGT_app_fw_end_addr
+  D:0031H         SYMBOL        SRC_app_fw_end_addr
+  -------         ENDDO         
+  C:084CH         LINE#         159
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 14
+
+
+  C:0856H         LINE#         160
+  C:0856H         LINE#         164
+  C:085CH         LINE#         165
+  C:085CH         LINE#         166
+  C:0862H         LINE#         167
+  C:0866H         LINE#         168
+  C:086AH         LINE#         169
+  C:086DH         LINE#         171
+  C:0873H         LINE#         172
+  C:0877H         LINE#         173
+  C:087BH         LINE#         174
+  C:087EH         LINE#         176
+  C:08A0H         LINE#         179
+  C:08A0H         LINE#         182
+  C:08B1H         LINE#         183
+  C:08C1H         LINE#         184
+  C:08C2H         LINE#         186
+  C:08C2H         LINE#         187
+  C:08C5H         LINE#         188
+  C:08C5H         LINE#         189
+  C:08C6H         LINE#         190
+  C:08CEH         LINE#         191
+  C:08CEH         LINE#         192
+  C:08D1H         LINE#         193
+  C:08D2H         LINE#         195
+  C:08D2H         LINE#         196
+  C:08D5H         LINE#         197
+  C:08D5H         LINE#         198
+  -------         ENDPROC       _VALIDATE_TGT_SRC_MATCH
+  -------         PROC          _VALIDATE_PAGES_WRITTEN
+  D:0007H         SYMBOL        num_pages_from_source
+  C:0CBBH         LINE#         210
+  C:0CBBH         LINE#         211
+  C:0CBBH         LINE#         212
+  C:0CC0H         LINE#         213
+  C:0CC0H         LINE#         214
+  C:0CC3H         LINE#         215
+  C:0CC3H         LINE#         216
+  -------         ENDPROC       _VALIDATE_PAGES_WRITTEN
+  -------         ENDMOD        FXXX_MASTER_VALIDATION
+
+  -------         MODULE        F39X_COMM_SMBUS0
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  -------         ENDMOD        F39X_COMM_SMBUS0
+
+  -------         MODULE        F39X_COMM_UART0
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0089H         PUBLIC        TMOD
+  B:0098H.0       PUBLIC        RI0
+  B:0098H.1       PUBLIC        TI0
+  D:008DH         PUBLIC        TH1
+  C:0C26H         PUBLIC        SRC_Comm_Init
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  C:0BA3H         PUBLIC        _SRC_Comm_Send_Tx_Bytes
+  D:0099H         PUBLIC        SBUF0
+  D:0098H         PUBLIC        SCON0
+  C:0B7AH         PUBLIC        _SRC_Comm_Wait_For_Rx_Bytes
+  D:008EH         PUBLIC        CKCON
+  -------         PROC          SRC_COMM_INIT
+  C:0C26H         LINE#         77
+  C:0C26H         LINE#         78
+  C:0C26H         LINE#         80
+  C:0C29H         LINE#         85
+  C:0C29H         LINE#         86
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 15
+
+
+  C:0C2CH         LINE#         87
+  C:0C2FH         LINE#         88
+  C:0C32H         LINE#         89
+  C:0C32H         LINE#         90
+  C:0C32H         LINE#         91
+  C:0C32H         LINE#         92
+  C:0C32H         LINE#         93
+  C:0C32H         LINE#         94
+  C:0C32H         LINE#         95
+  C:0C32H         LINE#         96
+  C:0C32H         LINE#         97
+  C:0C32H         LINE#         98
+  C:0C32H         LINE#         99
+  C:0C32H         LINE#         100
+  C:0C32H         LINE#         102
+  C:0C35H         LINE#         103
+  C:0C38H         LINE#         104
+  C:0C3BH         LINE#         105
+  C:0C3DH         LINE#         109
+  -------         ENDPROC       SRC_COMM_INIT
+  -------         PROC          _SRC_COMM_WAIT_FOR_RX_BYTES
+  D:0006H         SYMBOL        numbytes_to_read
+  -------         DO            
+  D:0004H         SYMBOL        received_numbytes
+  -------         ENDDO         
+  C:0B7AH         LINE#         120
+  C:0B7AH         LINE#         121
+  C:0B7AH         LINE#         130
+  C:0B7DH         LINE#         133
+  C:0B84H         LINE#         134
+  C:0B84H         LINE#         135
+  C:0B87H         LINE#         138
+  C:0B94H         LINE#         139
+  C:0B96H         LINE#         141
+  C:0B9BH         LINE#         142
+  C:0B9DH         LINE#         146
+  C:0BA2H         LINE#         147
+  -------         ENDPROC       _SRC_COMM_WAIT_FOR_RX_BYTES
+  -------         PROC          _SRC_COMM_SEND_TX_BYTES
+  D:0006H         SYMBOL        numbytes_to_send
+  -------         DO            
+  D:0004H         SYMBOL        sent_numbytes
+  -------         ENDDO         
+  C:0BA3H         LINE#         159
+  C:0BA3H         LINE#         160
+  C:0BA3H         LINE#         169
+  C:0BA6H         LINE#         172
+  C:0BADH         LINE#         173
+  C:0BADH         LINE#         174
+  C:0BAFH         LINE#         177
+  C:0BBCH         LINE#         179
+  C:0BC1H         LINE#         181
+  C:0BC6H         LINE#         184
+  -------         ENDPROC       _SRC_COMM_SEND_TX_BYTES
+  -------         ENDMOD        F39X_COMM_UART0
+
+  -------         MODULE        F39X_MASTER_DEVSPECIFIC
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A4H         PUBLIC        P0MDOUT
+  D:00A5H         PUBLIC        P1MDOUT
+  D:00D9H         PUBLIC        PCA0MD
+  D:00E1H         PUBLIC        XBR0
+  D:00E2H         PUBLIC        XBR1
+  D:00FFH         PUBLIC        VDM0CN
+  C:0CA4H         PUBLIC        PORT_Init
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 16
+
+
+  D:00B2H         PUBLIC        OSCICN
+  B:0090H.0       PUBLIC        P1_0_SWITCH
+  B:0090H.1       PUBLIC        P1_1_LED
+  C:0C7FH         PUBLIC        _Set_LED_State
+  C:0CC4H         PUBLIC        Init_Device
+  C:0CCDH         PUBLIC        Check_Pin_State
+  C:0CD6H         PUBLIC        Disable_Watchdog
+  D:00EFH         PUBLIC        RSTSRC
+  C:0CB1H         PUBLIC        OSCILLATOR_Init
+  -------         PROC          DISABLE_WATCHDOG
+  C:0CD6H         LINE#         77
+  C:0CD6H         LINE#         78
+  C:0CD6H         LINE#         80
+  C:0CD9H         LINE#         81
+  -------         ENDPROC       DISABLE_WATCHDOG
+  -------         PROC          INIT_DEVICE
+  C:0CC4H         LINE#         93
+  C:0CC4H         LINE#         94
+  C:0CC4H         LINE#         95
+  C:0CC7H         LINE#         96
+  C:0CCAH         LINE#         98
+  -------         ENDPROC       INIT_DEVICE
+  -------         PROC          OSCILLATOR_INIT
+  C:0CB1H         LINE#         117
+  C:0CB1H         LINE#         118
+  C:0CB1H         LINE#         119
+  C:0CB4H         LINE#         120
+  C:0CB7H         LINE#         121
+  C:0CBAH         LINE#         122
+  -------         ENDPROC       OSCILLATOR_INIT
+  -------         PROC          PORT_INIT
+  C:0CA4H         LINE#         143
+  C:0CA4H         LINE#         144
+  C:0CA4H         LINE#         145
+  C:0CA7H         LINE#         146
+  C:0CAAH         LINE#         147
+  C:0CADH         LINE#         148
+  C:0CB0H         LINE#         149
+  -------         ENDPROC       PORT_INIT
+  -------         PROC          CHECK_PIN_STATE
+  C:0CCDH         LINE#         160
+  C:0CCDH         LINE#         161
+  C:0CCDH         LINE#         162
+  C:0CD0H         LINE#         163
+  C:0CD0H         LINE#         164
+  C:0CD3H         LINE#         165
+  C:0CD3H         LINE#         167
+  C:0CD3H         LINE#         168
+  C:0CD5H         LINE#         169
+  C:0CD5H         LINE#         170
+  -------         ENDPROC       CHECK_PIN_STATE
+  -------         PROC          _SET_LED_STATE
+  D:0007H         SYMBOL        state
+  C:0C7FH         LINE#         182
+  C:0C7FH         LINE#         183
+  C:0C7FH         LINE#         184
+  C:0C8AH         LINE#         185
+  C:0C8AH         LINE#         186
+  C:0C8AH         LINE#         187
+  C:0C8CH         LINE#         188
+  C:0C8DH         LINE#         189
+  C:0C8DH         LINE#         190
+  C:0C8FH         LINE#         191
+  C:0C90H         LINE#         192
+  C:0C90H         LINE#         193
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 17
+
+
+  C:0C92H         LINE#         194
+  C:0C92H         LINE#         195
+  C:0C92H         LINE#         196
+  C:0C92H         LINE#         197
+  C:0C92H         LINE#         198
+  -------         ENDPROC       _SET_LED_STATE
+  -------         ENDMOD        F39X_MASTER_DEVSPECIFIC
+
+  -------         MODULE        F39X_SMBUS_MASTER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00D8H.2       PUBLIC        CCF2
+  D:00E6H         PUBLIC        EIE1
+  B:00A8H.7       PUBLIC        EA
+  D:00A7H         PUBLIC        SFRPAGE
+  D:00A5H         PUBLIC        P1MDOUT
+  C:0047H         PUBLIC        LIN0_Oscillator_Init
+  C:0C93H         PUBLIC        LIN0_Port_Init
+  D:00ECH         PUBLIC        PCA0CPH2
+  B:00D8H.6       PUBLIC        CR
+  D:00D9H         PUBLIC        PCA0MD
+  D:00D8H         PUBLIC        PCA0CN
+  D:00EBH         PUBLIC        PCA0CPL2
+  D:00DCH         PUBLIC        PCA0CPM2
+  D:00C9H         PUBLIC        LIN0CF
+  D:00C7H         PUBLIC        XBR2
+  D:00D4H         PUBLIC        P0SKIP
+  C:0C3EH         PUBLIC        Launch_Example_Master_Application
+  D:00A1H         PUBLIC        OSCICN
+  D:0043H         PUBLIC        Next_Interrupt_Time
+  D:00FAH         PUBLIC        PCA0H
+  D:00F9H         PUBLIC        PCA0L
+  C:0729H         PUBLIC        PCA0_ISR
+  B:0090H.3       PUBLIC        LED
+  C:0B4EH         PUBLIC        LIN0_Master_Init
+  B:0090H.4       PUBLIC        SW1
+  C:0A53H         PUBLIC        LIN0_ISR
+  B:0020H.1       PUBLIC        Resend_Last_Req
+  D:00D3H         PUBLIC        LIN0ADR
+  D:00D2H         PUBLIC        LIN0DAT
+  C:0BC7H         PUBLIC        LIN0_PCA0_Init
+  -------         PROC          LAUNCH_EXAMPLE_MASTER_APPLICATION
+  C:0C3EH         LINE#         160
+  C:0C3EH         LINE#         161
+  C:0C3EH         LINE#         162
+  C:0C41H         LINE#         164
+  C:0C44H         LINE#         166
+  C:0C47H         LINE#         167
+  C:0C4AH         LINE#         168
+  C:0C4DH         LINE#         169
+  C:0C50H         LINE#         171
+  C:0C52H         LINE#         173
+  C:0C54H         LINE#         175
+  -------         ENDPROC       LAUNCH_EXAMPLE_MASTER_APPLICATION
+  -------         PROC          LIN0_PCA0_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0BC7H         LINE#         192
+  C:0BC7H         LINE#         193
+  C:0BC7H         LINE#         194
+  C:0BC9H         LINE#         195
+  C:0BCCH         LINE#         198
+  C:0BCEH         LINE#         199
+  C:0BD0H         LINE#         201
+  C:0BD3H         LINE#         204
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 18
+
+
+  C:0BD5H         LINE#         205
+  C:0BD7H         LINE#         208
+  C:0BDDH         LINE#         209
+  C:0BE0H         LINE#         210
+  C:0BE3H         LINE#         212
+  C:0BE6H         LINE#         214
+  C:0BE8H         LINE#         216
+  C:0BEAH         LINE#         217
+  -------         ENDPROC       LIN0_PCA0_INIT
+  -------         PROC          LIN0_OSCILLATOR_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0047H         LINE#         229
+  C:0047H         LINE#         230
+  C:0047H         LINE#         231
+  C:0049H         LINE#         232
+  C:004CH         LINE#         234
+  C:004FH         LINE#         236
+  C:0051H         LINE#         237
+  -------         ENDPROC       LIN0_OSCILLATOR_INIT
+  -------         PROC          LIN0_PORT_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0C93H         LINE#         267
+  C:0C93H         LINE#         268
+  C:0C93H         LINE#         269
+  C:0C95H         LINE#         270
+  C:0C98H         LINE#         272
+  C:0C9BH         LINE#         280
+  C:0C9EH         LINE#         282
+  C:0CA1H         LINE#         284
+  C:0CA3H         LINE#         285
+  -------         ENDPROC       LIN0_PORT_INIT
+  -------         PROC          LIN0_MASTER_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0B4EH         LINE#         303
+  C:0B4EH         LINE#         304
+  C:0B4EH         LINE#         305
+  C:0B50H         LINE#         306
+  C:0B53H         LINE#         309
+  C:0B56H         LINE#         310
+  C:0B59H         LINE#         312
+  C:0B5CH         LINE#         314
+  C:0B5FH         LINE#         315
+  C:0B62H         LINE#         318
+  C:0B65H         LINE#         320
+  C:0B68H         LINE#         322
+  C:0B6BH         LINE#         323
+  C:0B6EH         LINE#         325
+  C:0B71H         LINE#         326
+  C:0B74H         LINE#         328
+  C:0B77H         LINE#         330
+  C:0B79H         LINE#         332
+  -------         ENDPROC       LIN0_MASTER_INIT
+  -------         PROC          PCA0_ISR
+  -------         DO            
+  D:0041H         SYMBOL        sw1prev
+  D:0006H         SYMBOL        sw1now
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0729H         LINE#         352
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 19
+
+
+  C:0734H         LINE#         359
+  C:0736H         LINE#         360
+  C:0739H         LINE#         362
+  C:073CH         LINE#         363
+  C:073CH         LINE#         364
+  C:073EH         LINE#         367
+  C:074AH         LINE#         369
+  C:074DH         LINE#         370
+  C:0750H         LINE#         372
+  C:0753H         LINE#         373
+  C:0753H         LINE#         374
+  C:0756H         LINE#         375
+  C:0759H         LINE#         376
+  C:075BH         LINE#         378
+  C:075BH         LINE#         379
+  C:0760H         LINE#         381
+  C:0767H         LINE#         382
+  C:0767H         LINE#         385
+  C:076AH         LINE#         386
+  C:076DH         LINE#         388
+  C:0770H         LINE#         389
+  C:0773H         LINE#         392
+  C:0773H         LINE#         393
+  C:0773H         LINE#         395
+  C:0773H         LINE#         396
+  C:0773H         LINE#         397
+  C:0775H         LINE#         398
+  C:077EH         LINE#         399
+  C:077EH         LINE#         402
+  C:0781H         LINE#         403
+  C:0784H         LINE#         405
+  C:0787H         LINE#         406
+  C:078AH         LINE#         409
+  C:078AH         LINE#         410
+  C:078AH         LINE#         412
+  C:078AH         LINE#         413
+  C:078AH         LINE#         414
+  C:078CH         LINE#         415
+  C:0791H         LINE#         416
+  C:0791H         LINE#         419
+  C:0794H         LINE#         420
+  C:0797H         LINE#         422
+  C:079AH         LINE#         423
+  C:079DH         LINE#         425
+  C:07A0H         LINE#         426
+  C:07A8H         LINE#         428
+  C:07ABH         LINE#         429
+  C:07AEH         LINE#         430
+  C:07AEH         LINE#         432
+  C:07B0H         LINE#         433
+  C:07B0H         LINE#         434
+  C:07B2H         LINE#         436
+  C:07B2H         LINE#         437
+  C:07B5H         LINE#         438
+  C:07B5H         LINE#         440
+  C:07B7H         LINE#         441
+  -------         ENDPROC       PCA0_ISR
+  -------         PROC          LIN0_ISR
+  -------         DO            
+  D:0005H         SYMBOL        ctrl
+  D:0004H         SYMBOL        ID
+  D:0006H         SYMBOL        command
+  D:0006H         SYMBOL        status
+  D:0021H         SYMBOL        error
+  D:0042H         SYMBOL        num_error
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 20
+
+
+  D:0007H         SYMBOL        SFRPAGE_save
+  -------         ENDDO         
+  C:0A53H         LINE#         457
+  C:0A62H         LINE#         461
+  C:0A64H         LINE#         462
+  C:0A67H         LINE#         464
+  C:0A6AH         LINE#         465
+  C:0A6CH         LINE#         467
+  C:0A6FH         LINE#         468
+  C:0A71H         LINE#         470
+  C:0A74H         LINE#         471
+  C:0A76H         LINE#         473
+  C:0A7AH         LINE#         474
+  C:0A7AH         LINE#         475
+  C:0A7DH         LINE#         476
+  C:0A7DH         LINE#         477
+  C:0A80H         LINE#         478
+  C:0A83H         LINE#         480
+  C:0A85H         LINE#         483
+  C:0A87H         LINE#         484
+  C:0A89H         LINE#         485
+  C:0A8DH         LINE#         486
+  C:0A8DH         LINE#         487
+  C:0A8FH         LINE#         490
+  C:0A96H         LINE#         491
+  C:0A96H         LINE#         492
+  C:0A99H         LINE#         493
+  C:0A9BH         LINE#         495
+  C:0A9EH         LINE#         496
+  C:0A9EH         LINE#         497
+  C:0AA0H         LINE#         498
+  C:0AA0H         LINE#         499
+  C:0AA3H         LINE#         500
+  C:0AA3H         LINE#         501
+  C:0AA5H         LINE#         502
+  C:0AA5H         LINE#         503
+  C:0AA5H         LINE#         504
+  C:0AA5H         LINE#         505
+  C:0AA5H         LINE#         507
+  C:0AA8H         LINE#         508
+  C:0AABH         LINE#         510
+  C:0AADH         LINE#         512
+  -------         ENDPROC       LIN0_ISR
+  -------         ENDMOD        F39X_SMBUS_MASTER
+
+  -------         MODULE        ?C?CLDOPTR
+  C:05D7H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:0604H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?CSTOPTR
+  C:0616H         PUBLIC        ?C?CSTOPTR
+  -------         ENDMOD        ?C?CSTOPTR
+
+  -------         MODULE        ?C?ULCMP
+  C:0638H         PUBLIC        ?C?ULCMP
+  -------         ENDMOD        ?C?ULCMP
+
+  -------         MODULE        ?C?LSTPTR
+  C:0649H         PUBLIC        ?C?LSTPTR
+  -------         ENDMOD        ?C?LSTPTR
+
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 21
+
+
+  -------         MODULE        ?C?LSTIDATA
+  C:0663H         PUBLIC        ?C?LSTIDATA
+  -------         ENDMOD        ?C?LSTIDATA
+
+  -------         MODULE        ?C?LSTXDATA
+  C:066FH         PUBLIC        ?C?LSTXDATA
+  -------         ENDMOD        ?C?LSTXDATA
+
+  -------         MODULE        ?C?LSTPDATA
+  C:067BH         PUBLIC        ?C?LSTPDATA
+  -------         ENDMOD        ?C?LSTPDATA
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LAUNCH_EXAMPLE_MASTER_APPLICATION?F39X_SMBUS_MASTER
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 09BDH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 09C9H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0521H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0532H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0A49H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0A50H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 22
+
+
+    ADDRESS: 036DH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0374H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 03BCH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 03FBH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0411H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 06D7H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 06EAH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 06FFH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0B01H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0B08H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_SEND_TX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0C61H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _COMM_WAIT_FOR_RX_BYTES
+    MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\Mast
+BL51 BANKED LINKER/LOCATER V6.22            03/19/2013  14:50:00  PAGE 23
+
+
+>> erProgrammer\Fxxx_Master_TGT_Commands.obj (FXXX_MASTER_TGT_COMMANDS)
+    ADDRESS: 0C68H
+
+Program Size: data=68.2 xdata=2360 code=3287
+LINK/LOCATE RUN COMPLETE.  21 WARNING(S),  0 ERROR(S)

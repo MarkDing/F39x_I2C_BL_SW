@@ -1,0 +1,555 @@
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE F39X_SMBUS_MASTER
+OBJECT MODULE PLACED IN F39x_SMBUS_Master.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe F39x_SMBUS_Master.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // F50x_LIN_Master.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright 2008 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          // This program's purpose is to communicate between the A and B sides of the
+   9          // C8051F50x target board through the Local Interconnect Network (LIN).
+  10          //
+  11          // Pressing the P1.4_A switch will trigger the P1.3_B LED to light up.
+  12          // Releasing the P1.4_A switch will turn off the P1.3_B LED.
+  13          // Alternatively, pressing the P1.4_B switch will turn on the P1.3_A LED
+  14          // while releasing the P1.4_B switch will turn off the P1.3_A LED.
+  15          //
+  16          // This example is intended to be used with the LIN_Slave example.
+  17          //
+  18          // How To Test:
+  19          //
+  20          // 1) Verify the LED and switch pin jumpers are populated
+  21          //    (J19 for device A and J11 for device B).
+  22          //
+  23          // 2) Make sure the LIN jumpers in J17 (for A side) and J26 (for B side)
+  24          //    are connected.
+  25          //
+  26          // 3) If you wish to change the baud rate of the LIN, change the following
+  27          //    global constant: LIN_BAUD_RATE
+  28          //
+  29          // 3) Download the code to a F50x-TB (either device A or device B) that is
+  30          //    connected as above to another device running the LIN0_Slave code.
+  31          //
+  32          // 4) Run the code.
+  33          //
+  34          // 5) If the communication passes, when a switch on a side of the target board
+  35          //    is pressed, the LED on the opposite side will light up. When said switch
+  36          //    is released, the LED will turn off.
+  37          //
+  38          // Target:         C8051F50x (C8051F500 TB)
+  39          // Tool chain:     Raisonance / Keil / SDCC
+  40          // Command Line:   None
+  41          //
+  42          // Revision History:
+  43          //
+  44          // Release 1.3 / 02 MAR 2010 (GP)
+  45          //    -Tested with Raisonance
+  46          //
+  47          // Release 1.2 / 10 SEP 2008 (GP)
+  48          //    -Changed LIN transmission to transmit at least one byte
+  49          //
+  50          // Release 1.1 / 03 SEP 2008 (GP)
+  51          //    -Fixed baud rate calculations
+  52          //
+  53          // Release 1.0 / 09 JUN 2008 (ADT)
+  54          //    -Initial Revision
+  55          //
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 2   
+
+  56          // Obs1: When the master sends a request frame, the ID sent from the master
+  57          //       is the same as the ID read by the master after a slave transmit frame,
+  58          //       even if the slave tries to edit the ID before transmitting.
+  59          //
+  60          //-----------------------------------------------------------------------------
+  61          // Includes
+  62          //-----------------------------------------------------------------------------
+  63          
+  64          #include <compiler_defs.h>
+  65          #include <C8051F500_defs.h>
+  66          #include <stdio.h>
+  67          
+  68          //-----------------------------------------------------------------------------
+  69          // Global Constants
+  70          //-----------------------------------------------------------------------------
+  71          
+  72          SBIT (SW1, SFR_P1, 4);                     // SW1 = '0' means switch pressed
+  73          SBIT (LED, SFR_P1, 3);                     // LED = '1' means LED on
+  74          
+  75          #define SYSCLK 24000000L               // Clock speed in Hz
+  76          
+  77          #if (SYSCLK < 8000000)                 // For the slowest baud rate
+              #error Minimum system clock needed to operate LIN peripheral is 8Mhz.
+              #endif
+  80          
+  81          #define TWENTY_MS (U16)((.02/(1.0/SYSCLK)) / 12.0) // Clock cycles for 20ms
+  82          
+  83          #define  LIN_BAUD_RATE 19200           // Baud Rate to run LIN peripheral
+  84                                                 // 625 < LIN_BAUD_RATE < 20000
+  85          
+  86          #define LIN_TX_PUSH_PULL 0             // 0=Open-drain; 1=Push-pull output
+  87          
+  88          //-----------------------------------------------------------------------------
+  89          // LIN #defines
+  90          //-----------------------------------------------------------------------------
+  91          
+  92          //------ Control register ------
+  93          #define  STREQ       0x01              // LIN Master Start transmission request
+  94          #define  WUPREQ      0x02              // Wake-Up request
+  95          #define  RSTERR      0x04              // Error reset request
+  96          #define  RSTINT      0x08              // Interrupt reset request
+  97          #define  DTACK       0x10              // Slave Data ACK
+  98          #define  TXRX        0x20              // Master selection of TX or RX mode
+  99          #define  SLEEP       0x40              // Slave flag set by master to inform
+ 100                                                 // the peripheral that either a sleep
+ 101                                                 // mode frame or bus idle timeout
+ 102                                                 // was reached
+ 103          #define  STOP        0x80              // Slave flag, to be set by the
+ 104                                                 // application so no processing is to be
+ 105                                                 // done until next SYNCH BREAK
+ 106          //------ Status Register ------
+ 107          #define  DONE        0x01              // Msg. processing completed
+ 108          #define  WAKEUP      0x02              // Wake-Up signal
+ 109          #define  ERROR       0x04              // Error detected
+ 110          #define  LININTREQ   0x08              // Interrupt request
+ 111          #define  DTREQ       0x10              // ID detected
+ 112          #define  ABORT       0x20              // Abort requested
+ 113          #define  IDLTOUT     0x40              // Time-out detected
+ 114          #define  ACTIVE      0x80              // Interface active (communicating)
+ 115          
+ 116          #define LIN_MULTIPLIER (U8)((20000.0 / LIN_BAUD_RATE) - 1)
+ 117          
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 3   
+
+ 118          #if (SYSCLK >= 16000000)
+ 119           #define LIN_PRESCALAR 1
+ 120           #define LIN_DIVIDER (U16) (SYSCLK / ((U32) 4 * (LIN_MULTIPLIER + 1) * (U32) LIN_BAUD_RATE))
+ 121          #else
+               #define LIN_PRESCALAR 0
+               #define LIN_DIVIDER (U16) (SYSCLK / ((U32) 2 * (LIN_MULTIPLIER + 1) * (U32) LIN_BAUD_RATE))
+              #endif
+ 125          
+ 126          // Instruction Set
+ 127          #define ID_SW1_SLAVE_QUERY 0x01
+ 128          #define ID_LED_SLAVE_OFF   0x02  //LED on the slave side
+ 129          #define ID_LED_SLAVE_ON    0x03
+ 130          
+ 131          #define LED_MASTER_OFF     0x04
+ 132          #define LED_MASTER_ON      0x05
+ 133          
+ 134          //-----------------------------------------------------------------------------
+ 135          // Global VARIABLES
+ 136          //-----------------------------------------------------------------------------
+ 137          
+ 138          UU16 Next_Interrupt_Time;              // Contains the next interrupt time that
+ 139                                                 // PCA module 2 will try to match
+ 140          
+ 141          bit Resend_Last_Req = 0;
+ 142          
+ 143          //-----------------------------------------------------------------------------
+ 144          // Function Prototypes
+ 145          //-----------------------------------------------------------------------------
+ 146          
+ 147          void LIN0_Oscillator_Init (void);           // Configure the system clock
+ 148          void LIN0_Port_Init (void);                 // Configure the Crossbar and GPIO
+ 149          void LIN0_PCA0_Init (void);                 // Configure the PCA
+ 150          void LIN0_Master_Init (void);          // Configure LIN for master
+ 151          
+ 152          INTERRUPT_PROTO (PCA0_ISR, INTERRUPT_PCA0);
+ 153          INTERRUPT_PROTO (LIN0_ISR, INTERRUPT_LIN0);
+ 154          
+ 155          
+ 156          //-----------------------------------------------------------------------------
+ 157          // MAIN Routine ==> renamed to: Launch_Example_Master_Application
+ 158          //-----------------------------------------------------------------------------
+ 159          
+ 160          void Launch_Example_Master_Application (void)
+ 161          {
+ 162   1         SFRPAGE = ACTIVE_PAGE;
+ 163   1      
+ 164   1         PCA0MD &= ~0x40;                    // Disable Watchdog timer
+ 165   1      
+ 166   1         LIN0_Oscillator_Init ();                 // Initialize the system clock
+ 167   1         LIN0_Port_Init ();                       // Initialize crossbar and GPIO
+ 168   1         LIN0_PCA0_Init ();                       // Initialize PCA0
+ 169   1         LIN0_Master_Init ();                // Initialize LIN0
+ 170   1      
+ 171   1         EA = 1;                             // Enable Interrupts
+ 172   1      
+ 173   1         LED = 0;                            // Initialize LED to be off
+ 174   1      
+ 175   1         while (1);
+ 176   1      }
+ 177          
+ 178          //-----------------------------------------------------------------------------
+ 179          // Initialization Subroutines
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 4   
+
+ 180          //-----------------------------------------------------------------------------
+ 181          
+ 182          //-----------------------------------------------------------------------------
+ 183          // LIN0_PCA0_Init
+ 184          //-----------------------------------------------------------------------------
+ 185          //
+ 186          // Return Value:  None
+ 187          // Parameters:    None
+ 188          //
+ 189          // Module 2 is configured as a match interrupt to be used as a periodic
+ 190          // interrupt every 20 ms.
+ 191          //-----------------------------------------------------------------------------
+ 192          void LIN0_PCA0_Init (void)
+ 193          {
+ 194   1         U8 SFRPAGE_save = SFRPAGE;
+ 195   1         SFRPAGE = ACTIVE_PAGE;
+ 196   1      
+ 197   1         // Configure PCA time base; overflow interrupt disabled
+ 198   1         PCA0CN = 0x00;                      // Stop counter; clear all flags
+ 199   1         PCA0MD = 0x00;                      // Use SYSCLK / 12 as time base
+ 200   1      
+ 201   1         PCA0CPM2 = 0x49;                    // Configure PCA0 module 2 to interrupt
+ 202   1                                             // periodically
+ 203   1      
+ 204   1         PCA0L = 0x00;                       // Set PCA0 counter to 0
+ 205   1         PCA0H = 0x00;
+ 206   1      
+ 207   1         // Initialize PCA0 module 2 to interrupt in 20 ms
+ 208   1         Next_Interrupt_Time.U16 = TWENTY_MS;
+ 209   1         PCA0CPL2 = Next_Interrupt_Time.U8[LSB];
+ 210   1         PCA0CPH2 = Next_Interrupt_Time.U8[MSB];
+ 211   1      
+ 212   1         EIE1 |= 0x08;                       // Enable PCA interrupts
+ 213   1      
+ 214   1         CR = 1;                             // Start PCA counter
+ 215   1      
+ 216   1         SFRPAGE = SFRPAGE_save;
+ 217   1      }
+ 218          
+ 219          //-----------------------------------------------------------------------------
+ 220          // LIN0_OSCILLATOR_Init
+ 221          //-----------------------------------------------------------------------------
+ 222          //
+ 223          // Return Value:  None
+ 224          // Parameters:    None
+ 225          //
+ 226          // Configure the internal oscillator to maximum internal frequency of 24 Mhz
+ 227          //
+ 228          //-----------------------------------------------------------------------------
+ 229          void LIN0_Oscillator_Init (void)
+ 230          {
+ 231   1         U8 SFRPAGE_save = SFRPAGE;
+ 232   1         SFRPAGE = CONFIG_PAGE;
+ 233   1      
+ 234   1         OSCICN = 0xC7;
+ 235   1      
+ 236   1         SFRPAGE = SFRPAGE_save;
+ 237   1      }
+ 238          
+ 239          
+ 240          //-----------------------------------------------------------------------------
+ 241          // LIN0_Port_Init *EDIT THIS SECTION*
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 5   
+
+ 242          //-----------------------------------------------------------------------------
+ 243          //
+ 244          // Return Value : None
+ 245          // Parameters   : None
+ 246          //
+ 247          // This function configures the crossbar and GPIO ports.
+ 248          
+ 249          // P0.0  -  Skipped,     Open-Drain, Digital
+ 250          // P0.1  -  Skipped,     Open-Drain, Digital
+ 251          // P0.2  -  Skipped,     Open-Drain, Digital
+ 252          // P0.3  -  Skipped,     Open-Drain, Digital
+ 253          // P0.4  -  Skipped,     Open-Drain, Digital
+ 254          // P0.5  -  Skipped,     Open-Drain, Digital
+ 255          // P0.6  -  Skipped,     Open-Drain, Digital
+ 256          // P0.7  -  Skipped,     Open-Drain, Digital
+ 257          // P1.0  -  TX    (LIN), Push-Pull,  Digital
+ 258          // P1.1  -  RX    (LIN), Open-Drain, Digital
+ 259          // P1.2  -  Unassigned,  Open-Drain, Digital
+ 260          // P1.3  -  LED,         Push-Pull,  Digital
+ 261          // P1.4  -  SW1,         Open-Drain, Digital
+ 262          // P1.5  -  Unassigned,  Open-Drain, Digital
+ 263          // P1.6  -  Unassigned,  Open-Drain, Digital
+ 264          // P1.7  -  Unassigned,  Open-Drain, Digital
+ 265          //
+ 266          //-----------------------------------------------------------------------------
+ 267          void LIN0_Port_Init (void)
+ 268          {
+ 269   1         U8 SFRPAGE_save = SFRPAGE;
+ 270   1         SFRPAGE = CONFIG_PAGE;
+ 271   1      
+ 272   1         P1MDOUT   = 0x08;                   // Set P1.1 to open-drain                                      
+ 273   1                                             // Set P1.3 to push-pull
+ 274   1                                             // Set P1.4 to open-drain
+ 275   1      
+ 276   1         #if LIN_TX_PUSH_PULL == 1 
+                 P1MDOUT |= 0x01;                    // Set P1.0 to push-pull
+                 #endif
+ 279   1      
+ 280   1         P0SKIP    = 0xFF;                   // Skip to place LIN on 1.0 and 1.1
+ 281   1      
+ 282   1         XBR2      = 0x41;                   // Enable LIN, crossbar and weak pullups
+ 283   1      
+ 284   1         SFRPAGE = SFRPAGE_save;
+ 285   1      }
+ 286          
+ 287          //-----------------------------------------------------------------------------
+ 288          // LIN0_Master_Init
+ 289          //-----------------------------------------------------------------------------
+ 290          //
+ 291          // Return Value : None
+ 292          // Parameters   : None
+ 293          //
+ 294          // Intializes the LIN peripheral to master mode.
+ 295          //
+ 296          // LIN is an asynchronous, serial communications interface. All LIN registers
+ 297          // besides the control mode register (LIN0CF) are indirectly accessed;
+ 298          // the address is specified in the LINADDR register which points to a specific
+ 299          // data register which can be accessed through the LINDATA register.
+ 300          // Waveforms and additional specifications can be found in the LIN consortium
+ 301          // (http:\\www.lin-subbus.com).
+ 302          //-----------------------------------------------------------------------------
+ 303          void LIN0_Master_Init (void)
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 6   
+
+ 304          {
+ 305   1         U8 SFRPAGE_save = SFRPAGE;
+ 306   1         SFRPAGE = CONFIG_PAGE;
+ 307   1      
+ 308   1         // Enable interface, configure the device for LIN Master, manual baud rate
+ 309   1         LIN0CF = 0x80;
+ 310   1         LIN0CF |= 0x40;
+ 311   1      
+ 312   1         SFRPAGE = ACTIVE_PAGE;
+ 313   1         // Load the least significant byte of the divider.
+ 314   1         LIN0ADR = LIN0DIV;
+ 315   1         LIN0DAT = (U8) LIN_DIVIDER;
+ 316   1      
+ 317   1         // Load the multiplier, prescalar, and most significant bit of the divider.
+ 318   1         LIN0ADR = LIN0MUL;
+ 319   1         LIN0DAT = (U8) ((LIN_PRESCALAR << 6) | (LIN_MULTIPLIER << 1)
+ 320   1                     | (LIN_DIVIDER >> 8));
+ 321   1      
+ 322   1         LIN0ADR = LIN0SIZE;
+ 323   1         LIN0DAT = 0x80;                     // Enhanced checksum
+ 324   1      
+ 325   1         LIN0ADR = LIN0CTRL;
+ 326   1         LIN0DAT = 0x0C;                     // Reset LININT and LIN0ERR
+ 327   1      
+ 328   1         EIE1 |= 0x80;                       // Enable  LIN interrupts
+ 329   1      
+ 330   1         SFRPAGE = SFRPAGE_save;
+ 331   1      
+ 332   1      }
+ 333          
+ 334          //-----------------------------------------------------------------------------
+ 335          // Interrupt Service Routines
+ 336          //-----------------------------------------------------------------------------
+ 337          
+ 338          //-----------------------------------------------------------------------------
+ 339          // PCA0_ISR
+ 340          //-----------------------------------------------------------------------------
+ 341          //
+ 342          // This is the ISR for the PCA0. Module 2 will send a LIN transmit or request
+ 343          // frame every 20ms to the slave. If there is a falling edge on the master
+ 344          // switch, meaning that the switch was just pressed, send a LED on transfer.
+ 345          // If there is a rising edige on the master switch, meaning that the switch
+ 346          // was just released, send a LED off transfer. If the switch was in the same
+ 347          // state as it was previously, meaning that the switch is either not pressed
+ 348          // or is being held down, send a request frame to retreive the status of the
+ 349          // slave switch.
+ 350          //
+ 351          //-----------------------------------------------------------------------------
+ 352          INTERRUPT (PCA0_ISR, INTERRUPT_PCA0)
+ 353          {
+ 354   1         static U8 sw1prev = 0;              // Status of the switch during the last
+ 355   1                                             // interrupt
+ 356   1      
+ 357   1         U8 sw1now;
+ 358   1      
+ 359   1         U8 SFRPAGE_save = SFRPAGE;
+ 360   1         SFRPAGE = ACTIVE_PAGE;
+ 361   1      
+ 362   1         if (CCF2)
+ 363   1         {
+ 364   2            CCF2 = 0;                        // Clear other interrupt flags for PCA
+ 365   2      
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 7   
+
+ 366   2            // Interrupt every 20 ms
+ 367   2            Next_Interrupt_Time.U16 = Next_Interrupt_Time.U16 + TWENTY_MS;
+ 368   2      
+ 369   2            PCA0CPL2 = Next_Interrupt_Time.U8[LSB];
+ 370   2            PCA0CPH2 = Next_Interrupt_Time.U8[MSB];
+ 371   2      
+ 372   2            if (Resend_Last_Req == 1)
+ 373   2            {
+ 374   3               LIN0ADR = LIN0CTRL;
+ 375   3               LIN0DAT |= STREQ;             // Start Request
+ 376   3            }
+ 377   2            else
+ 378   2            {
+ 379   3               sw1now = SW1; // Read current state of switch
+ 380   3      
+ 381   3               if ((sw1prev == 0) && (sw1now == 1))
+ 382   3               {
+ 383   4                  // Button was down and switch is now off = rising edge
+ 384   4                  // Turn off LED
+ 385   4                  LIN0ADR = LIN0CTRL;
+ 386   4                  LIN0DAT |= TXRX;              // Select to transmit data
+ 387   4      
+ 388   4                  LIN0ADR = LIN0ID;
+ 389   4                  LIN0DAT = ID_LED_SLAVE_OFF;   // Tell slave to turn off LED
+ 390   4      
+ 391   4                  // Data byte not used, but necessary to prevent slave error
+ 392   4                  LIN0ADR = LIN0SIZE;
+ 393   4                  LIN0DAT = (LIN0DAT & 0xF0) | 0x01;   // Transmitting 1 byte
+ 394   4      
+ 395   4                  LIN0ADR = LIN0CTRL;
+ 396   4                  LIN0DAT |= STREQ;             // Start Request
+ 397   4               }
+ 398   3               else if ((sw1prev == 1) && (sw1now == 0))
+ 399   3               {
+ 400   4                  // Button was up and switch is now pressed = falling edge
+ 401   4                  // Turn on LED
+ 402   4                  LIN0ADR = LIN0CTRL;
+ 403   4                  LIN0DAT |= TXRX;              // Select to transmit data
+ 404   4      
+ 405   4                  LIN0ADR = LIN0ID;
+ 406   4                  LIN0DAT = ID_LED_SLAVE_ON;    // Tell slave to turn on LED
+ 407   4      
+ 408   4                  // Data byte not used, but necessary to prevent slave error
+ 409   4                  LIN0ADR = LIN0SIZE;
+ 410   4                  LIN0DAT = (LIN0DAT & 0xF0) | 0x01;   // Transmitting 1 byte
+ 411   4      
+ 412   4                  LIN0ADR = LIN0CTRL;
+ 413   4                  LIN0DAT |= STREQ;             // Start Request
+ 414   4               }
+ 415   3               else if ((sw1prev == sw1now))
+ 416   3               {
+ 417   4                  // Same state as last state, covers 00 and 11
+ 418   4                  // Poll slave switch
+ 419   4                  LIN0ADR = LIN0CTRL;
+ 420   4                  LIN0DAT &= ~TXRX;             // Create a master receive operation
+ 421   4      
+ 422   4                  LIN0ADR = LIN0ID;
+ 423   4                  LIN0DAT = ID_SW1_SLAVE_QUERY; // Want to know status of slave switch
+ 424   4      
+ 425   4                  LIN0ADR = LIN0SIZE;
+ 426   4                  LIN0DAT = (LIN0DAT & 0xF0) | 0x01;   // Transmitting 1 byte
+ 427   4      
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 8   
+
+ 428   4                  LIN0ADR = LIN0CTRL;
+ 429   4                  LIN0DAT |= STREQ;             // Start Request
+ 430   4               }
+ 431   3      
+ 432   3               sw1prev = sw1now;                   // Save value of switch
+ 433   3            }
+ 434   2         }
+ 435   1         else
+ 436   1         {
+ 437   2            PCA0CN &= ~0xBB;                 // Clear other PCA interrupt flags
+ 438   2         }
+ 439   1      
+ 440   1         SFRPAGE = SFRPAGE_save;
+ 441   1      }
+ 442          
+ 443          //-----------------------------------------------------------------------------
+ 444          // LIN0_ISR
+ 445          //-----------------------------------------------------------------------------
+ 446          //
+ 447          // Return Value : None
+ 448          // Parameters   : None
+ 449          //
+ 450          // This ISR triggers when completing/receiving a transmission from the slave.
+ 451          // Depending on what message is sent, LED (P1.3) on the slave will turn on/off.
+ 452          // When receiving a transmission from the slave, the information in data byte
+ 453          // 1 will tell the master the state of the switch on the slave side. The master
+ 454          // will then toggle the LED (P1.3) on the master side accordingly.
+ 455          //
+ 456          //-----------------------------------------------------------------------------
+ 457          INTERRUPT (LIN0_ISR, INTERRUPT_LIN0)
+ 458          {
+ 459   1         U8 ctrl, ID, command, status, error;
+ 460   1         static U8 num_error = 0;
+ 461   1         U8 SFRPAGE_save = SFRPAGE;
+ 462   1         SFRPAGE = ACTIVE_PAGE;
+ 463   1      
+ 464   1         LIN0ADR = LIN0ST;                   // Retrieve status
+ 465   1         status = LIN0DAT;
+ 466   1      
+ 467   1         LIN0ADR = LIN0CTRL;
+ 468   1         ctrl = LIN0DAT;
+ 469   1      
+ 470   1         LIN0ADR = LIN0ID;
+ 471   1         ID = LIN0DAT;
+ 472   1      
+ 473   1         if (status & LININTREQ)
+ 474   1         {
+ 475   2            if (status & ERROR)              // If an error was detected
+ 476   2            {
+ 477   3               LIN0ADR = LIN0ERR;
+ 478   3               error = LIN0DAT;              // Check the error register
+ 479   3               // Keep track of the number of errors received
+ 480   3               num_error++;
+ 481   3               // Handle your errors here, application dependent
+ 482   3      
+ 483   3               Resend_Last_Req = 1;
+ 484   3            }
+ 485   2            else if(status & DONE)           // If transmission/reception completed
+ 486   2            {
+ 487   3               Resend_Last_Req = 0;
+ 488   3      
+ 489   3               // If in recieve mode and ID is correct
+C51 COMPILER V9.02   F39X_SMBUS_MASTER                                                     03/19/2013 14:27:31 PAGE 9   
+
+ 490   3               if (((ctrl & TXRX) == 0) && (ID == ID_SW1_SLAVE_QUERY))
+ 491   3               {
+ 492   4                  LIN0ADR = LIN0DT1;
+ 493   4                  command = LIN0DAT;         // Get info from transmission
+ 494   4      
+ 495   4                  if (command == LED_MASTER_ON)
+ 496   4                   {
+ 497   5                      LED = 1;
+ 498   5                   }
+ 499   4                  if (command == LED_MASTER_OFF)
+ 500   4                  {
+ 501   5                      LED = 0;
+ 502   5                  }
+ 503   4               }
+ 504   3            }
+ 505   2         }
+ 506   1      
+ 507   1         LIN0ADR = LIN0CTRL;
+ 508   1         LIN0DAT |= 0x0C;                    // Reset LININT and LIN0ERR
+ 509   1      
+ 510   1         SFRPAGE = SFRPAGE_save;
+ 511   1      
+ 512   1      }
+ 513          
+ 514          //-----------------------------------------------------------------------------
+ 515          // End Of File
+ 516          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    386    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

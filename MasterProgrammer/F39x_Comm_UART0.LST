@@ -1,0 +1,216 @@
+C51 COMPILER V9.02   F39X_COMM_UART0                                                       03/19/2013 14:49:59 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE F39X_COMM_UART0
+OBJECT MODULE PLACED IN F39x_Comm_UART0.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe F39x_Comm_UART0.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // F50x_Comm_UART0.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright (C) 2010 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // [*** TEMPLATE INFORMATION ***]
+  10          // Filename: Fnnn_Comm_CommType.c
+  11          // nnn => Fill-in with the MCU family part number.
+  12          // CommType => Fill-in Comm interface name.
+  13          // Examples: F50x_Comm_CAN0.c, F34x_Comm_UART0.c
+  14          //
+  15          //
+  16          // Note: The following changes were made to this file so it can be used 
+  17          // in the Master project:
+  18          // 1. The include header files were changed from 'TargetBL' to 'Master'.
+  19          // 2. "Rx_Buf" replaced with "SRC_Rx_Buf".
+  20          // 3. "Tx_Buf" replaced with "SRC_Tx_Buf".
+  21          // 4. All function names prefixed with "SRC_".
+  22          //
+  23          // Target:         C8051Fxxx (Any Silicon Labs Flash MCU)
+  24          // Tool chain:     Generic
+  25          // Command Line:   None
+  26          //
+  27          //
+  28          // Release 1.0 / 01SEP2010 (PKC)
+  29          //    -Initial Revision
+  30          //
+  31          //-----------------------------------------------------------------------------
+  32          
+  33          //-----------------------------------------------------------------------------
+  34          // Includes
+  35          //-----------------------------------------------------------------------------
+  36          #include <compiler_defs.h>
+  37          #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
+  38                                                 // real MCU register definition file
+  39          
+  40          #include "Fxxx_Master_Config.h"
+  41          #include "Fxxx_Master_Interface.h"
+  42          #include "Fxxx_BL128_UART0_Interface.h"  
+  43          
+  44          //-----------------------------------------------------------------------------
+  45          // Global CONSTANTS
+  46          //-----------------------------------------------------------------------------
+  47          
+  48          //-----------------------------------------------------------------------------
+  49          // Global Variables
+  50          //-----------------------------------------------------------------------------
+  51          
+  52          
+  53          //-----------------------------------------------------------------------------
+  54          // Function Prototypes (Local)
+  55          //-----------------------------------------------------------------------------
+C51 COMPILER V9.02   F39X_COMM_UART0                                                       03/19/2013 14:49:59 PAGE 2   
+
+  56          void SRC_Comm_Init (void);
+  57          U8 SRC_Comm_Wait_For_Rx_Bytes (U16 numbytes_to_read);
+  58          void SRC_Comm_Send_Tx_Bytes (U16 numbytes_to_send);
+  59          
+  60          //=============================================================================
+  61          // Function Definitions
+  62          //=============================================================================
+  63          
+  64          //-----------------------------------------------------------------------------
+  65          // SRC_Comm_Init
+  66          //-----------------------------------------------------------------------------
+  67          //
+  68          // Return Value : None
+  69          // Parameters   : None
+  70          //
+  71          // This function initializes the UART0 peripheral.
+  72          // Interrupts are disabled and handled in polled mode instead.
+  73          //
+  74          // Configure the UART0 using Timer1, for <BAUDRATE> and 8-N-1.
+  75          //
+  76          //-----------------------------------------------------------------------------
+  77          void SRC_Comm_Init (void)
+  78          {
+  79   1         // *** Comm-Specific / Device-Specific ***
+  80   1         SCON0 = 0x10;                       // SCON0: 8-bit variable bit rate
+  81   1                                             //        level of STOP bit is ignored
+  82   1                                             //        RX enabled
+  83   1                                             //        ninth bits are zeros
+  84   1                                             //        clear RI0 and TI0 bits
+  85   1         if (SYSCLK/BAUDRATE/2/256 < 1) {
+  86   2            TH1 = -(SYSCLK/BAUDRATE/2);               // 0x96
+  87   2            CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+  88   2            CKCON |=  0x08;
+  89   2         } else if (SYSCLK/BAUDRATE/2/256 < 4) {
+  90   2            TH1 = -(SYSCLK/BAUDRATE/2/4);
+  91   2            CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 01
+  92   2            CKCON |=  0x01;
+  93   2         } else if (SYSCLK/BAUDRATE/2/256 < 12) {
+  94   2            TH1 = -(SYSCLK/BAUDRATE/2/12);
+  95   2            CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 00
+  96   2         } else {
+  97   2            TH1 = -(SYSCLK/BAUDRATE/2/48);
+  98   2            CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 10
+  99   2            CKCON |=  0x02;
+ 100   2         }
+ 101   1      
+ 102   1         TL1 = TH1;                          // init Timer1 
+ 103   1         TMOD &= ~0xf0;                      // TMOD: timer 1 in 8-bit autoreload
+ 104   1         TMOD |=  0x20;
+ 105   1         TR1 = 1;                            // START Timer1
+ 106   1      //   IP |= 0x10;                         // Make UART high priority
+ 107   1      //   ES0 = 1;                            // Enable UART0 interrupts
+ 108   1      // *** Do not enable UART0 interrupts -- Polled-mode ***
+ 109   1      }
+ 110          
+ 111          //-----------------------------------------------------------------------------
+ 112          // SRC_Comm_Wait_For_Rx_Bytes
+ 113          //-----------------------------------------------------------------------------
+ 114          //
+ 115          // Return Value:  None
+ 116          // Parameters:    None
+ 117          //
+C51 COMPILER V9.02   F39X_COMM_UART0                                                       03/19/2013 14:49:59 PAGE 3   
+
+ 118          //
+ 119          //-----------------------------------------------------------------------------
+ 120          U8 SRC_Comm_Wait_For_Rx_Bytes (U16 numbytes_to_read)
+ 121          {
+ 122   1         // *** Comm-Specific / Device-Specific ***
+ 123   1         // TODO: Add code here to read bytes from the comm interface and store them
+ 124   1         // in the "SRC_Rx_Buf" buffer (buffer variable defined elsewhere).
+ 125   1         // Return the 1st byet of SRC_Rx_Buf as the return value.
+ 126   1         // This should be a blocking function; wait until requested number of bytes
+ 127   1         // have been read from the comm interface.
+ 128   1         // Send an ack (RSP_OK) after receiving each packet (except for the last packet)
+ 129   1        
+ 130   1         U16 received_numbytes = 0;
+ 131   1         
+ 132   1      
+ 133   1         while (received_numbytes < numbytes_to_read)
+ 134   1         {
+ 135   2            while (RI0 == 0) {}              // Poll on receive interrupt flag
+ 136   2      
+ 137   2            // Read a byte from UART
+ 138   2            *(SRC_Rx_Buf + received_numbytes) = SBUF0; 
+ 139   2            RI0 = 0;                         // Clear interrupt flag
+ 140   2            
+ 141   2            received_numbytes++;
+ 142   2         }
+ 143   1         
+ 144   1         
+ 145   1         // Return the BL command code, which is always at byte0
+ 146   1         return (*(SRC_Rx_Buf + 0)); 
+ 147   1      }
+ 148          
+ 149          //-----------------------------------------------------------------------------
+ 150          // SRC_Comm_Send_Tx_Bytes
+ 151          //-----------------------------------------------------------------------------
+ 152          //
+ 153          // Return Value : None
+ 154          // Parameters   : None
+ 155          //
+ 156          // Send the data in the buffer using the message object. 
+ 157          //
+ 158          //-----------------------------------------------------------------------------
+ 159          void SRC_Comm_Send_Tx_Bytes (U16 numbytes_to_send)
+ 160          {
+ 161   1         // *** Comm-Specific / Device-Specific ***
+ 162   1         // TODO: Add code here to write bytes to the comm interface from
+ 163   1         // the "SRC_Tx_Buf" buffer (buffer variable defined elsewhere).
+ 164   1         // This should be a blocking function; wait until ALL of the requested number 
+ 165   1         // of bytes have been sent via the comm interface.
+ 166   1      
+ 167   1         // Wait for an ack (RSP_OK) after sending each packet (except for the last packet)
+ 168   1        
+ 169   1         U16 sent_numbytes = 0;
+ 170   1         
+ 171   1      
+ 172   1         while (sent_numbytes < numbytes_to_send)
+ 173   1         {
+ 174   2            TI0 = 0;                         // Clear interrupt flag
+ 175   2            
+ 176   2            // Place a byte in UART0 buffer to start tranmission
+ 177   2            SBUF0 = *(SRC_Tx_Buf + sent_numbytes);            
+ 178   2      
+ 179   2            sent_numbytes++;      
+C51 COMPILER V9.02   F39X_COMM_UART0                                                       03/19/2013 14:49:59 PAGE 4   
+
+ 180   2            
+ 181   2            while (TI0 == 0) {}              // Poll on transmit interrupt flag
+ 182   2         }
+ 183   1         
+ 184   1      }
+ 185          //-----------------------------------------------------------------------------
+ 186          // End Of File
+ 187          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    101    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

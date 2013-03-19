@@ -1,0 +1,205 @@
+C51 COMPILER V9.02   F39X_TARGETBL_DEVSPECIFIC                                             03/15/2013 16:18:47 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE F39X_TARGETBL_DEVSPECIFIC
+OBJECT MODULE PLACED IN F39x_TargetBL_DevSpecific.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe F39x_TargetBL_DevSpecific.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) ROM(SMALL) O
+                    -T(11,SIZE)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // Fnnn_TargetBL_DevSpecific.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright (C) 2010 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // [*** TEMPLATE INFORMATION ***]
+  10          // Filename: Fnnn_TargetBL_DevSpecific.c
+  11          // nnn => Fill-in with the MCU family part number.
+  12          // Examples: F50x_TargetBL_DevSpecific.c, F34x_TargetBL_DevSpecific.c
+  13          //
+  14          //
+  15          // Target:         C8051Fxxx (Any Silicon Labs Flash MCU)
+  16          // Tool chain:     Generic
+  17          // Command Line:   None
+  18          //
+  19          //
+  20          // Release 1.0 / 01SEP2010 (PKC)
+  21          //    -Initial Revision
+  22          //
+  23          //-----------------------------------------------------------------------------
+  24          
+  25          //-----------------------------------------------------------------------------
+  26          // Includes
+  27          //-----------------------------------------------------------------------------
+  28          #include <compiler_defs.h>
+  29          #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
+  30                                                 // real MCU register definition file
+  31          
+  32          #include "Fxxx_Target_Config.h"
+  33          #include "Fxxx_Target_Interface.h"
+  34          
+  35          #include "Fxxx_TargetBL_Config.h"
+  36          #include "Fxxx_TargetBL_Interface.h"
+  37          
+  38          #include "Fxxx_BL131_SMB0_Interface.h"
+  39          
+  40          //-----------------------------------------------------------------------------
+  41          // Global CONSTANTS
+  42          //-----------------------------------------------------------------------------
+  43          
+  44          // ------------------------------------------
+  45          // *** Device-Specific *** 
+  46          // Change this as necessary based on MCU
+  47          // ------------------------------------------
+  48          
+  49          // Bit masks for the RSTSRC SFR
+  50          #define PORSF  0x02
+  51          #define FERROR 0x40
+  52          
+  53          //-----------------------------------------------------------------------------
+  54          // Global Variables
+C51 COMPILER V9.02   F39X_TARGETBL_DEVSPECIFIC                                             03/15/2013 16:18:47 PAGE 2   
+
+  55          //-----------------------------------------------------------------------------
+  56          
+  57          
+  58          //-----------------------------------------------------------------------------
+  59          // Function Prototypes (Local)
+  60          //-----------------------------------------------------------------------------
+  61          
+  62          //=============================================================================
+  63          // Support Function Definitions
+  64          //=============================================================================
+  65          // These support functions write one SFR to a fixed value.
+  66          // They help keep the code below the 0x1FF limit by fitting into the gaps
+  67          // between interrupt vectors.
+  68          void Disable_Watchdog (void)
+  69          {
+  70   1         PCA0MD &= ~0x40;  // Disable Watchdog
+  71   1      }
+  72          
+  73          void Set_VDM0CN_080h (void)
+  74          {
+  75   1         VDM0CN = 0x80;                      // Enable VDD monitor and early warning
+  76   1      }
+  77          
+  78          void Set_RSTSRC_002h (void)
+  79          {
+  80   1         RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
+  81   1      }
+  82          
+  83          void Set_SMB0CF_095h (void)
+  84          {
+  85   1         SMB0CF = 0x95;                      // Use Timer1 overflows as SMBus clock
+  86   1                                             // source;
+  87   1                                             // Enable slave mode;
+  88   1                                             // Enable setup & hold time
+  89   1                                             // extensions;
+  90   1                                             // Enable SMBus Free timeout detect;
+  91   1                                             // Enable SMBus;
+  92   1      }
+  93          
+  94          #if ((SYSCLK/SMB0_FREQUENCY/3) < 255)
+  95          #define SCALE 1
+  96          void Set_CKCON_008h (void)
+  97          {
+  98   1         CKCON = 0x08;                   // Timer1 clock source = SYSCLK
+  99   1      }
+ 100          
+ 101          #elif ((SYSCLK/SMB0_FREQUENCY/4/3) < 255)
+              #define SCALE 4
+              void Set_CKCON_001h (void)
+              {
+                 CKCON = 0x01;                   // Timer1 clock source = SYSCLK / 4
+              }
+              #endif
+ 108          
+ 109          void Set_TMOD_020h (void)
+ 110          {
+ 111   1         TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
+ 112   1      }
+ 113          
+ 114          void Configure_Timer1 (void)
+ 115          {
+ 116   1         TH1 = -(SYSCLK/SMB0_FREQUENCY/SCALE/3);
+C51 COMPILER V9.02   F39X_TARGETBL_DEVSPECIFIC                                             03/15/2013 16:18:47 PAGE 3   
+
+ 117   1         TL1 = TH1;                          // Init Timer1
+ 118   1         TR1 = 1;                            // Timer1 enabled
+ 119   1      }
+ 120          
+ 121          //=============================================================================
+ 122          // Function Definitions
+ 123          //=============================================================================
+ 124          
+ 125          //-----------------------------------------------------------------------------
+ 126          // Init_Device
+ 127          //-----------------------------------------------------------------------------
+ 128          //
+ 129          // Return Value:  None
+ 130          // Parameters:    None
+ 131          //
+ 132          //
+ 133          //
+ 134          //-----------------------------------------------------------------------------
+ 135          void Init_Device(void)
+ 136          {
+ 137   1         Disable_Watchdog ();
+ 138   1      
+ 139   1         // Initialize variables here so that RAM contents are not disturbed on a
+ 140   1         // non-bootloader reset
+ 141   1      
+ 142   1         Set_VDM0CN_080h ();                 // Enable VDD monitor and early warning
+ 143   1         Set_RSTSRC_002h ();                 // Enable VDD monitor as a reset source
+ 144   1      
+ 145   1         // Initialize port I/O
+ 146   1         XBR0 = 0x04;                        // Route SMBus signals to port pins
+ 147   1         XBR1 = 0x40;                        // Enable crossbar
+ 148   1      
+ 149   1         // Initialize SMBus
+ 150   1        Set_SMB0CF_095h ();                  // Use Timer1 overflows as SMBus clock
+ 151   1                                             // source;
+ 152   1                                             // Enable slave mode;
+ 153   1                                             // Enable setup & hold time
+ 154   1                                             // extensions;
+ 155   1                                             // Enable SMBus Free timeout detect;
+ 156   1                                             // Enable SMBus;
+ 157   1      
+ 158   1         // Initialize Timer 1 as SMBus clock source
+ 159   1         // Make sure the Timer can produce the appropriate frequency in 8-bit mode
+ 160   1         // Supported SMBus Frequencies range from 10kHz to 100kHz.  The CKCON register
+ 161   1         // settings may need to change for frequencies outside this range.
+ 162   1      #if ((SYSCLK/SMB0_FREQUENCY/3) < 255)
+ 163   1         Set_CKCON_008h ();                  // Timer1 clock source = SYSCLK
+ 164   1      #elif ((SYSCLK/SMB0_FREQUENCY/4/3) < 255)
+                  Set_CKCON_001h ();
+              #endif
+ 167   1      
+ 168   1         Set_TMOD_020h();                    // Timer1 in 8-bit auto-reload mode
+ 169   1      
+ 170   1         Configure_Timer1 ();
+ 171   1      }
+ 172          
+ 173          //-----------------------------------------------------------------------------
+ 174          // End Of File
+ 175          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.02   F39X_TARGETBL_DEVSPECIFIC                                             03/15/2013 16:18:47 PAGE 4   
+
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

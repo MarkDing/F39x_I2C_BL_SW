@@ -1,0 +1,291 @@
+C51 COMPILER V9.02   FXXX_MASTER_MAIN                                                      03/19/2013 14:27:31 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE FXXX_MASTER_MAIN
+OBJECT MODULE PLACED IN Fxxx_Master_Main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe Fxxx_Master_Main.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // Fxxx_Master_Main.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright (C) 2010 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // The main routine for the Master Programmer Firmware.
+  10          //
+  11          // 
+  12          //
+  13          //
+  14          // Target:         C8051Fxxx (Any Silicon Labs Flash MCU)
+  15          // Tool chain:     Generic
+  16          // Command Line:   None
+  17          //
+  18          //
+  19          // Release 1.0 / 01SEP2010 (PKC)
+  20          //    -Initial Revision
+  21          //
+  22          //-----------------------------------------------------------------------------
+  23          
+  24          //-----------------------------------------------------------------------------
+  25          // Includes
+  26          //-----------------------------------------------------------------------------
+  27          #include <compiler_defs.h>
+  28          #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
+  29                                                 // real MCU register definition file
+  30          
+  31          #include "Fxxx_Master_Config.h"
+  32          #include "Fxxx_Master_Interface.h"
+  33          #include "Fxxx_Target_Interface.h"
+  34          #include "Fxxx_DataSource_Interface.h"
+  35          #include "Fxxx_Master_Validation.h"
+  36          
+  37          //-----------------------------------------------------------------------------
+  38          // Global CONSTANTS
+  39          //-----------------------------------------------------------------------------
+  40          
+  41          
+  42          
+  43          //-----------------------------------------------------------------------------
+  44          // Global Variables (project-scope)
+  45          //-----------------------------------------------------------------------------
+  46          U8 Pages_Written;
+  47          
+  48          U32 SRC_Page_CRC;
+  49          U32 TGT_Page_CRC;
+  50          
+  51          //-----------------------------------------------------------------------------
+  52          // Global Variables (file-scope)
+  53          //-----------------------------------------------------------------------------
+  54          U16 Delay_Counter;
+  55          
+C51 COMPILER V9.02   FXXX_MASTER_MAIN                                                      03/19/2013 14:27:31 PAGE 2   
+
+  56          
+  57          //-----------------------------------------------------------------------------
+  58          // Function Prototypes (Local)
+  59          //-----------------------------------------------------------------------------
+  60          
+  61          
+  62          //=============================================================================
+  63          // Main Routine
+  64          //=============================================================================
+  65          void main (void)
+  66          {
+  67   1         //---------------------------------------
+  68   1         // Local Variable Definitions
+  69   1         //---------------------------------------
+  70   1         U8 TGT_response;
+  71   1         U8 SRC_response;
+  72   1      
+  73   1         U32 page_addr;
+  74   1      
+  75   1         //---------------------------------------
+  76   1         // Check pin state and launch example
+  77   1         //---------------------------------------
+  78   1      
+  79   1         #if EXAMPLE_MASTER_APP == 1
+                 if (Check_Pin_State () == PIN_ASSERTED)
+                 {
+                    Launch_Example_Master_Application ();
+                 }
+                 #endif
+  85   1      
+  86   1         //---------------------------------------
+  87   1         // Perform MCU initialization
+  88   1         //---------------------------------------
+  89   1      
+  90   1         Disable_Watchdog();
+  91   1         Init_Device();
+  92   1         Set_LED_State (LED_ON);
+  93   1         EA = 1;
+  94   1      
+  95   1         //-------------------------------------------
+  96   1         // Main Loop
+  97   1         //-------------------------------------------
+  98   1      
+  99   1         while(1)
+ 100   1         {
+ 101   2            while (Last_Error == 0)
+ 102   2            {
+ 103   3               while (Check_Pin_State () != PIN_ASSERTED); // Wait for user input before starting firmware updat
+             -e 
+ 104   3      
+ 105   3               Set_LED_State (LED_OFF);  // Indicate progress
+ 106   3      
+ 107   3               SRC_response = SRC_Get_Info (SRC_Info);
+ 108   3               SRC_Validate_Response (SRC_response, SRC_CMD_GET_INFO);
+ 109   3               if (Last_Error != 0)
+ 110   3                  break;
+ 111   3      
+ 112   3               // If the target is in app mode, this command will put it in BL mode
+ 113   3               // Ignore response first time because if it is in app mode, there will
+ 114   3               // be no response
+ 115   3               TGT_Enter_BL_Mode (TGT_ENTER_BL_MODE_NO_RSP_CODE, SRC_Serial);
+ 116   3      
+C51 COMPILER V9.02   FXXX_MASTER_MAIN                                                      03/19/2013 14:27:31 PAGE 3   
+
+ 117   3               // Delay to allow target to reset from app mode to BL mode
+ 118   3               Delay_Counter = 0xFFFF;
+ 119   3               while(Delay_Counter-- != 0);
+ 120   3      
+ 121   3               // Reissue this command to confirm that it is now in BL mode
+ 122   3               TGT_response = TGT_Enter_BL_Mode (TGT_ENTER_BL_MODE_REQ_RSP_CODE, SRC_Serial);
+ 123   3               TGT_Validate_Response (TGT_response, TGT_CMD_ENTER_BL_MODE);
+ 124   3               if (Last_Error != 0)
+ 125   3                  break;
+ 126   3      
+ 127   3               TGT_response = TGT_Get_Info (TGT_Info);
+ 128   3               TGT_Validate_Response (TGT_response, TGT_CMD_GET_INFO);
+ 129   3               if (Last_Error != 0)
+ 130   3                  break;
+ 131   3      
+ 132   3               // Send target info to the PC for display
+ 133   3               if (TGT_Info[TGT_APP_INFOBLOCK_LENGTH] != 0)
+ 134   3               {
+ 135   4                  SRC_response = SRC_Disp_TGT_Info ((TGT_Info[TGT_BL_INFOBLOCK_LENGTH]+TGT_Info[TGT_APP_INFOBLOC
+             -K_LENGTH]), TGT_Info);
+ 136   4               }
+ 137   3               else
+ 138   3               {
+ 139   4                  // This will send the app infoblock length byte (which would have been set to 0 elsewhere)
+ 140   4                  SRC_response = SRC_Disp_TGT_Info ((TGT_Info[TGT_BL_INFOBLOCK_LENGTH]+1), TGT_Info);
+ 141   4               }
+ 142   3      
+ 143   3               Validate_TGT_SRC_Match (SRC_response, &(page_addr));
+ 144   3               // After matching, the target app FW end address is stored in page_addr
+ 145   3      
+ 146   3               if (Last_Error != 0)
+ 147   3                  break;
+ 148   3      
+ 149   3               // Target and Source are now ready for bootloading
+ 150   3      
+ 151   3               // Set target address to target app FW end addr (to erase existing signature)
+ 152   3               // The addr would be pre-set in page_addr by previous call Validate_TGT_SRC_Match()
+ 153   3      
+ 154   3               // Erase the last user page
+ 155   3               TGT_response = TGT_Erase_Page (FLASH_KEY0, FLASH_KEY1, page_addr);
+ 156   3               TGT_Validate_Response (TGT_response, TGT_RSP_OK);
+ 157   3               if (Last_Error != 0)
+ 158   3                  break;
+ 159   3      
+ 160   3               // Now that the last app page has been erased, begin the page-by-page bootload process
+ 161   3               Pages_Written = 0;
+ 162   3      
+ 163   3               while (1)
+ 164   3               {
+ 165   4                  // Request start data from source
+ 166   4                  SRC_response = SRC_Get_NextPage_Info (&page_addr, &SRC_Page_CRC);
+ 167   4                  SRC_Validate_Response (SRC_response, SRC_CMD_GET_NEXTPAGE_INFO);
+ 168   4                  if (Last_Error != 0)
+ 169   4                     break;
+ 170   4      
+ 171   4                  // Exit this loop if no more pages are available from source
+ 172   4                  if (SRC_response == SRC_RSP_DATA_END)
+ 173   4                     break;
+ 174   4      
+ 175   4                  // Request data from source
+ 176   4                  SRC_response = SRC_Get_NextPage (); // Page data is stored in SRC_Rx_Buf
+ 177   4                  SRC_Validate_Response (SRC_response, SRC_CMD_GET_NEXTPAGE);
+C51 COMPILER V9.02   FXXX_MASTER_MAIN                                                      03/19/2013 14:27:31 PAGE 4   
+
+ 178   4                  if (Last_Error != 0)
+ 179   4                     break;
+ 180   4      
+ 181   4                  // Set target page
+ 182   4                  // The addr would be pre-set by SRC_Get_NextPage_Info
+ 183   4      
+ 184   4                  // Erase the target application page
+ 185   4                  TGT_response = TGT_Erase_Page (FLASH_KEY0, FLASH_KEY1, page_addr);
+ 186   4                  TGT_Validate_Response (TGT_response, TGT_RSP_OK);
+ 187   4                  if (Last_Error != 0)
+ 188   4                     break;
+ 189   4      
+ 190   4                  // Note: The TGT_Write_Flash function will ignore attempts to write to the signature byte addr
+             -esses
+ 191   4                  TGT_response = TGT_Write_Flash ((SRC_Rx_Buf+1), TGT_Page_Size, FLASH_KEY0, FLASH_KEY1, page_ad
+             -dr);
+ 192   4                  TGT_Validate_Response (TGT_response, TGT_RSP_OK);
+ 193   4                  if (Last_Error != 0)
+ 194   4                     break;
+ 195   4      
+ 196   4                  Pages_Written++;
+ 197   4      
+ 198   4                  TGT_response = TGT_Get_Page_CRC (page_addr, &TGT_Page_CRC);
+ 199   4                  TGT_Validate_Response (TGT_response, TGT_CMD_GET_PAGE_CRC); // this will check for CRC match
+ 200   4                  if (Last_Error != 0)
+ 201   4                     break;
+ 202   4               }
+ 203   3      
+ 204   3               if (Last_Error != 0)
+ 205   3                  break;
+ 206   3      
+ 207   3               // Check if we wrote all the pages provided by the source
+ 208   3               // The number of app FW pages specified (from SRC) is provided in place 
+ 209   3               // of byte0 of page_addr as a result of the last call to SRC_Get_Page_Info()
+ 210   3               Validate_Pages_Written ((U8)(page_addr&0xFF));
+ 211   3               if (Last_Error != 0)
+ 212   3                  break;
+ 213   3      
+ 214   3               // All pages were written successfully. Now write the signature:
+ 215   3               TGT_response = TGT_Write_Signature (FLASH_KEY0, FLASH_KEY1, SIG_BYTE0, SIG_BYTE1);
+ 216   3               TGT_Validate_Response (TGT_response, TGT_RSP_OK);
+ 217   3               if (Last_Error != 0)
+ 218   3                  break;
+ 219   3      
+ 220   3               // Reset target
+ 221   3               TGT_response = TGT_Reset_MCU ();
+ 222   3               TGT_Validate_Response (TGT_response, TGT_RSP_OK);
+ 223   3      
+ 224   3               Set_LED_State (LED_ON);
+ 225   3      
+ 226   3               // Send message to PC to indicate successful completion
+ 227   3               SRC_Disp_Error (ERR_NO_ERRORS);
+ 228   3            }
+ 229   2      
+ 230   2            if (Last_Error != 0)
+ 231   2            {         
+ 232   3               SRC_Disp_Error (Last_Error);
+ 233   3      
+ 234   3               if (Last_Error == ERR_USER_CANCELED_UPDATE)
+ 235   3               {
+ 236   4                  TGT_Reset_MCU (); // If the user canceled the update, reset the target
+ 237   4               }
+C51 COMPILER V9.02   FXXX_MASTER_MAIN                                                      03/19/2013 14:27:31 PAGE 5   
+
+ 238   3      
+ 239   3               // Indicate error
+ 240   3               while (Check_Pin_State () != PIN_ASSERTED)
+ 241   3               {
+ 242   4                  Set_LED_State (LED_TOGGLE);   
+ 243   4                  // Delay to allow target to reset from app mode to BL mode
+ 244   4                  Delay_Counter = 0xF000;
+ 245   4                  while(Delay_Counter-- != 0);
+ 246   4               }
+ 247   3      
+ 248   3               Last_Error = 0;
+ 249   3            }
+ 250   2         }
+ 251   1      }
+ 252          
+ 253          
+ 254          //-----------------------------------------------------------------------------
+ 255          // End Of File
+ 256          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    491    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

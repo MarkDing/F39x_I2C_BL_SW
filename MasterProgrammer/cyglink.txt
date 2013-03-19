@@ -1,0 +1,8 @@
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_Main.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_SRC_Commands.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_TGT_Commands.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\Fxxx_Master_Validation.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Comm_SMBUS0.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Comm_UART0.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Master_DevSpecific.obj",
+"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_SMBUS_Master.obj"  TO "C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F50x_LIN0_Master.OMF" RS(256) PL(68) PW(78) 
