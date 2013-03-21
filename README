@@ -1,0 +1,6 @@
+F390 I2C bootloader 
+It contains several parts.
+* Bootloader firmware 
+* PC software application
+* Master MCU firmware
+* Sample user application code

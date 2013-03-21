@@ -1,0 +1,801 @@
+BL51 BANKED LINKER/LOCATER V6.22              03/20/2013  14:59:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\F39x_CRC.obj, C:\Users\mading\SkyDrive\Work\F390-b
+>> ootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Init.obj, C:\Users\mading\Sk
+>> yDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Main.obj, 
+>> C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramm
+>> er\F39x_UART.obj, C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
+>> _SW\MasterProgrammer\F39x_Validation.obj, C:\Users\mading\SkyDrive\Work\F39
+>> 0-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_SMB.obj TO C:\Users\madin
+>> g\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgrammer\F39x_Master
+>> Programmer.OMF RS (256) PL (68) PW (78)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_CRC.obj (F39X_CRC)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Init.obj (F39X_INIT)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Main.obj (F39X_MAIN)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_UART.obj (F39X_UART)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_Validation.obj (F39X_VALIDATION)
+  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\MasterProgramme
+>> r\F39x_SMB.obj (F39X_SMB)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ISTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULCMP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTXDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPDATA)
+
+
+LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
+>> _SW\MasterProgrammer\F39x_MasterProgrammer.OMF (F39X_CRC)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000EH     UNIT         ?DT?F39X_MAIN
+            DATA    0016H     0009H     UNIT         _DATA_GROUP_
+            DATA    001FH     0001H     UNIT         ?DT?F39X_VALIDATION
+            BIT     0020H.0   0000H.2   UNIT         ?BI?F39X_SMB
+                    0020H.2   0000H.6                *** GAP ***
+            DATA    0021H     000CH     UNIT         ?DT?F39X_UART
+            DATA    002DH     000BH     UNIT         ?DT?_VALIDATE_TGT_SRC_MAT
+>> CH?F39X_VALIDATION
+            DATA    0038H     0003H     UNIT         ?DT?_SRC_DISP_TGT_INFO?F3
+>> 9X_UART
+            IDATA   003BH     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     0221H     UNIT         ?XD?F39X_MAIN
+            XDATA   0221H     0032H     UNIT         ?XD?F39X_UART
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 2
+
+
+            XDATA   0253H     0010H     UNIT         ?XD?F39X_SMB
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     UNIT         ?PR?TIMER0_ISR?F39X_MAIN
+                    0006H     0005H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0013H     UNIT         ?PR?_VALIDATE_PAGES_WRITT
+>> EN?F39X_VALIDATION
+                    0021H     0002H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     00D6H     UNIT         ?C?LIB_CODE
+            CODE    00FCH     00AFH     UNIT         ?PR?_VALIDATE_TGT_SRC_MAT
+>> CH?F39X_VALIDATION
+            CODE    01ABH     0098H     UNIT         ?PR?_SRC_GET_PAGE_INFO?F3
+>> 9X_UART
+            CODE    0243H     008CH     UNIT         ?C_C51STARTUP
+            CODE    02CFH     008AH     UNIT         ?PR?UART0_ISR?F39X_UART
+            CODE    0359H     0087H     UNIT         ?PR?MAIN?F39X_MAIN
+            CODE    03E0H     005CH     UNIT         ?PR?_SRC_GET_INFO?F39X_UA
+>> RT
+            CODE    043CH     0055H     UNIT         ?PR?_SRC_DISP_TGT_INFO?F3
+>> 9X_UART
+            CODE    0491H     0043H     UNIT         ?PR?_SRC_VALIDATE_RESPONS
+>> E?F39X_VALIDATION
+            CODE    04D4H     0041H     UNIT         ?PR?_TGT_VALIDATE_RESPONS
+>> E?F39X_VALIDATION
+            CODE    0515H     003FH     UNIT         ?PR?_GET_BUF_CRC?F39X_CRC
+>> 
+            CODE    0554H     0031H     UNIT         ?PR?_SET_LED_STATE?F39X_M
+>> AIN
+            CODE    0585H     0031H     UNIT         ?PR?_SRC_GET_PAGE?F39X_UA
+>> RT
+            CODE    05B6H     002AH     UNIT         ?PR?_SRC_DISP_INFO_CODE?F
+>> 39X_UART
+            CODE    05E0H     0024H     UNIT         ?PR?_UPDATE_CRC?F39X_CRC
+            CODE    0604H     0021H     UNIT         ?PR?_SETUP_RX?F39X_UART
+            CODE    0625H     0020H     UNIT         ?C_INITSEG
+            CODE    0645H     001DH     UNIT         ?PR?UART0_INIT?F39X_INIT
+            CODE    0662H     000FH     UNIT         ?PR?TIMER0_INIT?F39X_INIT
+>> 
+            CODE    0671H     000DH     UNIT         ?PR?PORT_INIT?F39X_INIT
+            CODE    067EH     000CH     UNIT         ?PR?DEVICE_INIT?F39X_INIT
+>> 
+            CODE    068AH     000AH     UNIT         ?PR?OSCILLATOR_INIT?F39X_
+>> INIT
+
+
+
+OVERLAY MAP OF MODULE:   C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\F39x_MasterProgrammer.OMF (F39X_CRC)
+
+
+SEGMENT                                            DATA_GROUP 
+  +--> CALLED SEGMENT                            START    LENGTH
+----------------------------------------------------------------
+?C_C51STARTUP                                    -----    -----
+  +--> ?PR?MAIN?F39X_MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?F39X_MAIN                               0016H    0002H
+  +--> ?PR?DEVICE_INIT?F39X_INIT
+  +--> ?PR?_SET_LED_STATE?F39X_MAIN
+  +--> ?PR?_SRC_GET_INFO?F39X_UART
+  +--> ?PR?_SRC_VALIDATE_RESPONSE?F39X_VALID...
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 3
+
+
+  +--> ?PR?_SRC_GET_PAGE_INFO?F39X_UART
+  +--> ?PR?_SRC_GET_PAGE?F39X_UART
+  +--> ?PR?_SRC_DISP_INFO_CODE?F39X_UART
+
+?PR?DEVICE_INIT?F39X_INIT                        -----    -----
+  +--> ?PR?OSCILLATOR_INIT?F39X_INIT
+  +--> ?PR?PORT_INIT?F39X_INIT
+  +--> ?PR?UART0_INIT?F39X_INIT
+  +--> ?PR?TIMER0_INIT?F39X_INIT
+
+?PR?_SRC_GET_INFO?F39X_UART                      0018H    0003H
+  +--> ?PR?_SETUP_RX?F39X_UART
+
+?PR?_SRC_VALIDATE_RESPONSE?F39X_VALID...         -----    -----
+  +--> ?PR?_GET_BUF_CRC?F39X_CRC
+
+?PR?_GET_BUF_CRC?F39X_CRC                        0018H    0007H
+  +--> ?PR?_UPDATE_CRC?F39X_CRC
+
+?PR?_SRC_GET_PAGE_INFO?F39X_UART                 0018H    0006H
+  +--> ?PR?_SETUP_RX?F39X_UART
+
+?PR?_SRC_GET_PAGE?F39X_UART                      -----    -----
+  +--> ?PR?_SETUP_RX?F39X_UART
+
+?PR?_SRC_DISP_INFO_CODE?F39X_UART                -----    -----
+  +--> ?PR?_SETUP_RX?F39X_UART
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
+>> C_BL_SW\MasterProgrammer\F39x_MasterProgrammer.OMF (F39X_CRC)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        F39X_CRC
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:05E0H         PUBLIC        _Update_CRC
+  C:0515H         PUBLIC        _Get_Buf_CRC
+  -------         PROC          _GET_BUF_CRC
+  D:0018H         SYMBOL        ptr
+  D:001BH         SYMBOL        numbytes
+  -------         DO            
+  D:001DH         SYMBOL        i
+  D:0006H         SYMBOL        CRC
+  -------         ENDDO         
+  C:0515H         LINE#         43
+  C:051FH         LINE#         44
+  C:051FH         LINE#         47
+  C:0522H         LINE#         50
+  C:0531H         LINE#         51
+  C:0531H         LINE#         52
+  C:053EH         LINE#         53
+  C:0549H         LINE#         54
+  C:0553H         LINE#         56
+  C:0553H         LINE#         57
+  -------         ENDPROC       _GET_BUF_CRC
+  -------         PROC          _UPDATE_CRC
+  D:0006H         SYMBOL        crc
+  D:0005H         SYMBOL        newbyte
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:05E0H         LINE#         70
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 4
+
+
+  C:05E0H         LINE#         71
+  C:05E0H         LINE#         76
+  C:05E3H         LINE#         78
+  C:05E5H         LINE#         79
+  C:05E5H         LINE#         80
+  C:05E9H         LINE#         81
+  C:05E9H         LINE#         82
+  C:05F0H         LINE#         83
+  C:05F6H         LINE#         84
+  C:05F8H         LINE#         86
+  C:05F8H         LINE#         87
+  C:05FFH         LINE#         88
+  C:05FFH         LINE#         89
+  C:0603H         LINE#         90
+  C:0603H         LINE#         91
+  -------         ENDPROC       _UPDATE_CRC
+  -------         ENDMOD        F39X_CRC
+
+  -------         MODULE        F39X_INIT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A4H         PUBLIC        P0MDOUT
+  D:00A5H         PUBLIC        P1MDOUT
+  D:00B8H         PUBLIC        IP
+  D:00E1H         PUBLIC        XBR0
+  D:00E2H         PUBLIC        XBR1
+  C:0662H         PUBLIC        TIMER0_Init
+  D:00FFH         PUBLIC        VDM0CN
+  D:0089H         PUBLIC        TMOD
+  C:0671H         PUBLIC        PORT_Init
+  D:00B2H         PUBLIC        OSCICN
+  B:00A8H.4       PUBLIC        ES0
+  B:00A8H.1       PUBLIC        ET0
+  C:067EH         PUBLIC        Device_Init
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  D:00EFH         PUBLIC        RSTSRC
+  C:0645H         PUBLIC        UART0_Init
+  D:0098H         PUBLIC        SCON0
+  D:008EH         PUBLIC        CKCON
+  C:068AH         PUBLIC        OSCILLATOR_Init
+  -------         PROC          DEVICE_INIT
+  C:067EH         LINE#         59
+  C:067EH         LINE#         60
+  C:067EH         LINE#         61
+  C:0681H         LINE#         63
+  C:0684H         LINE#         65
+  C:0687H         LINE#         69
+  -------         ENDPROC       DEVICE_INIT
+  -------         PROC          OSCILLATOR_INIT
+  C:068AH         LINE#         83
+  C:068AH         LINE#         84
+  C:068AH         LINE#         86
+  C:068DH         LINE#         87
+  C:0690H         LINE#         88
+  C:0693H         LINE#         89
+  -------         ENDPROC       OSCILLATOR_INIT
+  -------         PROC          PORT_INIT
+  C:0671H         LINE#         110
+  C:0671H         LINE#         111
+  C:0671H         LINE#         112
+  C:0674H         LINE#         113
+  C:0677H         LINE#         114
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 5
+
+
+  C:067AH         LINE#         115
+  C:067DH         LINE#         116
+  -------         ENDPROC       PORT_INIT
+  -------         PROC          TIMER0_INIT
+  C:0662H         LINE#         129
+  C:0662H         LINE#         130
+  C:0662H         LINE#         132
+  C:0665H         LINE#         133
+  C:0668H         LINE#         135
+  C:066BH         LINE#         136
+  C:066EH         LINE#         137
+  C:0670H         LINE#         138
+  -------         ENDPROC       TIMER0_INIT
+  -------         PROC          UART0_INIT
+  C:0645H         LINE#         149
+  C:0645H         LINE#         150
+  C:0645H         LINE#         151
+  C:0648H         LINE#         156
+  C:0648H         LINE#         157
+  C:064BH         LINE#         158
+  C:064EH         LINE#         159
+  C:0651H         LINE#         160
+  C:0651H         LINE#         161
+  C:0651H         LINE#         162
+  C:0651H         LINE#         163
+  C:0651H         LINE#         164
+  C:0651H         LINE#         165
+  C:0651H         LINE#         166
+  C:0651H         LINE#         167
+  C:0651H         LINE#         168
+  C:0651H         LINE#         169
+  C:0651H         LINE#         170
+  C:0651H         LINE#         171
+  C:0651H         LINE#         173
+  C:0654H         LINE#         174
+  C:0657H         LINE#         175
+  C:065AH         LINE#         176
+  C:065CH         LINE#         177
+  C:065FH         LINE#         178
+  C:0661H         LINE#         179
+  -------         ENDPROC       UART0_INIT
+  -------         ENDMOD        F39X_INIT
+
+  -------         MODULE        F39X_MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0008H         PUBLIC        SRC_Page_CRC
+  C:0003H         PUBLIC        TIMER0_ISR
+  B:00A8H.7       PUBLIC        EA
+  D:000AH         PUBLIC        TGT_Page_CRC
+  D:00D9H         PUBLIC        PCA0MD
+  D:000CH         PUBLIC        SRC_Response
+  D:000DH         PUBLIC        TGT_Response
+  C:0359H         PUBLIC        main
+  D:000EH         PUBLIC        LED_State
+  D:000FH         PUBLIC        Pages_Written
+  B:0090H.0       PUBLIC        P1_0_SWITCH
+  C:0554H         PUBLIC        _Set_LED_State
+  B:0090H.1       PUBLIC        P1_1_LED
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  X:0000H         PUBLIC        SRC_Info
+  D:0010H         PUBLIC        Page_Addr
+  D:0014H         PUBLIC        Temp_Counter
+  X:000DH         PUBLIC        TGT_Info
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 6
+
+
+  X:001FH         PUBLIC        Page_Buf
+  -------         PROC          MAIN
+  -------         DO            
+  D:0016H         SYMBOL        index
+  -------         ENDDO         
+  C:0359H         LINE#         76
+  C:0359H         LINE#         77
+  C:0359H         LINE#         80
+  C:035CH         LINE#         82
+  C:035FH         LINE#         84
+  C:0364H         LINE#         86
+  C:0366H         LINE#         88
+  C:0366H         LINE#         89
+  C:0366H         LINE#         90
+  C:036AH         LINE#         91
+  C:036AH         LINE#         92
+  C:036DH         LINE#         93
+  C:036DH         LINE#         94
+  C:0372H         LINE#         96
+  C:037DH         LINE#         97
+  C:0382H         LINE#         98
+  C:0386H         LINE#         99
+  C:0386H         LINE#         149
+  C:0389H         LINE#         151
+  C:0389H         LINE#         152
+  C:0389H         LINE#         154
+  C:039DH         LINE#         155
+  C:03A2H         LINE#         156
+  C:03A6H         LINE#         157
+  C:03A6H         LINE#         160
+  C:03ACH         LINE#         161
+  C:03ACH         LINE#         164
+  C:03B7H         LINE#         165
+  C:03BCH         LINE#         166
+  C:03C0H         LINE#         167
+  C:03C0H         LINE#         201
+  C:03C4H         LINE#         202
+  C:03C4H         LINE#         225
+  C:03C9H         LINE#         229
+  C:03C9H         LINE#         230
+  C:03CBH         LINE#         232
+  C:03CFH         LINE#         233
+  C:03CFH         LINE#         234
+  C:03D4H         LINE#         235
+  C:03DBH         LINE#         236
+  C:03DEH         LINE#         237
+  C:03DEH         LINE#         239
+  -------         ENDPROC       MAIN
+  -------         PROC          _SET_LED_STATE
+  D:0007H         SYMBOL        state
+  C:0554H         LINE#         256
+  C:0554H         LINE#         257
+  C:0554H         LINE#         259
+  C:0556H         LINE#         261
+  C:0565H         LINE#         262
+  C:0565H         LINE#         263
+  C:0565H         LINE#         264
+  C:0567H         LINE#         265
+  C:0569H         LINE#         266
+  C:056AH         LINE#         267
+  C:056AH         LINE#         268
+  C:056CH         LINE#         269
+  C:056EH         LINE#         270
+  C:056FH         LINE#         271
+  C:056FH         LINE#         272
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 7
+
+
+  C:0571H         LINE#         273
+  C:0574H         LINE#         274
+  C:0577H         LINE#         275
+  C:0579H         LINE#         276
+  C:057AH         LINE#         277
+  C:057AH         LINE#         278
+  C:057CH         LINE#         279
+  C:057FH         LINE#         280
+  C:0582H         LINE#         281
+  C:0584H         LINE#         282
+  C:0584H         LINE#         283
+  C:0584H         LINE#         284
+  C:0584H         LINE#         285
+  C:0584H         LINE#         287
+  -------         ENDPROC       _SET_LED_STATE
+  -------         PROC          TIMER0_ISR
+  C:0003H         LINE#         301
+  C:0003H         LINE#         306
+  C:0003H         LINE#         307
+  C:0005H         LINE#         308
+  C:0005H         LINE#         309
+  -------         ENDPROC       TIMER0_ISR
+  -------         ENDMOD        F39X_MAIN
+
+  -------         MODULE        F39X_UART
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  X:0221H         PUBLIC        Rx_Buf_Local
+  C:043CH         PUBLIC        _SRC_Disp_TGT_Info
+  D:0021H         PUBLIC        Rx_Buf_Index
+  D:0023H         PUBLIC        Tx_Buf_Index
+  C:05B6H         PUBLIC        _SRC_Disp_Info_Code
+  C:01ABH         PUBLIC        _SRC_Get_Page_Info
+  C:02CFH         PUBLIC        UART0_ISR
+  C:0610H         PUBLIC        _Setup_Rx
+  D:0024H         PUBLIC        Rx_Complete_Flag
+  D:0025H         PUBLIC        Rx_Num_Bytes
+  D:0027H         PUBLIC        Tx_Complete_Flag
+  D:0028H         PUBLIC        Tx_Num_Bytes
+  C:0585H         PUBLIC        _SRC_Get_Page
+  X:023AH         PUBLIC        Tx_Buf
+  B:0098H.0       PUBLIC        RI0
+  B:0098H.1       PUBLIC        TI0
+  C:03E0H         PUBLIC        _SRC_Get_Info
+  D:002AH         PUBLIC        Rx_Buf_Ptr
+  D:0099H         PUBLIC        SBUF0
+  -------         PROC          _SRC_GET_INFO
+  D:0018H         SYMBOL        src_info
+  -------         DO            
+  D:0007H         SYMBOL        index
+  -------         ENDDO         
+  C:03E0H         LINE#         86
+  C:03E6H         LINE#         87
+  C:03E6H         LINE#         94
+  C:03E9H         LINE#         95
+  C:03EFH         LINE#         96
+  C:03F5H         LINE#         97
+  C:03F8H         LINE#         99
+  C:03FDH         LINE#         101
+  C:03FFH         LINE#         103
+  C:0403H         LINE#         105
+  C:0407H         LINE#         123
+  C:0409H         LINE#         124
+  C:0409H         LINE#         125
+  C:042DH         LINE#         126
+  C:0431H         LINE#         136
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 8
+
+
+  C:043BH         LINE#         137
+  -------         ENDPROC       _SRC_GET_INFO
+  -------         PROC          _SRC_GET_PAGE_INFO
+  D:0018H         SYMBOL        addr
+  D:001BH         SYMBOL        src_page_crc
+  C:01ABH         LINE#         149
+  C:01B1H         LINE#         150
+  C:01B1H         LINE#         155
+  C:01B4H         LINE#         156
+  C:01BAH         LINE#         157
+  C:01C0H         LINE#         158
+  C:01C3H         LINE#         160
+  C:01CFH         LINE#         162
+  C:01D1H         LINE#         164
+  C:01D5H         LINE#         166
+  C:01D9H         LINE#         177
+  C:0216H         LINE#         181
+  C:0238H         LINE#         186
+  C:0242H         LINE#         187
+  -------         ENDPROC       _SRC_GET_PAGE_INFO
+  -------         PROC          _SRC_GET_PAGE
+  D:0001H         SYMBOL        buf
+  C:0585H         LINE#         199
+  C:0585H         LINE#         200
+  C:0585H         LINE#         205
+  C:0588H         LINE#         206
+  C:058EH         LINE#         207
+  C:0594H         LINE#         208
+  C:0597H         LINE#         210
+  C:059EH         LINE#         212
+  C:05A0H         LINE#         214
+  C:05A4H         LINE#         216
+  C:05A8H         LINE#         224
+  C:05B5H         LINE#         225
+  -------         ENDPROC       _SRC_GET_PAGE
+  -------         PROC          _SRC_DISP_TGT_INFO
+  D:0007H         SYMBOL        buf_length
+  D:0038H         SYMBOL        buf
+  -------         DO            
+  D:0006H         SYMBOL        index
+  -------         ENDDO         
+  C:043CH         LINE#         237
+  C:0442H         LINE#         238
+  C:0442H         LINE#         246
+  C:0445H         LINE#         247
+  C:044BH         LINE#         249
+  C:0452H         LINE#         250
+  C:0452H         LINE#         251
+  C:046DH         LINE#         252
+  C:0470H         LINE#         254
+  C:0479H         LINE#         255
+  C:0479H         LINE#         257
+  C:047CH         LINE#         259
+  C:047EH         LINE#         261
+  C:0482H         LINE#         263
+  C:0486H         LINE#         269
+  C:0490H         LINE#         270
+  -------         ENDPROC       _SRC_DISP_TGT_INFO
+  -------         PROC          _SRC_DISP_INFO_CODE
+  D:0007H         SYMBOL        info_code
+  C:05B6H         LINE#         282
+  C:05B6H         LINE#         283
+  C:05B6H         LINE#         289
+  C:05B9H         LINE#         290
+  C:05BFH         LINE#         291
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 9
+
+
+  C:05C2H         LINE#         292
+  C:05C8H         LINE#         293
+  C:05C8H         LINE#         295
+  C:05CBH         LINE#         297
+  C:05CDH         LINE#         299
+  C:05D1H         LINE#         301
+  C:05D5H         LINE#         307
+  C:05DFH         LINE#         308
+  -------         ENDPROC       _SRC_DISP_INFO_CODE
+  C:0609H         SYMBOL        L?0047
+  -------         PROC          L?0046
+  -------         ENDPROC       L?0046
+  C:0609H         SYMBOL        L?0047
+  -------         PROC          _SETUP_RX
+  D:0006H         SYMBOL        num_bytes
+  D:0001H         SYMBOL        buf_ptr
+  C:0610H         LINE#         320
+  C:0610H         LINE#         321
+  C:0610H         LINE#         322
+  C:0613H         LINE#         323
+  C:0617H         LINE#         324
+  C:061CH         LINE#         325
+  C:0622H         LINE#         326
+  C:0624H         LINE#         327
+  -------         ENDPROC       _SETUP_RX
+  -------         PROC          UART0_ISR
+  -------         DO            
+  D:0007H         SYMBOL        rx_byte
+  -------         ENDDO         
+  C:02CFH         LINE#         340
+  C:02E4H         LINE#         344
+  C:02E7H         LINE#         345
+  C:02E7H         LINE#         346
+  C:02E9H         LINE#         347
+  C:02EBH         LINE#         349
+  C:02EFH         LINE#         350
+  C:02EFH         LINE#         351
+  C:02FAH         LINE#         352
+  C:02FAH         LINE#         353
+  C:030AH         LINE#         354
+  C:0312H         LINE#         355
+  C:0312H         LINE#         356
+  C:031CH         LINE#         357
+  C:031CH         LINE#         358
+  C:031FH         LINE#         359
+  C:031FH         LINE#         360
+  C:031FH         LINE#         361
+  C:031FH         LINE#         363
+  C:0322H         LINE#         364
+  C:0322H         LINE#         365
+  C:0324H         LINE#         367
+  C:0328H         LINE#         368
+  C:0328H         LINE#         369
+  C:0331H         LINE#         370
+  C:0331H         LINE#         371
+  C:0334H         LINE#         372
+  C:0336H         LINE#         374
+  C:0336H         LINE#         375
+  C:0344H         LINE#         376
+  C:0346H         LINE#         377
+  C:0346H         LINE#         378
+  C:0346H         LINE#         379
+  C:0346H         LINE#         380
+  -------         ENDPROC       UART0_ISR
+  -------         ENDMOD        F39X_UART
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 10
+
+
+
+  -------         MODULE        F39X_VALIDATION
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:001FH         PUBLIC        Last_Error
+  C:00FCH         PUBLIC        _Validate_TGT_SRC_Match
+  C:0491H         PUBLIC        _SRC_Validate_Response
+  C:04D4H         PUBLIC        _TGT_Validate_Response
+  C:000EH         PUBLIC        _Validate_Pages_Written
+  -------         PROC          _TGT_VALIDATE_RESPONSE
+  D:0007H         SYMBOL        response
+  D:0005H         SYMBOL        command
+  C:04D4H         LINE#         58
+  C:04D4H         LINE#         59
+  C:04D4H         LINE#         60
+  C:04E5H         LINE#         61
+  C:04E5H         LINE#         62
+  C:04E5H         LINE#         63
+  C:04EAH         LINE#         64
+  C:04EAH         LINE#         65
+  C:04EDH         LINE#         66
+  C:04EDH         LINE#         67
+  C:04EEH         LINE#         68
+  C:04EEH         LINE#         70
+  C:04F3H         LINE#         71
+  C:04F3H         LINE#         72
+  C:04F3H         LINE#         73
+  C:04F3H         LINE#         74
+  C:04F5H         LINE#         75
+  C:04F5H         LINE#         76
+  C:04FAH         LINE#         77
+  C:04FAH         LINE#         78
+  C:04FAH         LINE#         79
+  C:04FAH         LINE#         80
+  C:04FCH         LINE#         81
+  C:04FCH         LINE#         82
+  C:0501H         LINE#         83
+  C:0501H         LINE#         84
+  C:0504H         LINE#         85
+  C:0505H         LINE#         86
+  C:0511H         LINE#         87
+  C:0511H         LINE#         88
+  C:0514H         LINE#         89
+  C:0514H         LINE#         90
+  C:0514H         LINE#         91
+  C:0514H         LINE#         92
+  C:0514H         LINE#         93
+  C:0514H         LINE#         94
+  -------         ENDPROC       _TGT_VALIDATE_RESPONSE
+  -------         PROC          _SRC_VALIDATE_RESPONSE
+  D:0007H         SYMBOL        response
+  D:0005H         SYMBOL        command
+  -------         DO            
+  D:0006H         SYMBOL        buf_crc
+  -------         ENDDO         
+  C:0491H         LINE#         106
+  C:0491H         LINE#         107
+  C:0491H         LINE#         110
+  C:049DH         LINE#         111
+  C:049DH         LINE#         112
+  C:049DH         LINE#         114
+  C:04A2H         LINE#         115
+  C:04A2H         LINE#         116
+  C:04A2H         LINE#         117
+  C:04A2H         LINE#         118
+  C:04A4H         LINE#         119
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 11
+
+
+  C:04A4H         LINE#         120
+  C:04AEH         LINE#         121
+  C:04AEH         LINE#         122
+  C:04AEH         LINE#         123
+  C:04AEH         LINE#         124
+  C:04B0H         LINE#         125
+  C:04B0H         LINE#         126
+  C:04B5H         LINE#         127
+  C:04B5H         LINE#         128
+  C:04B8H         LINE#         129
+  C:04B9H         LINE#         131
+  C:04B9H         LINE#         132
+  C:04C6H         LINE#         133
+  C:04D0H         LINE#         134
+  C:04D0H         LINE#         135
+  C:04D3H         LINE#         136
+  C:04D3H         LINE#         137
+  C:04D3H         LINE#         138
+  C:04D3H         LINE#         139
+  C:04D3H         LINE#         140
+  C:04D3H         LINE#         141
+  C:04D3H         LINE#         142
+  -------         ENDPROC       _SRC_VALIDATE_RESPONSE
+  -------         PROC          _VALIDATE_TGT_SRC_MATCH
+  D:002DH         SYMBOL        page_addr
+  -------         DO            
+  D:0030H         SYMBOL        TGT_app_fw_last_page_start_addr
+  D:0034H         SYMBOL        SRC_app_fw_last_page_start_addr
+  -------         ENDDO         
+  C:00FCH         LINE#         154
+  C:0102H         LINE#         155
+  C:0102H         LINE#         159
+  C:012EH         LINE#         166
+  C:013BH         LINE#         168
+  C:0167H         LINE#         175
+  C:0174H         LINE#         177
+  C:0196H         LINE#         180
+  C:0196H         LINE#         183
+  C:01A7H         LINE#         184
+  C:01A7H         LINE#         186
+  C:01A7H         LINE#         187
+  C:01AAH         LINE#         188
+  C:01AAH         LINE#         189
+  -------         ENDPROC       _VALIDATE_TGT_SRC_MATCH
+  -------         PROC          _VALIDATE_PAGES_WRITTEN
+  D:0007H         SYMBOL        num_pages_from_source
+  C:000EH         LINE#         201
+  C:000EH         LINE#         202
+  C:000EH         LINE#         203
+  C:001DH         LINE#         204
+  C:001DH         LINE#         205
+  C:0020H         LINE#         206
+  C:0020H         LINE#         207
+  -------         ENDPROC       _VALIDATE_PAGES_WRITTEN
+  -------         ENDMOD        F39X_VALIDATION
+
+  -------         MODULE        F39X_SMB
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  X:0253H         PUBLIC        CAN_Tx_Buf
+  B:0020H.0       PUBLIC        CAN_Error
+  B:0020H.1       PUBLIC        CAN_Rx_Complete_Flag
+  X:025BH         PUBLIC        CAN_Rx_Buf
+  -------         ENDMOD        F39X_SMB
+
+  -------         MODULE        ?C?CLDPTR
+BL51 BANKED LINKER/LOCATER V6.22            03/20/2013  14:59:52  PAGE 12
+
+
+  C:0026H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:003FH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTOPTR
+  C:006CH         PUBLIC        ?C?CSTOPTR
+  -------         ENDMOD        ?C?CSTOPTR
+
+  -------         MODULE        ?C?ISTPTR
+  C:008EH         PUBLIC        ?C?ISTPTR
+  -------         ENDMOD        ?C?ISTPTR
+
+  -------         MODULE        ?C?ULCMP
+  C:00ADH         PUBLIC        ?C?ULCMP
+  -------         ENDMOD        ?C?ULCMP
+
+  -------         MODULE        ?C?LSTPTR
+  C:00BEH         PUBLIC        ?C?LSTPTR
+  -------         ENDMOD        ?C?LSTPTR
+
+  -------         MODULE        ?C?LSTIDATA
+  C:00D8H         PUBLIC        ?C?LSTIDATA
+  -------         ENDMOD        ?C?LSTIDATA
+
+  -------         MODULE        ?C?LSTXDATA
+  C:00E4H         PUBLIC        ?C?LSTXDATA
+  -------         ENDMOD        ?C?LSTXDATA
+
+  -------         MODULE        ?C?LSTPDATA
+  C:00F0H         PUBLIC        ?C?LSTPDATA
+  -------         ENDMOD        ?C?LSTPDATA
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SRC_DISP_TGT_INFO?F39X_UART
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TGT_VALIDATE_RESPONSE?F39X_VALIDATION
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_VALIDATE_TGT_SRC_MATCH?F39X_VALIDATION
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_VALIDATE_PAGES_WRITTEN?F39X_VALIDATION
+
+Program Size: data=59.2 xdata=611 code=1677
+LINK/LOCATE RUN COMPLETE.  4 WARNING(S),  0 ERROR(S)

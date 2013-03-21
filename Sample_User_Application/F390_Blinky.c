@@ -17,14 +17,12 @@
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include <c8051f390.h>                    // SFR declarations
+#include <compiler_defs.h>  // this file
+#include <C8051F390_defs.h>                    // SFR declarations
 
 //-----------------------------------------------------------------------------
 // 16-bit SFR Definitions for 'F33x
 //-----------------------------------------------------------------------------
-
-sfr16 TMR2RL   = 0xca;                    // Timer2 reload value
-sfr16 TMR2     = 0xcc;                    // Timer2 counter
 
 //-----------------------------------------------------------------------------
 // Global CONSTANTS
@@ -32,8 +30,7 @@ sfr16 TMR2     = 0xcc;                    // Timer2 counter
 
 #define SYSCLK       24500000 / 8         // SYSCLK frequency in Hz
 
-sbit LED = P1^3;                          // LED='1' means ON
-sbit SW2 = P0^7;                          // SW2='0' means switch pressed
+sbit LED = P1^1;                          // LED='1' means ON
 
 //-----------------------------------------------------------------------------
 // Function PROTOTYPES
@@ -84,14 +81,14 @@ void SYSCLK_Init (void)
 //-----------------------------------------------------------------------------
 //
 // Configure the Crossbar and GPIO ports.
-// P3.3 - LED (push-pull)
 //
 void PORT_Init (void)
 {
 
+   P1SKIP   = 0x02;                       // skip the LED pin from crossbar
+   P1MDOUT |= 0x02;                       // enable LED as a push-pull output
    XBR0     = 0x00;                       // no digital peripherals selected
    XBR1     = 0x40;                       // Enable crossbar and weak pull-ups
-   P1MDOUT |= 0x08;                       // enable LED as a push-pull output
 }
 
 //-----------------------------------------------------------------------------

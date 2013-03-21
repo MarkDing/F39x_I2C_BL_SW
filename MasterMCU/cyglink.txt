@@ -1,1 +1,0 @@
-"C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\MasterMCU\F39x_UART0_Interrupt.obj"  TO "C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_TargetBL\MasterMCU\F39x_master_mcu" RS(256) PL(68) PW(78) 
