@@ -83,7 +83,7 @@ U8    SMB_NUM_BYTES;
 //-----------------------------------------------------------------------------
 void SMB0_Op (U8 SMB0_Num_Bytes)
 {
-   SMB_NUM_BYTES = SMB0_Num_Bytes;
+//   SMB_NUM_BYTES = SMB0_Num_Bytes;
    SMB_DATA_READY = 0;
 
    // Loop until all data sent.
@@ -124,6 +124,7 @@ void SMBus_Handler (void)
 
                Rx_Buf_ptr = &Rx_Buf[0];
                Tx_Buf_ptr = &Tx_Buf[0];
+			   SMB_NUM_BYTES = 0;
 
                if((SMB0DAT&0xFE) == (SMB0_SLAVE_ADDRESS&0xFE)) // Decode address
                {                          // If the received address matches,
@@ -134,7 +135,6 @@ void SMBus_Handler (void)
                      // Prepare outgoing byte
                      SMB0DAT = *(Tx_Buf_ptr);
                      Tx_Buf_ptr++;
-                     SMB_NUM_BYTES--;
                   }
                }
                else                       // If received slave address does not
@@ -146,9 +146,12 @@ void SMBus_Handler (void)
             // Slave Receiver: Data received
             case  SMB_SRDB:
 
-               *(Rx_Buf_ptr) = SMB0DAT;
-               Rx_Buf_ptr++;
-               SMB_NUM_BYTES--;
+	           if(SMB_NUM_BYTES < TGT_BL_BUF_SIZE)
+			   {
+                   *(Rx_Buf_ptr) = SMB0DAT;
+  		           SMB_NUM_BYTES++;
+	               Rx_Buf_ptr++;
+			   }
                ACK = 1;                // ACK received data
                break;
 
@@ -160,9 +163,6 @@ void SMBus_Handler (void)
                   // Prepare next outgoing byte
                   SMB0DAT = *(Tx_Buf_ptr);
                   Tx_Buf_ptr++;
-                  SMB_NUM_BYTES--;
-//                  if (!SMB_NUM_BYTES)
-//                     SMB_DATA_READY = 1;     // Indicate new data fully received
                }
                break;
 
@@ -178,15 +178,14 @@ void SMBus_Handler (void)
             // bit is cleared and the slave goes to the SRSTO state.
             case  SMB_STSTO:
 
-               if (!SMB_NUM_BYTES)
-                  SMB_DATA_READY = 1;     // Indicate new data fully received
-
+               SMB_DATA_READY = 1;     // Indicate new data fully received
                STO = 0;                   // STO must be cleared by software when
                                           // a STOP is detected as a slave
                break;
 
             // Default: all other cases undefined
             default:
+               SMB_DATA_READY = 1;     // Indicate new data fully received
                SMB0CN &= ~0x32;    // STA, STO, and ACK set to 0
                break;
          }

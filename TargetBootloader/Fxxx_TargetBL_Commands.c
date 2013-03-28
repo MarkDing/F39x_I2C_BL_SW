@@ -79,10 +79,6 @@ void TGT_Pre_Flash (void)
    Flash_Key1 = Rx_Buf[2];
    Rx_Buf[1] = 0;
    Rx_Buf[2] = 0;
-   Set_TX_TGT_RSP_OK ();
-
-   // Send response
-   SMB0_Op (1);
 }
 
 //-----------------------------------------------------------------------------
@@ -109,7 +105,7 @@ void TGT_Erase_Page (void)
 
    U8 AddrMSB = Rx_Buf[4];
 
-   if ((AddrMSB < (APP_FW_START_ADDR >> 8)) || (AddrMSB > ((APP_FW_END_ADDR >> 8) - 2)))
+   if ((AddrMSB < (APP_FW_START_ADDR >> 8)) || (AddrMSB > (APP_FW_END_ADDR >> 8)))
    {
       // Address out-of-bounds
       Set_TX_TGT_RSP_PARAMETER_INVALID ();
@@ -121,7 +117,11 @@ void TGT_Erase_Page (void)
 
       PSCTL |= 0x03;
       FLASH_Modify ((AddrMSB << 8), 0x00);
+	  Set_TX_TGT_RSP_OK ();
+
    }
+  // Send response
+  SMB0_Op (1);
 }
 
 //-----------------------------------------------------------------------------
@@ -143,18 +143,18 @@ void TGT_Write_Flash (void)
    // [4] addr1 (MSB)
    // [5] numbytes
    
-   // Response:
-   // [0] Response code
-
    // Bytes to write:
    // [0] byte0
    // [1] byte1
    // [.] ...
    // [numbytes-1] byte(numbytes-1)
 
+   // Response:
+   // [0] Response code
+
    UU16 start_addr;
    U8 numbytes;
-   U8 data * Rx_Buf_ptr = Rx_Buf;
+   U8 data * Rx_Buf_ptr = &Rx_Buf[6];
 
    start_addr.U8[LSB] = Rx_Buf[3];
    start_addr.U8[MSB] = Rx_Buf[4];
@@ -172,9 +172,6 @@ void TGT_Write_Flash (void)
       // Setup for flash operation
       TGT_Pre_Flash ();
 
-      // Get the bytes to be written to flash
-      SMB0_Op (numbytes);
-
       while (numbytes--)
       {
          PSCTL |= 0x01;
@@ -182,7 +179,10 @@ void TGT_Write_Flash (void)
          Rx_Buf_ptr++;
          start_addr.U16++;
       }      
+	   Set_TX_TGT_RSP_OK ();
    } 
+   // Send response
+   SMB0_Op (1);
 }
 
 //-----------------------------------------------------------------------------

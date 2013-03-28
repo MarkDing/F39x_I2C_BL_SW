@@ -56,7 +56,7 @@
 
 // Note: 'TGT_BL_TYPE' should be defined as 131 (0x81) elsewhere.
 #define  SMB0_SLAVE_ADDRESS      0x20
-#define  SMB0_FREQUENCY          100000         // Target SMBus frequency
+#define  SMB0_FREQUENCY          77044 //100000         // Target SMBus frequency
 
 #define  WRITE          0x00           // SMBus WRITE command
 #define  READ           0x01           // SMBus READ command

@@ -25,12 +25,8 @@
 //-----------------------------------------------------------------------------
 #include "compiler_defs.h"
 #include "C8051F390_defs.h"
-
-#ifndef MASTER_MCU_BL
-   #define MASTER_MCU_BL
-#endif
+#include "F39x_Init.h"
 #include "F39x_Master_Interface.h"
-
 #include "F39x_SMB.h"
 
 //-----------------------------------------------------------------------------
@@ -41,20 +37,49 @@
 //-----------------------------------------------------------------------------
 // Global Variables
 //-----------------------------------------------------------------------------
-bit CAN_Error = 0;                     // 0 = No Errors during transmission
-                                       // 1 = Some error(s) occurred
 
-SEGMENT_VARIABLE (CAN_Rx_Buf[8], U8, SEG_XDATA);
-SEGMENT_VARIABLE (CAN_Tx_Buf[8], U8, SEG_XDATA);
+#define CMD_PKG_SIZE 6
+SEGMENT_VARIABLE (SMB_Rx_Buf[MAX_BUF_BYTES+CMD_PKG_SIZE], U8, SEG_XDATA);
+SEGMENT_VARIABLE (SMB_Tx_Buf[MAX_BUF_BYTES+CMD_PKG_SIZE], U8, SEG_XDATA);
 
-bit CAN_Rx_Complete_Flag = 0;          // CAN Rx Complete Flag
+#define WRITE 			0
+U8    SMB_NUM_BYTES;
+// Flash Write/Erase Key Codes for Target MCU
+#define FLASH_KEY0      0xA5
+#define FLASH_KEY1      0xF1
 
-#if 0 // Mark.Ding hide it
+U8 TARGET = 0x20;                             // Target SMBus slave address
+
+bit SMB_BUSY;                          // Software flag to indicate when the
+                                       // SMB_Read() or SMB_Write() functions
+                                       // have claimed the SMBus
+
+bit SMB_RW;                            // Software flag to indicate the
+                                       // direction of the current transfer
+
+U16 NUM_ERRORS;                        // Counter for the number of errors.
+
+// Device addresses (7 bits, lsb is a don't care)
+#define  SLAVE_ADDR     0x20           // Device address for slave target
+
+// Status vector - top 4 bits only
+#define  SMB_MTSTA      0xE0           // (MT) start transmitted
+#define  SMB_MTDB       0xC0           // (MT) data byte transmitted
+#define  SMB_MRDB       0x80           // (MR) data byte received
+// End status vector definition
+
 //-----------------------------------------------------------------------------
 // Function Prototypes (Local)
 //-----------------------------------------------------------------------------
-INTERRUPT_PROTO (CAN0_ISR, INTERRUPT_CAN0);
-void CAN0_Send_Message (U8 *buf, U8 msg_obj);
+void SMB0_Send_Message (U8 *buf, U8 msg_obj);
+
+void Timer3_Init (void);
+
+//INTERRUPT_PROTO (TIMER3_ISR, INTERRUPT_TIMER3);
+INTERRUPT_PROTO (SMBUS0_ISR, INTERRUPT_SMBUS0);
+
+void SMB_Write (U8 nbytes);
+void SMB_Read (U8 nbytes);
 
 //-----------------------------------------------------------------------------
 // Main Routine
@@ -65,371 +90,66 @@ void CAN0_Send_Message (U8 *buf, U8 msg_obj);
 //=============================================================================
 
 //-----------------------------------------------------------------------------
-// CAN0_Init
+// SMBus_Init
 //-----------------------------------------------------------------------------
 //
 // Return Value : None
 // Parameters   : None
 //
-// This function initializes the CAN peripheral and three message objects
-//
-// CAN Bit Clock : 1 Mbps
-// Auto Retransmit : Automatic Retransmission is enabled
-// MsgVal        : Set to Valid based on the #define MESSAGE_OBJECTS
-// Filtering     : Enabled for all valid message objects
-// Message Identifier : 11-bit standard; Each message object is only used by
-//                      one message ID
-// Direction     : Two buffers for transmit and one for receive are configured
-// End of Buffer : All message objects are treated as separate buffers
-//
-// The following interrupts are enabled and are handled by CAN0_ISR
-//
-// Error Interrupts
-// Status Change Interrupt
-// Receive Interrupt
+// SMBus configured as follows:
+// - SMBus enabled
+// - Slave mode inhibited
+// - Timer1 used as clock source. The maximum SCL frequency will be
+//   approximately 1/3 the Timer1 overflow rate
+// - Setup and hold time extensions enabled
+// - Bus Free and SCL Low timeout detection enabled
 //
 //-----------------------------------------------------------------------------
-
-void CAN0_Init (void)
+void SMBus_Init (void)
 {
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE  = CAN0_PAGE;               // All CAN register are on page 0x0C
+   SMB0CF = 0x55;                      // Use Timer1 overflows as SMBus clock
+                                       // source;
+                                       // Disable slave mode;
+                                       // Enable setup & hold time
+                                       // extensions;
+                                       // Enable SMBus Free timeout detect;
 
-   CAN0CN |= 0x01;                     // Start Intialization mode
-
-   //---------Initialize general CAN peripheral settings
-
-   CAN0CN |= 0x4E;                     // Enable Error and Module
-                                       // Enable access to bit timing register
-
-   // See the CAN Bit Timing Spreadsheet for how to calculate this value
-   CAN0BT = 0x1402;                    // Based on 24 Mhz CAN clock, set the
-                                       // CAN bit rate to 1 Mbps
-
-   //---------Initialize settings for Transmit Message Object 1
-
-   // Command Mask Register
-   CAN0IF1CM = 0x00F0;                 // Write Operation
-                                       // Transfer ID Mask, MDir, MXtd
-                                       // Transfer ID, Dir, Xtd, MsgVal
-                                       // Transfer Control Bits
-                                       // Don't set TxRqst or transfer data
-
-   // Mask Registers
-   CAN0IF1M1 = 0x0000;                 // Mask Bits 15-0 not used for filtering
-   CAN0IF1M2 = 0x5FFC;                 // Ignore Extended Identifier for
-                                       // filtering
-                                       // Used Direction bit for filtering
-                                       // Use ID bits 28-18 for filtering
-
-   // Message Control Registers
-   CAN0IF1MC = 0x0080 | MESSAGE_SIZE;  // Disable Transmit Interrupt
-                                       // Message Object is a Single Message
-                                       // Message Size set by #define
-   // Arbitration Registers
-   CAN0IF1A1 = 0x0000;                 // 11-bit ID, so lower 16-bits not used
-
-   // Arbitration Registers
-   CAN0IF1A2 = 0xA000 | (MSG_ID_TX_BL_CMD << 2);   // Set MsgVal to valid
-                                                   // Set Direction to write
-                                                   // Set 11-bit Identifier
-
-   CAN0IF1CR = MO_TX_BL_CMD;           // Start command request
-
-   while (CAN0IF1CRH & 0x80) {}        // Poll on Busy bit
-
-   //---------Initialize settings for Transmit Message Object 2
-
-   // Can use the same settings for this transmit object, so no need reinitalize
-   // the first five CAN registers again
-
-   // Command Mask Register
-   // CAN0IF1CM = 0x00F0;
-
-   // Mask Registers
-   // CAN0IF1M1 = 0x0000;
-   // CAN0IF1M2 = 0x5FFC;
-
-   // Message Control Registers
-   // CAN0IF1MC = 0x0080 | MESSAGE_SIZE;
-
-   // Arbitration Registers
-   // CAN0IF1A1 = 0x0000;
-
-   // Arbitration Registers
-   CAN0IF1A2 = 0xA000 | (MSG_ID_TX_BL_WRITE8 << 2);   // Set MsgVal to valid
-                                                      // Set Direction to write
-                                                      // Set 11-bit Identifier
-
-   CAN0IF1CR = MO_TX_BL_WRITE8;        // Start command request
-
-   while (CAN0IF1CRH & 0x80) {}        // Poll on Busy bit
-
-
-   //---------Initialize settings for Receive Message Object
-
-   // Can use the same settings for Receive object, so no need reinitalize the
-   // first four CAN registers again
-
-   // Command Mask Register
-   //   CAN0IF1CM = 0x00F0;
-
-   // Mask Registers
-   //  CAN0IF1M1 = 0x0000;
-   //  CAN0IF1M2 = 0x5FFC;
-
-   // Arbitration Registers
-   //  CAN0IF1A1 = 0x0000;
-
-
-   // Message Control Registers
-   CAN0IF1MC = 0x1480 | MESSAGE_SIZE;  // Enable Receive Interrupt
-                                       // Message Object is a Single Message
-                                       // Message Size set by #define
-   // Arbitration Registers
-   CAN0IF1A2 = 0x8000 | (MSG_ID_RX_BL_RSP << 2);   // Set MsgVal to valid
-                                                   // Set Object Direction to read
-                                                   // Set 11-bit Identifier
-
-   CAN0IF1CR = MO_RX_BL_RSP;              // Start command request
-
-   while (CAN0IF1CRH & 0x80) {}           // Poll on Busy bit
-
-   //--------- CAN Initalization is complete
-
-   CAN0CN &= ~0x41;                    // Return to Normal Mode and disable
-                                       // access to bit timing register
-
-   EIE2 |= 0x02;                       // Enable CAN interupts
-
-   SFRPAGE = SFRPAGE_save;
+   SMB0CF |= 0x80;                     // Enable SMBus;
+   EIE1 |= 0x01;                       // Enable the SMBus interrupt
 }
 
+
 //-----------------------------------------------------------------------------
-// CAN0_SendMessage
+// Timer3_Init
 //-----------------------------------------------------------------------------
 //
 // Return Value : None
 // Parameters   : None
 //
-// Send the data in the buffer using the message object. This function
-// assumes 8 bytes of data for all messages.
+// Timer3 configured for use by the SMBus low timeout detect feature as
+// follows:
+// - Timer3 in 16-bit auto-reload mode
+// - SYSCLK/12 as Timer3 clock source
+// - Timer3 reload registers loaded for a 25ms overflow period
+// - Timer3 pre-loaded to overflow after 25ms
+// - Timer3 enabled
 //
 //-----------------------------------------------------------------------------
-
-void CAN0_Send_Message (U8 *buf, U8 msg_obj)
+void Timer3_Init (void)
 {
-   // This function assumes that the message object is fully initialized
-   // in CAN0_Init and so all it has to do is fill the data registers and
-   // initiate transmission
+   TMR3CN = 0x00;                      // Timer3 configured for 16-bit auto-
+                                       // reload, low-byte interrupt disabled
 
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE  = CAN0_PAGE;               // All CAN register are on page 0x0C
+   CKCON &= ~0x40;                     // Timer3 uses SYSCLK/12
 
-   CAN0IF1DA1H = *buf;                 // Initialize data registers
-   CAN0IF1DA1L = *(buf + 1);
-   CAN0IF1DA2H = *(buf + 2);
-   CAN0IF1DA2L = *(buf + 3);
-   CAN0IF1DB1H = *(buf + 4);
-   CAN0IF1DB1L = *(buf + 5);
-   CAN0IF1DB2H = *(buf + 6);
-   CAN0IF1DB2L = *(buf + 7);
+   TMR3RL = -(SYSCLK/12/40);           // Timer3 configured to overflow after
+   TMR3 = TMR3RL;                      // ~25ms (for SMBus low timeout detect):
+                                       // 1/.025 = 40
 
-   CAN0IF1CM = 0x0087;                 // Set Direction to Write
-                                       // Write TxRqst, all 8 data bytes
-
-   CAN0IF1CR = msg_obj;                // Start command request
-
-   while (CAN0IF1CRH & 0x80) {}        // Poll on Busy bit
-
-   SFRPAGE = SFRPAGE_save;             // Restore SFRPAGE
+   EIE1 |= 0x80;                       // Timer3 interrupt enable
+   TMR3CN |= 0x04;                     // Start Timer3
 }
 
-//-----------------------------------------------------------------------------
-// TGT_Enter_BL_Mode
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Enter_BL_Mode (U8 request_response, U8 CAN_dev_addr)
-{
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
-
-   // Command Format:
-   // [0] Command
-   // [1] CAN Device Address
-
-   CAN_Tx_Buf[0] = TGT_CMD_ENTER_BL_MODE;
-   CAN_Tx_Buf[1] = CAN_dev_addr;
-   
-   //CAN_Tx_Buf[1] = 0x01;   // CAN Device Addr = 0x01
-   // Other bytes of the message are "don't care".
-
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   if (request_response == REQUEST_RESPONSE)
-   {
-      while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-      // Response Format:
-      // [0] Return code (ACK/ERROR etc)
-   }
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
-
-//-----------------------------------------------------------------------------
-// TGT_Get_Info
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Get_Info (U8 *target_info)
-{
-   U8 packet_num;
-   U8 index;
-
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
-
-   // Command Format:
-   // [0] Command
-
-   CAN_Tx_Buf[0] = TGT_CMD_GET_INFO;
-   // Other bytes of the message are "don't care".
-
-   for (packet_num = 0; packet_num < 3; packet_num++)
-   {
-      CAN_Rx_Complete_Flag = 0;
-      CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-      while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-      // Response:
-      // [0] Return code (ACK/ERROR etc)
-      // [1] Packet Number
-      // [2] InfoBlock byte (0 + (packetnum*6))
-      // [3] InfoBlock byte (1 + (packetnum*6))
-      // [4] ...
-      // [5] 
-      // [6] 
-      // [7]
-
-      if (CAN_Rx_Buf[0] != TGT_RSP_OK)
-         break;
-
-      if (CAN_Rx_Buf[1] != packet_num)
-      {
-         CAN_Rx_Buf[0] = TGT_RSP_ERROR;
-         break;
-      }
-
-      for (index = 0; index < (MESSAGE_SIZE-2); index++)
-      {
-         target_info[index + (packet_num*6)] = CAN_Rx_Buf[index + 2];
-      }
-   }
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
-
-//-----------------------------------------------------------------------------
-// TGT_Set_Flash_Keys
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Set_Flash_Keys (U8 flash_key0, U8 flash_key1)
-{
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
-
-   // Command Format:
-   // [0] Command
-   // [1] Flash Key byte 0
-   // [2] Flash Key byte 1
-
-   CAN_Tx_Buf[0] = TGT_CMD_SET_FLASH_KEYS;
-   CAN_Tx_Buf[1] = flash_key0;
-   CAN_Tx_Buf[2] = flash_key1;
-   // Other bytes of the message are "don't care".
-
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-   // Response:
-   // [0] Return code (ACK/ERROR etc)
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
-
-//-----------------------------------------------------------------------------
-// TGT_Set_Addr
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Set_Addr (U8 bank, U32 addr)
-{
-   UU32 addr_copy;
-
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
-
-   addr_copy.U32 = addr;
-
-   // Command Format:
-   // [0] Command
-   // [1] Flash code bank number
-   // [2] Flash address byte 0
-   // [3] Flash address byte 1
-   // [4] Flash address byte 2 <-- don't care for MCUs 64k and smaller
-
-   CAN_Tx_Buf[0] = TGT_CMD_SET_ADDR;
-   CAN_Tx_Buf[1] = bank;
-   CAN_Tx_Buf[2] = addr_copy.U8[b0];
-   CAN_Tx_Buf[3] = addr_copy.U8[b1];
-   CAN_Tx_Buf[4] = addr_copy.U8[b2];
-   // Other bytes of the message are "don't care".
-
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-   // Response:
-   // [0] Return code (ACK/ERROR etc)
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
 
 //-----------------------------------------------------------------------------
 // TGT_Erase_Page
@@ -441,28 +161,27 @@ U8 TGT_Set_Addr (U8 bank, U32 addr)
 //
 //
 //-----------------------------------------------------------------------------
-U8 TGT_Erase_Page (void)
+U8 TGT_Erase_Page (U32 addr)
 {
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
 
    // Command Format:
    // [0] Command
 
-   CAN_Tx_Buf[0] = TGT_CMD_ERASE_PAGE;
+   SMB_Tx_Buf[0] = TGT_CMD_ERASE_FLASH_PAGE;
+   SMB_Tx_Buf[1] = FLASH_KEY0;
+   SMB_Tx_Buf[2] = FLASH_KEY1;
+   SMB_Tx_Buf[3] = addr & 0xFF;
+   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
    // Other bytes of the message are "don't care".
 
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
+   SMB_Write(CMD_PKG_SIZE);
+   SMB_Read(1);
 
    // Response:
-   // [0] Return code (ACK/ERROR etc)
+   // [0] Return code (ACK/ERROR etc)/
 
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
+//   SMB_Rx_Buf[0] = TGT_RSP_OK;
+   return SMB_Rx_Buf[0];
 }
 
 //-----------------------------------------------------------------------------
@@ -472,127 +191,43 @@ U8 TGT_Erase_Page (void)
 // Return Value : None
 // Parameters   : None
 //
-//
+// Write 32 bytes to bootloader
 //
 //-----------------------------------------------------------------------------
-U8 TGT_Write_Flash (U8 *buf, U16 index, U8 numbytes)
+U8 TGT_Write_Flash (U8 *buf, U32 addr, U16 numbytes)
 {
    U8 i;
 
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
 
-   // numbytes needs to be 8 because this message is preconfigured for 8 bytes
+   // Command Format:
+   // [0] Command
+   // [1] flash key code0
+   // [2] flash key code1
+   // [3] addr0 (LSB)
+   // [4] addr1 (MSB)
+   // [5] numbytes
+   SMB_Tx_Buf[0] = TGT_CMD_WRITE_FLASH_BYTES;
+   SMB_Tx_Buf[1] = FLASH_KEY0;
+   SMB_Tx_Buf[2] = FLASH_KEY1;
+   SMB_Tx_Buf[3] = addr & 0xFF;
+   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
+   SMB_Tx_Buf[5] = numbytes;
 
-   // Command Format: [No command byte because this uses a unique message ID]
-   // [0] Flash byte 0
-   // [1] Flash byte 1
-   // [2] Flash byte 2
-   // [3] Flash byte 3
-   // [4] Flash byte 4
-   // [5] Flash byte 5
-   // [6] Flash byte 6
-   // [7] Flash byte 7
-
-   for (i = 0; i < numbytes; i++)
+   for (i = 0; i < numbytes ; i++)
    {
-      CAN_Tx_Buf[i] = *(buf + index + i);
+      SMB_Tx_Buf[i + CMD_PKG_SIZE] = *(buf + i);
    }
    // Other bytes of the message are "don't care".
 
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_WRITE8);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
+   SMB_Write(CMD_PKG_SIZE + numbytes);
+   SMB_Read(1);
    // Response:
    // [0] Return code (ACK/ERROR etc)
 
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
+   return SMB_Rx_Buf[0];
 }
 
-//-----------------------------------------------------------------------------
-// TGT_Get_Page_CRC
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Get_Page_CRC (U16 *target_page_crc)
-{
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
 
-   // Command Format:
-   // [0] Command
-
-   CAN_Tx_Buf[0] = TGT_CMD_GET_PAGE_CRC;
-   // Other bytes of the message are "don't care".
-
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-   // Response:
-   // [0] Return code (ACK/ERROR etc)
-   // [1] CRC byte 0
-   // [2] CRC byte 1
-
-   *target_page_crc = (U16)((CAN_Rx_Buf[2] << 8) | CAN_Rx_Buf[1]);
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
-
-//-----------------------------------------------------------------------------
-// TGT_Write_Signature
-//-----------------------------------------------------------------------------
-//
-// Return Value : None
-// Parameters   : None
-//
-//
-//
-//-----------------------------------------------------------------------------
-U8 TGT_Write_Signature (U8 sig_byte0, U8 sig_byte1, U8 sig_byte2, U8 sig_byte3)
-{
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CAN0_PAGE;
-
-   // Command Format:
-   // [0] Command
-   // [1] Signature byte 0
-   // [2] Signature byte 1
-   // [3] Signature byte 2
-   // [4] Signature byte 3
-
-   CAN_Tx_Buf[0] = TGT_CMD_WRITE_SIGNATURE;
-   CAN_Tx_Buf[1] = sig_byte0;
-   CAN_Tx_Buf[2] = sig_byte1;
-   CAN_Tx_Buf[3] = sig_byte2;
-   CAN_Tx_Buf[4] = sig_byte3;
-   // Other bytes of the message are "don't care".
-
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
-
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-
-   // Response:
-   // [0] Return code (ACK/ERROR etc)
-
-
-   SFRPAGE = SFRPAGE_save;
-
-   return CAN_Rx_Buf[0];
-}
 
 //-----------------------------------------------------------------------------
 // TGT_SW_Reset
@@ -606,105 +241,186 @@ U8 TGT_Write_Signature (U8 sig_byte0, U8 sig_byte1, U8 sig_byte2, U8 sig_byte3)
 //-----------------------------------------------------------------------------
 void TGT_SW_Reset (void)
 {
-   U8 SFRPAGE_save = SFRPAGE;
-   SFRPAGE = CONFIG_PAGE;
 
    // Command Format:
    // [0] Command
 
-   CAN_Tx_Buf[0] = TGT_CMD_SW_RESET;
+   SMB_Tx_Buf[0] = TGT_CMD_RESET_MCU;
    // Other bytes of the message are "don't care".
 
-   CAN_Rx_Complete_Flag = 0;
-   CAN0_Send_Message (CAN_Tx_Buf, MO_TX_BL_CMD);
+   SMB_Write(CMD_PKG_SIZE);
+   SMB_Read(1);
 
-
-   // No response should be expected for this command
-
-   /*
-   while (CAN_Rx_Complete_Flag == 0);  // Wait till a response is received
-   */
-
-   // Response:
-   // [0] Return code (ACK/ERROR etc)
-
-
-   SFRPAGE = SFRPAGE_save;
 }
 
-//=============================================================================
+//-----------------------------------------------------------------------------
 // Interrupt Service Routines
-//=============================================================================
-
-//-----------------------------------------------------------------------------
-// CAN0_ISR
-//-----------------------------------------------------------------------------
-//
-// The ISR is triggered upon any CAN errors or upon a complete reception.
-//
-// If an error occurs, a global flag is updated
-//
 //-----------------------------------------------------------------------------
 
-INTERRUPT (CAN0_ISR, INTERRUPT_CAN0)
+//-----------------------------------------------------------------------------
+// SMBus Interrupt Service Routine (ISR)
+//-----------------------------------------------------------------------------
+//
+// SMBus ISR state machine
+// - Master only implementation - no slave or arbitration states defined
+// - All incoming data is written to global variable array <SMB_Rx_Buf>
+// - All outgoing data is read from global variable array <SMB_Tx_Buf>
+//
+//-----------------------------------------------------------------------------
+INTERRUPT(SMBUS0_ISR, INTERRUPT_SMBUS0)
 {
-   // SFRPAGE is set to CAN0_Page automatically when ISR starts
+   bit FAIL = 0;                       // Used by the ISR to flag failed
+                                       // transfers
 
-   U8 status = CAN0STAT;               // Read status, which clears the Status
-                                       // Interrupt bit pending in CAN0IID
+   static U8 sent_byte_counter;
+   static U8 rec_byte_counter;
 
-   U8 Interrupt_ID = CAN0IID;          // Read which message object caused
-                                       // the interrupt
-
-   CAN0IF1CM = 0x007F;                 // Read all of message object to IF1
-                                       // Clear IntPnd and newData
-
-
-   CAN0IF1CR = Interrupt_ID;           // Start command request to actually
-                                       // clear the interrupt
-
-   while (CAN0IF1CRH & 0x80) {}        // Poll on Busy bit
-
-   // If receive completed successfully
-   if ((status & RxOk) && (Interrupt_ID == MO_RX_BL_RSP))
+   if (ARBLOST == 0)                   // Check for errors
    {
-       // Read all 8 data bytes to CAN_Rx_Buf, even though they might not be valid
-
-      CAN_Rx_Buf[0] = CAN0IF1DA1H;
-      CAN_Rx_Buf[1] = CAN0IF1DA1L;
-      CAN_Rx_Buf[2] = CAN0IF1DA2H;
-      CAN_Rx_Buf[3] = CAN0IF1DA2L;
-      CAN_Rx_Buf[4] = CAN0IF1DB1H;
-      CAN_Rx_Buf[5] = CAN0IF1DB1L;
-      CAN_Rx_Buf[6] = CAN0IF1DB2H;
-      CAN_Rx_Buf[7] = CAN0IF1DB2L;
-
-      CAN_Rx_Complete_Flag = 1;       // Indicate Rx Complete
-   }
-
-   // If an error occured, simply update the global variable and continue
-   if (status & LEC)
-   {
-       // The LEC bits identify the type of error, but those are grouped here
-      if ((status & LEC) != 0x07)
+      // Normal operation
+      switch (SMB0CN & 0xF0)           // Status vector
       {
-          CAN_Error = 1;
-      }
-   }
+         // Master Transmitter/Receiver: START condition transmitted.
+         case SMB_MTSTA:
+            SMB0DAT = TARGET | SMB_RW; // Load address of the target slave
+            STA = 0;                   // Manually clear START bit
+            rec_byte_counter = 1;      // Reset the counter
+            sent_byte_counter = 1;     // Reset the counter
+            break;
 
-   if (status & BOff)
+         // Master Transmitter: Data byte transmitted
+         case SMB_MTDB:
+            if (ACK)                   // Slave ACK?
+            {
+               if (SMB_RW == WRITE)    // If this transfer is a WRITE,
+               {
+                  if (sent_byte_counter <= SMB_NUM_BYTES)
+                  {
+                     // send data byte
+                     SMB0DAT = SMB_Tx_Buf[sent_byte_counter-1];
+                     sent_byte_counter++;
+                  }
+                  else
+                  {
+                     STO = 1;          // Set STO to terminate transfer
+                     SMB_BUSY = 0;     // And free SMBus interface
+                  }
+               }
+               else {}                 // If this transfer is a READ,
+                                       // proceed with transfer without
+                                       // writing to SMB0DAT (switch
+                                       // to receive mode)
+            }
+            else                       // If slave NACK,
+            {
+               STO = 1;                // Send STOP condition, followed
+               STA = 1;                // By a START
+               NUM_ERRORS++;           // Indicate error
+            }
+            break;
+
+         // Master Receiver: byte received
+         case SMB_MRDB:
+            if (rec_byte_counter < SMB_NUM_BYTES)
+            {
+               SMB_Rx_Buf[rec_byte_counter-1] = SMB0DAT; // Store received
+                                                         // byte
+               ACK = 1;                 // Send ACK to indicate byte received
+               rec_byte_counter++;      // Increment the byte counter
+            }
+            else
+            {
+               SMB_Rx_Buf[rec_byte_counter-1] = SMB0DAT; // Store received
+                                                         // byte
+               SMB_BUSY = 0;            // Free SMBus interface
+               ACK = 0;                 // Send NACK to indicate last byte
+                                       // of this transfer
+
+               STO = 1;                 // Send STOP to terminate transfer
+            }
+            break;
+
+         default:
+            FAIL = 1;                  // Indicate failed transfer
+                                       // and handle at end of ISR
+            break;
+
+      } // end switch
+   }
+   else
    {
-      CAN_Error = 1;
-   }
+      // ARBLOST = 1, error occurred... abort transmission
+      FAIL = 1;
+   } // end ARBLOST if
 
-   if (status & EWarn)
+   if (FAIL)                           // If the transfer failed,
    {
-      CAN_Error = 1;
+      SMB0CF &= ~0x80;                 // Reset communication
+      SMB0CF |= 0x80;
+      STA = 0;
+      STO = 0;
+      ACK = 0;
+
+      SMB_BUSY = 0;                    // Free SMBus
+
+      FAIL = 0;
+
+      NUM_ERRORS++;                    // Indicate an error occurred
    }
 
-   // Old SFRPAGE is popped off the SFR stack when ISR exits
+   SI = 0;                             // Clear interrupt flag
 }
-#endif
+//-----------------------------------------------------------------------------
+// SMB_Write
+//-----------------------------------------------------------------------------
+//
+// Return Value : None
+// Parameters   : None
+//
+// Writes a single byte to the slave with address specified by the <TARGET>
+// variable.
+// Calling sequence:
+// 1) Write target slave address to the <TARGET> variable
+// 2) Write outgoing data to the <SMB_Tx_Buf> variable array
+// 3) Call SMB_Write()
+//
+//-----------------------------------------------------------------------------
+void SMB_Write (U8 nbytes)
+{
+   while (SMB_BUSY);                   // Wait for SMBus to be free.
+   SMB_NUM_BYTES = nbytes;
+   SMB_BUSY = 1;                       // Claim SMBus (set to busy)
+   SMB_RW = 0;                         // Mark this transfer as a WRITE
+   STA = 1;                            // Start transfer
+}
+
+//-----------------------------------------------------------------------------
+// SMB_Read
+//-----------------------------------------------------------------------------
+//
+// Return Value : None
+// Parameters   : None
+//
+// Reads a single byte from the slave with address specified by the <TARGET>
+// variable.
+// Calling sequence:
+// 1) Write target slave address to the <TARGET> variable
+// 2) Call SMB_Write()
+// 3) Read input data from <SMB_Rx_Buf> variable array
+//
+//-----------------------------------------------------------------------------
+void SMB_Read (U8 nbytes)
+{
+   while (SMB_BUSY);                   // Wait for bus to be free.
+   SMB_NUM_BYTES = nbytes;
+   SMB_BUSY = 1;                       // Claim SMBus (set to busy)
+   SMB_RW = 1;                         // Mark this transfer as a READ
+
+   STA = 1;                            // Start transfer
+
+   while (SMB_BUSY);                   // Wait for transfer to complete
+}
+
 //-----------------------------------------------------------------------------
 // End Of File
 //-----------------------------------------------------------------------------

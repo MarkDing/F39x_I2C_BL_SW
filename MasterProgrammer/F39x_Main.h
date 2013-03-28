@@ -35,9 +35,6 @@
 #define LED_BLINK_SLOW  0x02
 #define LED_BLINK_FAST  0x03
 
-// Flash Write/Erase Key Codes for Target MCU
-#define FLASH_KEY0      0xA5
-#define FLASH_KEY1      0xF1
 
 //-----------------------------------------------------------------------------
 // Global Variables - Externs

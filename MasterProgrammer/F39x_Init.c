@@ -60,13 +60,13 @@ void Device_Init (void)
 {
    OSCILLATOR_Init ();                 // Configure system clock
 
-   PORT_Init ();                       // Initialize crossbar
+   PORT_Init();                       // Initialize crossbar
 
-   UART0_Init ();                      // Init UART0 & Timer1 (Data source comm)
+   UART0_Init();                      // Init UART0 & Timer1 (Data source comm)
 
-//   SMB0_Init ();                       // Init SMB0 (Target MCU comm) Mark.Ding
+   SMBus_Init();                       // Init SMB0 (Target MCU comm) Mark.Ding
 
-   TIMER0_Init ();                     // Init Timer0 for LED blinks
+   TIMER0_Init();                     // Init Timer0 for LED blinks
 }
 
 //-----------------------------------------------------------------------------
@@ -100,8 +100,8 @@ void OSCILLATOR_Init (void)
 // P0.4   digital   push-pull    UART0 TX
 // P0.5   digital   open-drain   UART0 RX
 //
-// P0.0   digital  open-drain    SDA0
-// P0.1   digital  open-drain    SCL0
+// P0.2   digital  open-drain    SDA0
+// P0.3   digital  open-drain    SCL0
 //
 // P1.1   digital  push-pull     LED
 // P1.0   digital  open-drain    SW
@@ -111,6 +111,7 @@ void PORT_Init (void)
 {
     P0MDOUT   = 0x10;					// Enable UART0 TX as push-pull output
     P1MDOUT   = 0x02;					// P1.1 (LED) is push-pull
+    P0SKIP    = 0x03;
     XBR0      = 0x05;					// Enable UART0 and SMBUS0
     XBR1      = 0x40;					// Enable crossbar
 }

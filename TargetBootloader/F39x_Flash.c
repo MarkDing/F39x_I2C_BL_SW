@@ -80,27 +80,17 @@ void FLASH_Modify (U16 addr, U8 byte)
 {
 
    // *** Device-Specific *** 
-   // TODO: Add this based on MCU.
-
    // ** IMPORTANT ** When modifying flash primitive functions to fit in this 
    // template, it is important to remove the literal flash key values and use 
    // the global variables Flash_Key0 and Flash_Key1 instead.  
 
-//   U8 xdata * data pwrite;             // FLASH write pointer
-
-//   pwrite = (U8 xdata *) addr;
 
    VDM0CN = 0xA0;                      // Enable VDD monitor and high threshold
-
-   Set_RSTSRC_002h ();                 // Enable VDD monitor as a reset source
-
+   RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
+ 
    FLKEY  = Flash_Key0;                // Key Sequence 1
-
    FLKEY  = Flash_Key1;                // Key Sequence 2
-
    *((U8 xdata *) addr) = byte;
-//   *pwrite = byte;                     // Write the byte
-
    PSCTL &= ~0x03;                     // PSWE = 0 which disable writes
 }
 

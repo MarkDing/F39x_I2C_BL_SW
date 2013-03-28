@@ -32,7 +32,7 @@
 // ---------------------------------
 // General Constants
 // ---------------------------------
-#define SYSCLK 49000000UL              // SYSCLK frequency in Hz
+#define SYSCLK 49000000/2UL              // SYSCLK frequency in Hz
 
 // ---------------------------------
 // Target BL Config Options

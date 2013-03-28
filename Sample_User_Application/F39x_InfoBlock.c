@@ -50,11 +50,11 @@ Byte offset (from last byte) - Field
 // Defines for use in the InfoBlock
 #define TGT_APP_INFOBLOCK_LENGTH 7
 
-#define TGT_MCU_CODE             0x27  // Code for this MCU partnumber
-#define TGT_BL_TYPE              0x03  // SMBUS BL
+#define TGT_MCU_CODE             0x39  // Code for this MCU partnumber
+#define TGT_BL_TYPE              0x04  // SMBUS BL
 #define TGT_FLASH_PAGE_SIZE_CODE 0x01  // Flash Page Size Code: 1 => 512 bytes
 #define APP_FW_VERSION_HIGH      0x01
-#define APP_FW_VERSION_LOW       0x23
+#define APP_FW_VERSION_LOW       0x01
 #define SMBUS_DEVICE_ADDR        0x20
 
 

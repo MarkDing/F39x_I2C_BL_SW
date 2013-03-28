@@ -59,7 +59,7 @@ enum Source_Info_Rsp
    SRC_Flash_Page_Size_Code,
    SRC_App_FW_Ver_Low,
    SRC_App_FW_Ver_High,
-   SRC_CAN_Device_Addr,
+   SRC_SMBUS_Device_Addr,
    SRC_App_FW_Start_Addr0,
    SRC_App_FW_Start_Addr1,
    SRC_App_FW_Start_Addr2,
@@ -101,22 +101,24 @@ enum Source_Info_Rsp
 #define SRC_RSP_DATA_END         0x72
 #define SRC_RSP_UNKNOWN_CMD      0x73
 
-// Target MCU Commands
-#define TGT_CMD_ENTER_BL_MODE    0x90
-#define TGT_CMD_GET_INFO         0x91
-#define TGT_CMD_SET_FLASH_KEYS   0x92
-#define TGT_CMD_SET_ADDR         0x93
-#define TGT_CMD_ERASE_PAGE       0x94
-#define TGT_CMD_WRITE_FLASH      0x95
-#define TGT_CMD_GET_PAGE_CRC     0x96
-#define TGT_CMD_WRITE_SIGNATURE  0x97
-#define TGT_CMD_SW_RESET         0x98
 
-// Target MCU Response Codes
-#define TGT_RSP_OK               0x60
-#define TGT_RSP_ERROR            0x61
-#define TGT_RSP_BL_MODE          0x62
-#define TGT_RSP_APP_MODE         0x63
+// ---------------------------------
+// Target BL Command Codes
+// ---------------------------------
+#define TGT_CMD_RESET_MCU           0x00
+#define TGT_CMD_GET_VERSION         0x01
+#define TGT_CMD_ERASE_FLASH_PAGE    0x02
+#define TGT_CMD_WRITE_FLASH_BYTES   0x03
+#define TGT_CMD_READ_FLASH_BYTES    0x04
+
+// ---------------------------------
+// Target BL Response Codes
+// ---------------------------------
+#define TGT_RSP_OK                  0x00 // RSP_OK should always be 0
+#define TGT_RSP_PARAMETER_INVALID   0x01
+#define TGT_RSP_UNSUPPORTED_CMD     0x02
+#define TGT_RSP_ERROR               0x80
+
 
 //---------------------------------------------
 // Error Codes
@@ -133,41 +135,6 @@ enum Source_Info_Rsp
 #define ERR_TGT_SRC_INFO_MISMATCH   0x20
 #define ERR_NUM_PAGES_MISMATCH      0x21
 
-//---------------------------------------------
-// CAN-specific Constants
-//---------------------------------------------
-
-// Size of CAN Messages
-#define MESSAGE_SIZE   8            // Range is 1-8 bytes
-#define TGT_MAX_BYTES_PER_WRITE MESSAGE_SIZE
-
-// Note: The master and target message IDs need to be mirrored (TX vs RX)
-
-#ifdef MASTER_MCU_BL
-
-   // Message Objects to use (range 0-31)
-   #define MO_TX_BL_CMD    0x10
-   #define MO_TX_BL_WRITE8 0x11
-   #define MO_RX_BL_RSP    0x12
-
-   // 11-bit Arbitration Message IDs
-   #define MSG_ID_TX_BL_CMD      0x0B1 // Transmitted by Master MCU for all BL commands, except:
-   #define MSG_ID_TX_BL_WRITE8   0x1B1 // Transmitted by Master MCU for the 8-byte Write command
-   #define MSG_ID_RX_BL_RSP      0x2B1 // Received by Master MCU (responses from target MCU)
-
-#else
-
-   // Message Objects to use (range 0-31)
-   #define MO_RX_BL_CMD    0x10
-   #define MO_RX_BL_WRITE8 0x11
-   #define MO_TX_BL_RSP    0x12
-
-   // 11-bit Arbitration Message IDs
-   #define MSG_ID_RX_BL_CMD      0x0B1 // Transmitted by Master MCU for all BL commands, except:
-   #define MSG_ID_RX_BL_WRITE8   0x1B1 // Transmitted by Master MCU for the 8-byte Write command
-   #define MSG_ID_TX_BL_RSP      0x2B1 // Received by Master MCU (responses from target MCU)
-
-#endif
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

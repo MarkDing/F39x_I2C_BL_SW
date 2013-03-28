@@ -55,7 +55,7 @@ void main (void)
    //---------------------------------------
    // Check the override pin.
    //---------------------------------------
-   if (!BL_Override_Pin)
+   if (BL_Override_Pin)
    {
       // If not in BL Override, jump to application
       START_APPLICATION ();
@@ -81,11 +81,6 @@ void main (void)
             Set_TX_TGT_RSP_OK ();
             SMB0_Op (1);
             RSTSRC = 0x12;          // Initiate software reset with vdd monitor enabled  
-            break;
-
-         case TGT_CMD_GET_VERSION:
-            Set_TX_TGT_BL_VER ();
-            SMB0_Op (1);
             break;
 
          case TGT_CMD_ERASE_FLASH_PAGE:
@@ -154,19 +149,6 @@ void Set_TX_TGT_RSP_UNSUPPORTED_CMD (void)
    Tx_Buf[0] = TGT_RSP_UNSUPPORTED_CMD;
 }
 
-//-----------------------------------------------------------------------------
-// Set_TX_TGT_BL_VER
-//-----------------------------------------------------------------------------
-//
-// Return Value:  None
-// Parameters:    None
-//
-// Sets TX response code to TGT_BL_VER
-//-----------------------------------------------------------------------------
-void Set_TX_TGT_BL_VER (void)
-{
-   Tx_Buf[0] = TGT_BL_VER;
-}
 //-----------------------------------------------------------------------------
 // End Of File
 //-----------------------------------------------------------------------------

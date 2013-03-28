@@ -65,31 +65,6 @@
 // These support functions write one SFR to a fixed value.
 // They help keep the code below the 0x1FF limit by fitting into the gaps
 // between interrupt vectors.
-void Disable_Watchdog (void)
-{
-   PCA0MD &= ~0x40;  // Disable Watchdog
-}
-
-void Set_VDM0CN_080h (void)
-{
-   VDM0CN = 0x80;                      // Enable VDD monitor and early warning
-}
-
-void Set_RSTSRC_002h (void)
-{
-   RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
-}
-
-void Set_SMB0CF_095h (void)
-{
-   SMB0CF = 0x95;                      // Use Timer1 overflows as SMBus clock
-                                       // source;
-                                       // Enable slave mode;
-                                       // Enable setup & hold time
-                                       // extensions;
-                                       // Enable SMBus Free timeout detect;
-                                       // Enable SMBus;
-}
 
 #if ((SYSCLK/SMB0_FREQUENCY/3) < 255)
 #define SCALE 1
@@ -106,10 +81,6 @@ void Set_CKCON_001h (void)
 }
 #endif
 
-void Set_TMOD_020h (void)
-{
-   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
-}
 
 void Configure_Timer1 (void)
 {
@@ -134,20 +105,21 @@ void Configure_Timer1 (void)
 //-----------------------------------------------------------------------------
 void Init_Device(void)
 {
-   Disable_Watchdog ();
+	PCA0MD &= ~0x40;  // Disable Watchdog
 
-   // Initialize variables here so that RAM contents are not disturbed on a
-   // non-bootloader reset
+	// Initialize variables here so that RAM contents are not disturbed on a
+	// non-bootloader reset
 
-   Set_VDM0CN_080h ();                 // Enable VDD monitor and early warning
-   Set_RSTSRC_002h ();                 // Enable VDD monitor as a reset source
+	VDM0CN = 0x80;                      // Enable VDD monitor and early warning
+	RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
 
    // Initialize port I/O
-   XBR0 = 0x04;                        // Route SMBus signals to port pins
-   XBR1 = 0x40;                        // Enable crossbar
+    P0SKIP = 0x03;
+    XBR0 = 0x04;                        // Route SMBus signals to port pins
+    XBR1 = 0x40;                        // Enable crossbar
 
-   // Initialize SMBus
-  Set_SMB0CF_095h ();                  // Use Timer1 overflows as SMBus clock
+    // Initialize SMBus
+    SMB0CF = 0x95;                     // Use Timer1 overflows as SMBus clock
                                        // source;
                                        // Enable slave mode;
                                        // Enable setup & hold time
@@ -165,7 +137,7 @@ void Init_Device(void)
     Set_CKCON_001h ();
 #endif
 
-   Set_TMOD_020h();                    // Timer1 in 8-bit auto-reload mode
+   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
 
    Configure_Timer1 ();
 }

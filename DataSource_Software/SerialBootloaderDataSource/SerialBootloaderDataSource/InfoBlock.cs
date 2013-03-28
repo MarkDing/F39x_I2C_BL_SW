@@ -65,6 +65,9 @@ namespace SerialBootloaderDataSource
                 case 3:
                     retval = "LIN";
                     break;
+                case 4:
+                    retval = "SMBUS";
+                    break;
                 default:
                     retval = "Invalid";
                     break;

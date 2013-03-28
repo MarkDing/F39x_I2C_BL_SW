@@ -30,10 +30,7 @@
 // Global CONSTANTS
 //-----------------------------------------------------------------------------
 
-// "request_response" parameter values (for TGT_Enter_BL_Mode function)
-#define IGNORE_RESPONSE 0x00
-#define REQUEST_RESPONSE 0x01
-
+#define MAX_BUF_BYTES 32
 //------------------------
 // Bit Definition Masks
 //------------------------
@@ -50,16 +47,10 @@
 //-----------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------
-void CAN0_Init (void);
+void SMBus_Init (void);
 
-U8 TGT_Enter_BL_Mode (U8 request_response, U8 CAN_dev_addr);
-U8 TGT_Get_Info (U8 *target_info);
-U8 TGT_Set_Flash_Keys (U8 flash_key0, U8 flash_key1);
-U8 TGT_Set_Addr (U8 bank, U32 addr);
-U8 TGT_Erase_Page (void);
-U8 TGT_Write_Flash (U8 *buf, U16 index, U8 numbytes);
-U8 TGT_Get_Page_CRC (U16 *target_page_crc);
-U8 TGT_Write_Signature (U8 sig_byte0, U8 sig_byte1, U8 sig_byte2, U8 sig_byte3);
+U8 TGT_Erase_Page (U32 addr);
+U8 TGT_Write_Flash (U8 *buf, U32 addr, U16 numbytes);
 void TGT_SW_Reset (void);
 
 //-----------------------------------------------------------------------------

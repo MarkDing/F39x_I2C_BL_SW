@@ -84,7 +84,28 @@ void main (void)
    Set_LED_State (LED_OFF);
 
    EA = 1;                             // Enable global interrupts
+#if 0   
+   for(index = 0; index < 512; index++)
+   {
+	   Page_Buf[index] = (U8)index;
+   }
+   while(1)
+   {
+      if (P1_0_SWITCH == 0)         // Begin bootload if switch is pressed
+	  {
 
+		TGT_Response = TGT_Erase_Page(0x400);  // Mark.Ding add for testing
+	   	for(index = 0; index < PAGE_SIZE; index += MAX_BUF_BYTES)
+	   	{
+			TGT_Response = TGT_Write_Flash (Page_Buf+index, 0x400+index, MAX_BUF_BYTES);
+    	    TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
+			if (Last_Error != 0)
+				break;
+		}
+		while (P1_0_SWITCH == 0);  // Wait till switch is released
+	  }
+   }
+#endif
    while(1) // Spin forever in this outer loop
    {
       while (Last_Error == 0)          // Wait for switch press...
@@ -97,54 +118,7 @@ void main (void)
             SRC_Validate_Response (SRC_Response, SRC_CMD_GET_INFO);
             if (Last_Error != 0)
                break;
-#if 0  // Mark.Ding
-            // If the target is in app mode, this command will put it in BL mode
-            // Ignore response first time because if it is in app mode, there will
-            // be no response
-            TGT_Enter_BL_Mode (IGNORE_RESPONSE, SRC_Info[SRC_CAN_Device_Addr]);
 
-            // Delay to allow target to reset from app mode to BL mode
-            Temp_Counter = 0xFFFF;
-            while(Temp_Counter-- != 0);
-
-            // Reissue this command to confirm that it is now in BL mode
-            TGT_Response = TGT_Enter_BL_Mode (REQUEST_RESPONSE, SRC_Info[SRC_CAN_Device_Addr]);
-            TGT_Validate_Response (TGT_Response, TGT_CMD_ENTER_BL_MODE);
-            if (Last_Error != 0)
-               break;
-
-            TGT_Response = TGT_Get_Info (TGT_Info);
-            TGT_Validate_Response (TGT_Response, TGT_CMD_GET_INFO);
-            if (Last_Error != 0)
-               break;
-
-            // TODO: Send target info to the PC for display
-            SRC_Disp_TGT_Info (TGT_Info[TGT_Info_Rsp_Length], TGT_Info);
-
-            Validate_TGT_SRC_Match (&(Page_Addr));
-            // After matching, the last user page address is stored in Page_Addr
-            if (Last_Error != 0)
-               break;
-
-            // Target and Source are now ready for bootloading
-            TGT_Response = TGT_Set_Flash_Keys (FLASH_KEY0, FLASH_KEY1);
-            TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-            if (Last_Error != 0)
-               break;
-
-            // Set target address to last user page (to erase existing signature)
-            // The addr would be pre-set in Page_Addr by previous call Validate_TGT_SRC_Match()
-            TGT_Response = TGT_Set_Addr (0, Page_Addr);
-            TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-            if (Last_Error != 0)
-               break;
-
-            // Erase the last user page
-            TGT_Response = TGT_Erase_Page ();
-            TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-            if (Last_Error != 0)
-               break;
-#endif
             // Now that the last app page has been erased, begin the page-by-page bootload process
             Pages_Written = 0;
 
@@ -165,63 +139,38 @@ void main (void)
                SRC_Validate_Response (SRC_Response, SRC_CMD_GET_PAGE);  // this will check for CRC match
                if (Last_Error != 0)
                   break;
-#if 0 // Mark.Ding
+
                // Set target page
-               // The addr would be pre-set by SRC_Get_Page_Info
-               TGT_Response = TGT_Set_Addr (0, Page_Addr);
-               TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-               if (Last_Error != 0)
-                  break;
 
                // Erase the target application page
-               TGT_Response = TGT_Erase_Page ();
+               TGT_Response = TGT_Erase_Page(Page_Addr);
                TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
                if (Last_Error != 0)
                   break;
+				// Page_Buf[0] and Page_Buf[513] are special value define in data source application.
+			   for(index = 0; index < PAGE_SIZE; index += MAX_BUF_BYTES)
+			   {
+	               TGT_Response = TGT_Write_Flash (Page_Buf+index + 1, Page_Addr+index, MAX_BUF_BYTES);
+    	           TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
+        	       if (Last_Error != 0)
+            	      break;
+			   }
 
-               for (index = 0; index < PAGE_SIZE; index += TGT_MAX_BYTES_PER_WRITE)
-               {
-                  TGT_Response = TGT_Write_Flash ((Page_Buf+1), index, TGT_MAX_BYTES_PER_WRITE);
-                  TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-                  if (Last_Error != 0)
-                     break;
-               }
                Pages_Written++;
 
-               if (Last_Error != 0)
-                  break;
-
-               TGT_Response = TGT_Get_Page_CRC (&TGT_Page_CRC);
-               TGT_Validate_Response (TGT_Response, TGT_CMD_GET_PAGE_CRC); // this will check for CRC match
-               if (Last_Error != 0)
-                  break;
-#endif
             }
 
             if (Last_Error != 0)
                break;
-#if 0 // Mark.Ding
             // Check if we wrote all the pages provided by the source
             // The number of pages is provided in place of the last byte of Page_Addr
             // as a result of the last call to SRC_Get_Page_Info()
             Validate_Pages_Written ((U8)(Page_Addr&0xFF));
 
-            // All pages were written successfully. Now write the signature:
-            TGT_Response = TGT_Write_Signature (SIG_BYTE0, SIG_BYTE1, SIG_BYTE2, SIG_BYTE3);
-            TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-            if (Last_Error != 0)
-               break;
-
-            // Clear flash keys on target
-            TGT_Response = TGT_Set_Flash_Keys (0x00, 0x00);
-            TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-            if (Last_Error != 0)
-               break;
 
             // Reset target
-            TGT_SW_Reset ();
-            //TGT_Validate_Response (TGT_Response, TGT_RSP_OK);
-#endif
+            TGT_SW_Reset (); // Mark.Ding hide it for test
+
             Set_LED_State (LED_ON);
             // TODO: Send message to PC to indicate successful completion
 
