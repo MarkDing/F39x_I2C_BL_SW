@@ -59,6 +59,12 @@ void TGT_Validate_Response (U8 response, U8 command)
 {
    switch (command)
    {
+      case TGT_CMD_ENTER_BL_MODE:
+         if(response != TGT_RSP_BL_MODE) 
+         {
+            Last_Error = ERR_TGT_BL_MODE;
+         }
+         break;
       case TGT_RSP_OK:
          if(response != TGT_RSP_OK)
          {

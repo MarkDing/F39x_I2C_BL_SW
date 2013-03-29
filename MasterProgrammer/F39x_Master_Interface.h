@@ -75,6 +75,10 @@ enum Source_Info_Rsp
 // Target MCU Sizes
 #define PAGE_SIZE               512
 
+// User applicate code
+#define APP_FW_START_ADDR        0x0200
+#define APP_FW_END_ADDR          0x3FFF
+
 // Signature Bytes
 #define SIG_BYTE0             0x3D
 #define SIG_BYTE1             0xC2
@@ -110,13 +114,14 @@ enum Source_Info_Rsp
 #define TGT_CMD_ERASE_FLASH_PAGE    0x02
 #define TGT_CMD_WRITE_FLASH_BYTES   0x03
 #define TGT_CMD_READ_FLASH_BYTES    0x04
-
+#define TGT_CMD_ENTER_BL_MODE       0x05
 // ---------------------------------
 // Target BL Response Codes
 // ---------------------------------
 #define TGT_RSP_OK                  0x00 // RSP_OK should always be 0
 #define TGT_RSP_PARAMETER_INVALID   0x01
 #define TGT_RSP_UNSUPPORTED_CMD     0x02
+#define TGT_RSP_BL_MODE             0x03
 #define TGT_RSP_ERROR               0x80
 
 

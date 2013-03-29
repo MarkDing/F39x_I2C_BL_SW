@@ -46,10 +46,6 @@
 // Change this as necessary based on MCU
 // ------------------------------------------
 
-// Bit masks for the RSTSRC SFR
-#define PORSF  0x02
-#define FERROR 0x40
-
 //-----------------------------------------------------------------------------
 // Global Variables
 //-----------------------------------------------------------------------------
@@ -66,6 +62,31 @@
 // They help keep the code below the 0x1FF limit by fitting into the gaps
 // between interrupt vectors.
 
+void Disable_Watchdog (void)
+{
+   PCA0MD &= ~0x40;  // Disable Watchdog
+}
+void Set_VDM0CN_080h (void)
+{
+   VDM0CN = 0x80;                      // Enable VDD monitor and early warning
+}
+
+void Set_RSTSRC_002h (void)
+{
+   RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
+}
+
+void Set_SMB0CF_095h (void)
+{
+   SMB0CF = 0x95;                      // Use Timer1 overflows as SMBus clock
+                                       // source;
+                                       // Enable slave mode;
+                                       // Enable setup & hold time
+                                       // extensions;
+                                       // Enable SMBus Free timeout detect;
+                                       // Enable SMBus;
+}
+
 #if ((SYSCLK/SMB0_FREQUENCY/3) < 255)
 #define SCALE 1
 void Set_CKCON_008h (void)
@@ -80,6 +101,11 @@ void Set_CKCON_001h (void)
    CKCON = 0x01;                   // Timer1 clock source = SYSCLK / 4
 }
 #endif
+
+void Set_TMOD_020h (void)
+{
+   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
+}
 
 
 void Configure_Timer1 (void)
@@ -105,13 +131,13 @@ void Configure_Timer1 (void)
 //-----------------------------------------------------------------------------
 void Init_Device(void)
 {
-	PCA0MD &= ~0x40;  // Disable Watchdog
+	Disable_Watchdog();  // Disable Watchdog
 
 	// Initialize variables here so that RAM contents are not disturbed on a
 	// non-bootloader reset
 
-	VDM0CN = 0x80;                      // Enable VDD monitor and early warning
-	RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
+    Set_VDM0CN_080h ();                 // Enable VDD monitor and early warning
+    Set_RSTSRC_002h ();                 // Enable VDD monitor as a reset source
 
    // Initialize port I/O
     P0SKIP = 0x03;
@@ -119,7 +145,7 @@ void Init_Device(void)
     XBR1 = 0x40;                        // Enable crossbar
 
     // Initialize SMBus
-    SMB0CF = 0x95;                     // Use Timer1 overflows as SMBus clock
+    Set_SMB0CF_095h ();                // Use Timer1 overflows as SMBus clock
                                        // source;
                                        // Enable slave mode;
                                        // Enable setup & hold time
@@ -137,7 +163,7 @@ void Init_Device(void)
     Set_CKCON_001h ();
 #endif
 
-   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
+   Set_TMOD_020h();                    // Timer1 in 8-bit auto-reload mode
 
    Configure_Timer1 ();
 }

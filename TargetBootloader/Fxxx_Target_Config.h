@@ -62,11 +62,12 @@
 // Mask to clear out address bits within a page (useful for page boundary check)
 // Example: For 512-byte pages, the lower 9 address bits [8:0] represent the bytes within
 // a Flash page; so this mask's lower 9 bits would be set => 0x000001FF
-#define TGT_FLASH_PAGE_ADDR_MASK 0x000001FF
+#define TGT_FLASH_PAGE_ADDR_MASK 0x01FF
 
 // Specify 24-bit linear addresses here (do not use banked 16-bit addresses)
-#define APP_FW_START_ADDR        0x000200
-#define APP_FW_END_ADDR          0x003FFF
+#define APP_FW_START_ADDR        0x0200
+#define APP_FW_END_ADDR          0x3FFF
+
 
 #define APP_FW_SIG0_ADDR         APP_FW_END_ADDR
 

@@ -152,10 +152,37 @@ void Timer3_Init (void)
 
 
 //-----------------------------------------------------------------------------
+// TGT_Enter_BL_Mode
+//-----------------------------------------------------------------------------
+//
+// Return Value : Response
+// Parameters   : None
+//
+//
+//
+//-----------------------------------------------------------------------------
+U8 TGT_Enter_BL_Mode()
+{
+   // Command Format:
+   // [0] Command
+
+   SMB_Tx_Buf[0] = TGT_CMD_ENTER_BL_MODE;
+   // Other bytes of the message are "don't care".
+
+   SMB_Write(CMD_PKG_SIZE);
+   SMB_Read(1);
+
+   // Response:
+   // [0] Return code (ACK/ERROR etc)/
+
+   return SMB_Rx_Buf[0];
+}
+
+//-----------------------------------------------------------------------------
 // TGT_Erase_Page
 //-----------------------------------------------------------------------------
 //
-// Return Value : None
+// Return Value : Response
 // Parameters   : None
 //
 //
@@ -167,20 +194,25 @@ U8 TGT_Erase_Page (U32 addr)
    // Command Format:
    // [0] Command
 
-   SMB_Tx_Buf[0] = TGT_CMD_ERASE_FLASH_PAGE;
-   SMB_Tx_Buf[1] = FLASH_KEY0;
-   SMB_Tx_Buf[2] = FLASH_KEY1;
-   SMB_Tx_Buf[3] = addr & 0xFF;
-   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
-   // Other bytes of the message are "don't care".
+	if( (addr < APP_FW_START_ADDR) || (addr > APP_FW_END_ADDR))
+	{
+		SMB_Rx_Buf[0] = TGT_RSP_PARAMETER_INVALID;
+	}
+	else
+	{
+	   SMB_Tx_Buf[0] = TGT_CMD_ERASE_FLASH_PAGE;
+	   SMB_Tx_Buf[1] = FLASH_KEY0;
+	   SMB_Tx_Buf[2] = FLASH_KEY1;
+	   SMB_Tx_Buf[3] = addr & 0xFF;
+	   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
+	   // Other bytes of the message are "don't care".
 
-   SMB_Write(CMD_PKG_SIZE);
-   SMB_Read(1);
-
+	   SMB_Write(CMD_PKG_SIZE);
+	   SMB_Read(1);
+	}
    // Response:
    // [0] Return code (ACK/ERROR etc)/
 
-//   SMB_Rx_Buf[0] = TGT_RSP_OK;
    return SMB_Rx_Buf[0];
 }
 
@@ -188,7 +220,7 @@ U8 TGT_Erase_Page (U32 addr)
 // TGT_Write_Flash
 //-----------------------------------------------------------------------------
 //
-// Return Value : None
+// Return Value : Response
 // Parameters   : None
 //
 // Write 32 bytes to bootloader
@@ -199,29 +231,38 @@ U8 TGT_Write_Flash (U8 *buf, U32 addr, U16 numbytes)
    U8 i;
 
 
-   // Command Format:
-   // [0] Command
-   // [1] flash key code0
-   // [2] flash key code1
-   // [3] addr0 (LSB)
-   // [4] addr1 (MSB)
-   // [5] numbytes
-   SMB_Tx_Buf[0] = TGT_CMD_WRITE_FLASH_BYTES;
-   SMB_Tx_Buf[1] = FLASH_KEY0;
-   SMB_Tx_Buf[2] = FLASH_KEY1;
-   SMB_Tx_Buf[3] = addr & 0xFF;
-   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
-   SMB_Tx_Buf[5] = numbytes;
+	if( (addr < APP_FW_START_ADDR) || 
+		(addr > APP_FW_END_ADDR) ||
+		((addr+numbytes-1) > APP_FW_END_ADDR))
+	{
+		SMB_Rx_Buf[0] = TGT_RSP_PARAMETER_INVALID;
+	}
+	else
+	{
+	   // Command Format:
+	   // [0] Command
+	   // [1] flash key code0
+	   // [2] flash key code1
+	   // [3] addr0 (LSB)
+	   // [4] addr1 (MSB)
+	   // [5] numbytes
+	   SMB_Tx_Buf[0] = TGT_CMD_WRITE_FLASH_BYTES;
+	   SMB_Tx_Buf[1] = FLASH_KEY0;
+	   SMB_Tx_Buf[2] = FLASH_KEY1;
+	   SMB_Tx_Buf[3] = addr & 0xFF;
+	   SMB_Tx_Buf[4] = (addr >> 8) & 0xFF;
+	   SMB_Tx_Buf[5] = numbytes;
 
-   for (i = 0; i < numbytes ; i++)
-   {
-      SMB_Tx_Buf[i + CMD_PKG_SIZE] = *(buf + i);
-   }
-   // Other bytes of the message are "don't care".
+	   for (i = 0; i < numbytes ; i++)
+	   {
+	      SMB_Tx_Buf[i + CMD_PKG_SIZE] = *(buf + i);
+	   }
+	   // Other bytes of the message are "don't care".
 
-   SMB_Write(CMD_PKG_SIZE + numbytes);
-   SMB_Read(1);
-   // Response:
+	   SMB_Write(CMD_PKG_SIZE + numbytes);
+	   SMB_Read(1);
+	}
+// Response:
    // [0] Return code (ACK/ERROR etc)
 
    return SMB_Rx_Buf[0];
@@ -250,7 +291,6 @@ void TGT_SW_Reset (void)
 
    SMB_Write(CMD_PKG_SIZE);
    SMB_Read(1);
-
 }
 
 //-----------------------------------------------------------------------------
@@ -314,7 +354,8 @@ INTERRUPT(SMBUS0_ISR, INTERRUPT_SMBUS0)
             else                       // If slave NACK,
             {
                STO = 1;                // Send STOP condition, followed
-               STA = 1;                // By a START
+               SMB_BUSY = 0;     // And free SMBus interface
+//               STA = 1;                // By a START
                NUM_ERRORS++;           // Indicate error
             }
             break;

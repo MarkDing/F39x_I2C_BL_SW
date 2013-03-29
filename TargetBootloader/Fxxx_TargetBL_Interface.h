@@ -82,6 +82,7 @@ void FLASH_Modify (U16 addr, U8 byte);
 //void Comm_Send_Tx_Bytes (U8);
 void SMB0_Op (U8 SMB0_Num_Bytes);
 void Set_TX_TGT_RSP_OK (void);
+void Set_TX_TGT_RSP_BL_MODE (void);
 void Set_TX_TGT_RSP_PARAMETER_INVALID (void);
 void Set_TX_TGT_RSP_UNSUPPORTED_CMD (void);
 void Set_TX_TGT_BL_VER (void);

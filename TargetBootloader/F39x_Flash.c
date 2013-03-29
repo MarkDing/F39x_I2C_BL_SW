@@ -84,7 +84,10 @@ void FLASH_Modify (U16 addr, U8 byte)
    // template, it is important to remove the literal flash key values and use 
    // the global variables Flash_Key0 and Flash_Key1 instead.  
 
-
+//   if((addr > APP_FW_END_ADDR) || (addr < APP_FW_START_ADDR))
+//   {
+//      return 1;
+//   }
    VDM0CN = 0xA0;                      // Enable VDD monitor and high threshold
    RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
  

@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22              03/28/2013  16:25:35  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22              03/29/2013  19:39:45  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -67,7 +67,7 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
             DATA    0038H     000BH     UNIT         _DATA_GROUP_
             IDATA   0043H     0001H     UNIT         ?STACK
 
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 2
 
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
@@ -84,58 +84,60 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
 >> EN?F39X_VALIDATION
                     0021H     0002H                  *** GAP ***
             CODE    0023H     0003H     ABSOLUTE     
-            CODE    0026H     0010H     UNIT         ?PR?PORT_INIT?F39X_INIT
-                    0036H     0005H                  *** GAP ***
+            CODE    0026H     0013H     UNIT         ?PR?TGT_ENTER_BL_MODE?F39
+>> X_SMB
+                    0039H     0002H                  *** GAP ***
             CODE    003BH     0003H     ABSOLUTE     
-            CODE    003EH     0105H     UNIT         ?PR?MAIN?F39X_MAIN
-            CODE    0143H     00E9H     UNIT         ?C?LIB_CODE
-            CODE    022CH     00C0H     UNIT         ?PR?SMBUS0_ISR?F39X_SMB
-            CODE    02ECH     00AFH     UNIT         ?PR?_VALIDATE_TGT_SRC_MAT
->> CH?F39X_VALIDATION
-            CODE    039BH     0098H     UNIT         ?PR?_SRC_GET_PAGE_INFO?F3
->> 9X_UART
-            CODE    0433H     008CH     UNIT         ?C_C51STARTUP
-            CODE    04BFH     008AH     UNIT         ?PR?UART0_ISR?F39X_UART
-            CODE    0549H     0067H     UNIT         ?PR?_TGT_WRITE_FLASH?F39X
+            CODE    003EH     012EH     UNIT         ?PR?MAIN?F39X_MAIN
+            CODE    016CH     00E9H     UNIT         ?C?LIB_CODE
+            CODE    0255H     00CAH     UNIT         ?PR?_TGT_WRITE_FLASH?F39X
 >> _SMB
-            CODE    05B0H     005CH     UNIT         ?PR?_SRC_GET_INFO?F39X_UA
->> RT
-            CODE    060CH     0055H     UNIT         ?PR?_SRC_DISP_TGT_INFO?F3
+            CODE    031FH     00C0H     UNIT         ?PR?SMBUS0_ISR?F39X_SMB
+            CODE    03DFH     00AFH     UNIT         ?PR?_VALIDATE_TGT_SRC_MAT
+>> CH?F39X_VALIDATION
+            CODE    048EH     0098H     UNIT         ?PR?_SRC_GET_PAGE_INFO?F3
 >> 9X_UART
-            CODE    0661H     0043H     UNIT         ?PR?_SRC_VALIDATE_RESPONS
->> E?F39X_VALIDATION
-            CODE    06A4H     003FH     UNIT         ?PR?_GET_BUF_CRC?F39X_CRC
->> 
-            CODE    06E3H     0031H     UNIT         ?PR?_SET_LED_STATE?F39X_M
->> AIN
-            CODE    0714H     0031H     UNIT         ?PR?_SRC_GET_PAGE?F39X_UA
->> RT
-            CODE    0745H     0031H     UNIT         ?PR?_TGT_ERASE_PAGE?F39X_
+            CODE    0526H     008CH     UNIT         ?C_C51STARTUP
+            CODE    05B2H     008AH     UNIT         ?PR?UART0_ISR?F39X_UART
+            CODE    063CH     0062H     UNIT         ?PR?_TGT_ERASE_PAGE?F39X_
 >> SMB
-            CODE    0776H     002AH     UNIT         ?PR?_SRC_DISP_INFO_CODE?F
->> 39X_UART
-            CODE    07A0H     0024H     UNIT         ?PR?_UPDATE_CRC?F39X_CRC
-            CODE    07C4H     0021H     UNIT         ?PR?_SETUP_RX?F39X_UART
-            CODE    07E5H     001FH     UNIT         ?C_INITSEG
-            CODE    0804H     001DH     UNIT         ?PR?UART0_INIT?F39X_INIT
-            CODE    0821H     0019H     UNIT         ?PR?TIMER3_INIT?F39X_SMB
-            CODE    083AH     000FH     UNIT         ?PR?DEVICE_INIT?F39X_INIT
->> 
-            CODE    0849H     000FH     UNIT         ?PR?TIMER0_INIT?F39X_INIT
->> 
-            CODE    0858H     000FH     UNIT         ?PR?TGT_SW_RESET?F39X_SMB
->> 
-            CODE    0867H     000FH     UNIT         ?PR?_SMB_READ?F39X_SMB
-            CODE    0876H     000CH     UNIT         ?PR?_SMB_WRITE?F39X_SMB
-            CODE    0882H     000AH     UNIT         ?PR?OSCILLATOR_INIT?F39X_
->> INIT
-            CODE    088CH     000AH     UNIT         ?PR?_TGT_VALIDATE_RESPONS
+            CODE    069EH     005CH     UNIT         ?PR?_SRC_GET_INFO?F39X_UA
+>> RT
+            CODE    06FAH     0055H     UNIT         ?PR?_SRC_DISP_TGT_INFO?F3
+>> 9X_UART
+            CODE    074FH     0043H     UNIT         ?PR?_SRC_VALIDATE_RESPONS
 >> E?F39X_VALIDATION
-            CODE    0896H     000AH     UNIT         ?PR?SMBUS_INIT?F39X_SMB
+            CODE    0792H     003FH     UNIT         ?PR?_GET_BUF_CRC?F39X_CRC
+>> 
+            CODE    07D1H     0031H     UNIT         ?PR?_SET_LED_STATE?F39X_M
+>> AIN
+            CODE    0802H     0031H     UNIT         ?PR?_SRC_GET_PAGE?F39X_UA
+>> RT
+            CODE    0833H     002AH     UNIT         ?PR?_SRC_DISP_INFO_CODE?F
+>> 39X_UART
+            CODE    085DH     0024H     UNIT         ?PR?_UPDATE_CRC?F39X_CRC
+            CODE    0881H     0021H     UNIT         ?PR?_SETUP_RX?F39X_UART
+            CODE    08A2H     001FH     UNIT         ?C_INITSEG
+            CODE    08C1H     001DH     UNIT         ?PR?UART0_INIT?F39X_INIT
+            CODE    08DEH     0019H     UNIT         ?PR?TIMER3_INIT?F39X_SMB
+            CODE    08F7H     0017H     UNIT         ?PR?_TGT_VALIDATE_RESPONS
+>> E?F39X_VALIDATION
+            CODE    090EH     0010H     UNIT         ?PR?PORT_INIT?F39X_INIT
+            CODE    091EH     000FH     UNIT         ?PR?DEVICE_INIT?F39X_INIT
+>> 
+            CODE    092DH     000FH     UNIT         ?PR?TIMER0_INIT?F39X_INIT
+>> 
+            CODE    093CH     000FH     UNIT         ?PR?TGT_SW_RESET?F39X_SMB
+>> 
+            CODE    094BH     000FH     UNIT         ?PR?_SMB_WRITE?F39X_SMB
+            CODE    095AH     000FH     UNIT         ?PR?_SMB_READ?F39X_SMB
+            CODE    0969H     000AH     UNIT         ?PR?OSCILLATOR_INIT?F39X_
+>> INIT
+            CODE    0973H     000AH     UNIT         ?PR?SMBUS_INIT?F39X_SMB
+
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 3
 
 
-
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 3
 
 
 OVERLAY MAP OF MODULE:   C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
@@ -164,10 +166,11 @@ SEGMENT                                             BIT_GROUP          DATA_GR
   +--> ?PR?_SET_LED_STATE?F39X_MAIN
   +--> ?PR?_SRC_GET_INFO?F39X_UART
   +--> ?PR?_SRC_VALIDATE_RESPONSE?F39X_VALID...
+  +--> ?PR?TGT_ENTER_BL_MODE?F39X_SMB
+  +--> ?PR?_TGT_VALIDATE_RESPONSE?F39X_VALID...
   +--> ?PR?_SRC_GET_PAGE_INFO?F39X_UART
   +--> ?PR?_SRC_GET_PAGE?F39X_UART
   +--> ?PR?_TGT_ERASE_PAGE?F39X_SMB
-  +--> ?PR?_TGT_VALIDATE_RESPONSE?F39X_VALID...
   +--> ?PR?_TGT_WRITE_FLASH?F39X_SMB
   +--> ?PR?_VALIDATE_PAGES_WRITTEN?F39X_VALI...
   +--> ?PR?TGT_SW_RESET?F39X_SMB
@@ -193,8 +196,16 @@ SEGMENT                                             BIT_GROUP          DATA_GR
 >> 0007H
   +--> ?PR?_UPDATE_CRC?F39X_CRC
 
+?PR?TGT_ENTER_BL_MODE?F39X_SMB                   -----    -----      -----    
+>> -----
+  +--> ?PR?_SMB_WRITE?F39X_SMB
+  +--> ?PR?_SMB_READ?F39X_SMB
+
 ?PR?_SRC_GET_PAGE_INFO?F39X_UART                 -----    -----      003AH    
 >> 0006H
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 4
+
+
   +--> ?PR?_SETUP_RX?F39X_UART
 
 ?PR?_SRC_GET_PAGE?F39X_UART                      -----    -----      -----    
@@ -203,9 +214,6 @@ SEGMENT                                             BIT_GROUP          DATA_GR
 
 ?PR?_TGT_ERASE_PAGE?F39X_SMB                     -----    -----      003AH    
 >> 0004H
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 4
-
-
   +--> ?PR?_SMB_WRITE?F39X_SMB
   +--> ?PR?_SMB_READ?F39X_SMB
 
@@ -233,8 +241,8 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
 
   -------         MODULE        F39X_CRC
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:07A0H         PUBLIC        _Update_CRC
-  C:06A4H         PUBLIC        _Get_Buf_CRC
+  C:085DH         PUBLIC        _Update_CRC
+  C:0792H         PUBLIC        _Get_Buf_CRC
   -------         PROC          _GET_BUF_CRC
   D:003AH         SYMBOL        ptr
   D:003DH         SYMBOL        numbytes
@@ -242,16 +250,16 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:003FH         SYMBOL        i
   D:0006H         SYMBOL        CRC
   -------         ENDDO         
-  C:06A4H         LINE#         43
-  C:06AEH         LINE#         44
-  C:06AEH         LINE#         47
-  C:06B1H         LINE#         50
-  C:06C0H         LINE#         51
-  C:06C0H         LINE#         52
-  C:06CDH         LINE#         53
-  C:06D8H         LINE#         54
-  C:06E2H         LINE#         56
-  C:06E2H         LINE#         57
+  C:0792H         LINE#         43
+  C:079CH         LINE#         44
+  C:079CH         LINE#         47
+  C:079FH         LINE#         50
+  C:07AEH         LINE#         51
+  C:07AEH         LINE#         52
+  C:07BBH         LINE#         53
+  C:07C6H         LINE#         54
+  C:07D0H         LINE#         56
+  C:07D0H         LINE#         57
   -------         ENDPROC       _GET_BUF_CRC
   -------         PROC          _UPDATE_CRC
   D:0006H         SYMBOL        crc
@@ -259,25 +267,25 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         DO            
   D:0005H         SYMBOL        i
   -------         ENDDO         
-  C:07A0H         LINE#         70
-  C:07A0H         LINE#         71
-  C:07A0H         LINE#         76
-  C:07A3H         LINE#         78
-  C:07A5H         LINE#         79
-  C:07A5H         LINE#         80
-  C:07A9H         LINE#         81
-  C:07A9H         LINE#         82
-  C:07B0H         LINE#         83
-  C:07B6H         LINE#         84
-  C:07B8H         LINE#         86
-  C:07B8H         LINE#         87
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 5
+  C:085DH         LINE#         70
+  C:085DH         LINE#         71
+  C:085DH         LINE#         76
+  C:0860H         LINE#         78
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 5
 
 
-  C:07BFH         LINE#         88
-  C:07BFH         LINE#         89
-  C:07C3H         LINE#         90
-  C:07C3H         LINE#         91
+  C:0862H         LINE#         79
+  C:0862H         LINE#         80
+  C:0866H         LINE#         81
+  C:0866H         LINE#         82
+  C:086DH         LINE#         83
+  C:0873H         LINE#         84
+  C:0875H         LINE#         86
+  C:0875H         LINE#         87
+  C:087CH         LINE#         88
+  C:087CH         LINE#         89
+  C:0880H         LINE#         90
+  C:0880H         LINE#         91
   -------         ENDPROC       _UPDATE_CRC
   -------         ENDMOD        F39X_CRC
 
@@ -288,92 +296,92 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:00B8H         PUBLIC        IP
   D:00E1H         PUBLIC        XBR0
   D:00E2H         PUBLIC        XBR1
-  C:0849H         PUBLIC        TIMER0_Init
+  C:092DH         PUBLIC        TIMER0_Init
   D:00FFH         PUBLIC        VDM0CN
   D:0089H         PUBLIC        TMOD
   D:00D4H         PUBLIC        P0SKIP
-  C:0026H         PUBLIC        PORT_Init
+  C:090EH         PUBLIC        PORT_Init
   D:00B2H         PUBLIC        OSCICN
   B:00A8H.4       PUBLIC        ES0
   B:00A8H.1       PUBLIC        ET0
-  C:083AH         PUBLIC        Device_Init
+  C:091EH         PUBLIC        Device_Init
   D:008CH         PUBLIC        TH0
   D:008DH         PUBLIC        TH1
   D:008AH         PUBLIC        TL0
   D:008BH         PUBLIC        TL1
   B:0088H.6       PUBLIC        TR1
   D:00EFH         PUBLIC        RSTSRC
-  C:0804H         PUBLIC        UART0_Init
+  C:08C1H         PUBLIC        UART0_Init
   D:0098H         PUBLIC        SCON0
   D:008EH         PUBLIC        CKCON
-  C:0882H         PUBLIC        OSCILLATOR_Init
+  C:0969H         PUBLIC        OSCILLATOR_Init
   -------         PROC          DEVICE_INIT
-  C:083AH         LINE#         59
-  C:083AH         LINE#         60
-  C:083AH         LINE#         61
-  C:083DH         LINE#         63
-  C:0840H         LINE#         65
-  C:0843H         LINE#         67
-  C:0846H         LINE#         69
+  C:091EH         LINE#         59
+  C:091EH         LINE#         60
+  C:091EH         LINE#         61
+  C:0921H         LINE#         63
+  C:0924H         LINE#         65
+  C:0927H         LINE#         67
+  C:092AH         LINE#         69
   -------         ENDPROC       DEVICE_INIT
   -------         PROC          OSCILLATOR_INIT
-  C:0882H         LINE#         83
-  C:0882H         LINE#         84
-  C:0882H         LINE#         86
-  C:0885H         LINE#         87
-  C:0888H         LINE#         88
-  C:088BH         LINE#         89
+  C:0969H         LINE#         83
+  C:0969H         LINE#         84
+  C:0969H         LINE#         86
+  C:096CH         LINE#         87
+  C:096FH         LINE#         88
+  C:0972H         LINE#         89
   -------         ENDPROC       OSCILLATOR_INIT
   -------         PROC          PORT_INIT
-  C:0026H         LINE#         110
-  C:0026H         LINE#         111
-  C:0026H         LINE#         112
-  C:0029H         LINE#         113
-  C:002CH         LINE#         114
-  C:002FH         LINE#         115
-  C:0032H         LINE#         116
-  C:0035H         LINE#         117
+  C:090EH         LINE#         110
+  C:090EH         LINE#         111
+  C:090EH         LINE#         112
+  C:0911H         LINE#         113
+  C:0914H         LINE#         114
+  C:0917H         LINE#         115
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 6
+
+
+  C:091AH         LINE#         116
+  C:091DH         LINE#         117
   -------         ENDPROC       PORT_INIT
   -------         PROC          TIMER0_INIT
-  C:0849H         LINE#         130
-  C:0849H         LINE#         131
-  C:0849H         LINE#         133
-  C:084CH         LINE#         134
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 6
-
-
-  C:084FH         LINE#         136
-  C:0852H         LINE#         137
-  C:0855H         LINE#         138
-  C:0857H         LINE#         139
+  C:092DH         LINE#         130
+  C:092DH         LINE#         131
+  C:092DH         LINE#         133
+  C:0930H         LINE#         134
+  C:0933H         LINE#         136
+  C:0936H         LINE#         137
+  C:0939H         LINE#         138
+  C:093BH         LINE#         139
   -------         ENDPROC       TIMER0_INIT
   -------         PROC          UART0_INIT
-  C:0804H         LINE#         150
-  C:0804H         LINE#         151
-  C:0804H         LINE#         152
-  C:0807H         LINE#         157
-  C:0807H         LINE#         158
-  C:080AH         LINE#         159
-  C:080DH         LINE#         160
-  C:0810H         LINE#         161
-  C:0810H         LINE#         162
-  C:0810H         LINE#         163
-  C:0810H         LINE#         164
-  C:0810H         LINE#         165
-  C:0810H         LINE#         166
-  C:0810H         LINE#         167
-  C:0810H         LINE#         168
-  C:0810H         LINE#         169
-  C:0810H         LINE#         170
-  C:0810H         LINE#         171
-  C:0810H         LINE#         172
-  C:0810H         LINE#         174
-  C:0813H         LINE#         175
-  C:0816H         LINE#         176
-  C:0819H         LINE#         177
-  C:081BH         LINE#         178
-  C:081EH         LINE#         179
-  C:0820H         LINE#         180
+  C:08C1H         LINE#         150
+  C:08C1H         LINE#         151
+  C:08C1H         LINE#         152
+  C:08C4H         LINE#         157
+  C:08C4H         LINE#         158
+  C:08C7H         LINE#         159
+  C:08CAH         LINE#         160
+  C:08CDH         LINE#         161
+  C:08CDH         LINE#         162
+  C:08CDH         LINE#         163
+  C:08CDH         LINE#         164
+  C:08CDH         LINE#         165
+  C:08CDH         LINE#         166
+  C:08CDH         LINE#         167
+  C:08CDH         LINE#         168
+  C:08CDH         LINE#         169
+  C:08CDH         LINE#         170
+  C:08CDH         LINE#         171
+  C:08CDH         LINE#         172
+  C:08CDH         LINE#         174
+  C:08D0H         LINE#         175
+  C:08D3H         LINE#         176
+  C:08D6H         LINE#         177
+  C:08D8H         LINE#         178
+  C:08DBH         LINE#         179
+  C:08DDH         LINE#         180
   -------         ENDPROC       UART0_INIT
   -------         ENDMOD        F39X_INIT
 
@@ -390,7 +398,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:000EH         PUBLIC        LED_State
   D:000FH         PUBLIC        Pages_Written
   B:0090H.0       PUBLIC        P1_0_SWITCH
-  C:06E3H         PUBLIC        _Set_LED_State
+  C:07D1H         PUBLIC        _Set_LED_State
   B:0090H.1       PUBLIC        P1_1_LED
   D:008CH         PUBLIC        TH0
   D:008AH         PUBLIC        TL0
@@ -399,6 +407,9 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:0010H         PUBLIC        Page_Addr
   D:0014H         PUBLIC        Temp_Counter
   X:000DH         PUBLIC        TGT_Info
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 7
+
+
   X:001FH         PUBLIC        Page_Buf
   -------         PROC          MAIN
   -------         DO            
@@ -407,127 +418,134 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:003EH         LINE#         76
   C:003EH         LINE#         77
   C:003EH         LINE#         80
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 7
-
-
   C:0041H         LINE#         82
   C:0044H         LINE#         84
   C:0049H         LINE#         86
-  C:004BH         LINE#         109
-  C:004BH         LINE#         110
-  C:004BH         LINE#         111
-  C:0052H         LINE#         112
-  C:0052H         LINE#         113
-  C:0055H         LINE#         114
-  C:0055H         LINE#         115
-  C:005AH         LINE#         117
-  C:0065H         LINE#         118
-  C:006AH         LINE#         119
-  C:0071H         LINE#         120
-  C:0071H         LINE#         123
-  C:0074H         LINE#         125
-  C:0074H         LINE#         126
-  C:0074H         LINE#         128
-  C:0088H         LINE#         129
-  C:008DH         LINE#         130
-  C:0094H         LINE#         131
-  C:0094H         LINE#         134
-  C:009AH         LINE#         135
-  C:009AH         LINE#         138
-  C:00A5H         LINE#         139
-  C:00AAH         LINE#         140
-  C:00AEH         LINE#         141
-  C:00AEH         LINE#         146
-  C:00BBH         LINE#         147
-  C:00C0H         LINE#         148
-  C:00C4H         LINE#         149
-  C:00C4H         LINE#         151
-  C:00D0H         LINE#         152
-  C:00D0H         LINE#         153
-  C:00F9H         LINE#         154
-  C:00FEH         LINE#         155
-  C:0102H         LINE#         156
-  C:0102H         LINE#         157
-  C:010FH         LINE#         159
-  C:0111H         LINE#         161
-  C:0114H         LINE#         163
-  C:0118H         LINE#         164
-  C:0118H         LINE#         168
-  C:011FH         LINE#         172
-  C:0122H         LINE#         174
-  C:0127H         LINE#         178
-  C:0127H         LINE#         179
-  C:012AH         LINE#         181
-  C:0131H         LINE#         182
-  C:0131H         LINE#         183
-  C:0136H         LINE#         184
-  C:013DH         LINE#         185
-  C:0140H         LINE#         186
-  C:0140H         LINE#         188
+  C:004BH         LINE#         87
+  C:004BH         LINE#         88
+  C:004BH         LINE#         89
+  C:0052H         LINE#         90
+  C:0052H         LINE#         91
+  C:0055H         LINE#         92
+  C:0055H         LINE#         93
+  C:005AH         LINE#         95
+  C:0065H         LINE#         96
+  C:006AH         LINE#         97
+  C:0071H         LINE#         98
+  C:0071H         LINE#         103
+  C:0074H         LINE#         106
+  C:007AH         LINE#         107
+  C:0087H         LINE#         110
+  C:008CH         LINE#         111
+  C:0091H         LINE#         112
+  C:0098H         LINE#         113
+  C:0098H         LINE#         116
+  C:009BH         LINE#         118
+  C:009BH         LINE#         119
+  C:009BH         LINE#         121
+  C:00AFH         LINE#         122
+  C:00B4H         LINE#         123
+  C:00BBH         LINE#         124
+  C:00BBH         LINE#         127
+  C:00C1H         LINE#         128
+  C:00C1H         LINE#         131
+  C:00CCH         LINE#         132
+  C:00D1H         LINE#         133
+  C:00D5H         LINE#         134
+  C:00D5H         LINE#         138
+  C:00E2H         LINE#         139
+  C:00E7H         LINE#         140
+  C:00EBH         LINE#         141
+  C:00EBH         LINE#         143
+  C:00F7H         LINE#         144
+  C:00F7H         LINE#         145
+  C:0120H         LINE#         146
+  C:0125H         LINE#         147
+  C:0129H         LINE#         148
+  C:0129H         LINE#         149
+  C:0136H         LINE#         151
+  C:0138H         LINE#         153
+  C:013BH         LINE#         155
+  C:013FH         LINE#         156
+  C:013FH         LINE#         160
+  C:0146H         LINE#         164
+  C:0149H         LINE#         166
+  C:014EH         LINE#         170
+  C:014EH         LINE#         171
+  C:0151H         LINE#         173
+  C:0155H         LINE#         174
+  C:0155H         LINE#         175
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 8
+
+
+  C:015AH         LINE#         176
+  C:0161H         LINE#         177
+  C:0164H         LINE#         178
+  C:0164H         LINE#         179
   -------         ENDPROC       MAIN
   -------         PROC          _SET_LED_STATE
   D:0007H         SYMBOL        state
-  C:06E3H         LINE#         205
-  C:06E3H         LINE#         206
-  C:06E3H         LINE#         208
-  C:06E5H         LINE#         210
-  C:06F4H         LINE#         211
-  C:06F4H         LINE#         212
-  C:06F4H         LINE#         213
-  C:06F6H         LINE#         214
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 8
-
-
-  C:06F8H         LINE#         215
-  C:06F9H         LINE#         216
-  C:06F9H         LINE#         217
-  C:06FBH         LINE#         218
-  C:06FDH         LINE#         219
-  C:06FEH         LINE#         220
-  C:06FEH         LINE#         221
-  C:0700H         LINE#         222
-  C:0703H         LINE#         223
-  C:0706H         LINE#         224
-  C:0708H         LINE#         225
-  C:0709H         LINE#         226
-  C:0709H         LINE#         227
-  C:070BH         LINE#         228
-  C:070EH         LINE#         229
-  C:0711H         LINE#         230
-  C:0713H         LINE#         231
-  C:0713H         LINE#         232
-  C:0713H         LINE#         233
-  C:0713H         LINE#         234
-  C:0713H         LINE#         236
+  C:07D1H         LINE#         197
+  C:07D1H         LINE#         198
+  C:07D1H         LINE#         200
+  C:07D3H         LINE#         202
+  C:07E2H         LINE#         203
+  C:07E2H         LINE#         204
+  C:07E2H         LINE#         205
+  C:07E4H         LINE#         206
+  C:07E6H         LINE#         207
+  C:07E7H         LINE#         208
+  C:07E7H         LINE#         209
+  C:07E9H         LINE#         210
+  C:07EBH         LINE#         211
+  C:07ECH         LINE#         212
+  C:07ECH         LINE#         213
+  C:07EEH         LINE#         214
+  C:07F1H         LINE#         215
+  C:07F4H         LINE#         216
+  C:07F6H         LINE#         217
+  C:07F7H         LINE#         218
+  C:07F7H         LINE#         219
+  C:07F9H         LINE#         220
+  C:07FCH         LINE#         221
+  C:07FFH         LINE#         222
+  C:0801H         LINE#         223
+  C:0801H         LINE#         224
+  C:0801H         LINE#         225
+  C:0801H         LINE#         226
+  C:0801H         LINE#         228
   -------         ENDPROC       _SET_LED_STATE
   -------         PROC          TIMER0_ISR
-  C:0003H         LINE#         250
-  C:0003H         LINE#         255
-  C:0003H         LINE#         256
-  C:0005H         LINE#         257
-  C:0005H         LINE#         258
+  C:0003H         LINE#         242
+  C:0003H         LINE#         247
+  C:0003H         LINE#         248
+  C:0005H         LINE#         249
+  C:0005H         LINE#         250
   -------         ENDPROC       TIMER0_ISR
   -------         ENDMOD        F39X_MAIN
 
   -------         MODULE        F39X_UART
   C:0000H         SYMBOL        _ICE_DUMMY_
   X:026DH         PUBLIC        Rx_Buf_Local
-  C:060CH         PUBLIC        _SRC_Disp_TGT_Info
+  C:06FAH         PUBLIC        _SRC_Disp_TGT_Info
   D:0021H         PUBLIC        Rx_Buf_Index
   D:0023H         PUBLIC        Tx_Buf_Index
-  C:0776H         PUBLIC        _SRC_Disp_Info_Code
-  C:039BH         PUBLIC        _SRC_Get_Page_Info
-  C:04BFH         PUBLIC        UART0_ISR
-  C:07D0H         PUBLIC        _Setup_Rx
+  C:0833H         PUBLIC        _SRC_Disp_Info_Code
+  C:048EH         PUBLIC        _SRC_Get_Page_Info
+  C:05B2H         PUBLIC        UART0_ISR
+  C:088DH         PUBLIC        _Setup_Rx
   D:0024H         PUBLIC        Rx_Complete_Flag
   D:0025H         PUBLIC        Rx_Num_Bytes
   D:0027H         PUBLIC        Tx_Complete_Flag
   D:0028H         PUBLIC        Tx_Num_Bytes
-  C:0714H         PUBLIC        _SRC_Get_Page
+  C:0802H         PUBLIC        _SRC_Get_Page
   X:0286H         PUBLIC        Tx_Buf
   B:0098H.0       PUBLIC        RI0
   B:0098H.1       PUBLIC        TI0
-  C:05B0H         PUBLIC        _SRC_Get_Info
+  C:069EH         PUBLIC        _SRC_Get_Info
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 9
+
+
   D:002AH         PUBLIC        Rx_Buf_Ptr
   D:0099H         PUBLIC        SBUF0
   -------         PROC          _SRC_GET_INFO
@@ -535,58 +553,55 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         DO            
   D:0007H         SYMBOL        index
   -------         ENDDO         
-  C:05B0H         LINE#         86
-  C:05B6H         LINE#         87
-  C:05B6H         LINE#         94
-  C:05B9H         LINE#         95
-  C:05BFH         LINE#         96
-  C:05C5H         LINE#         97
-  C:05C8H         LINE#         99
-  C:05CDH         LINE#         101
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 9
-
-
-  C:05CFH         LINE#         103
-  C:05D3H         LINE#         105
-  C:05D7H         LINE#         123
-  C:05D9H         LINE#         124
-  C:05D9H         LINE#         125
-  C:05FDH         LINE#         126
-  C:0601H         LINE#         136
-  C:060BH         LINE#         137
+  C:069EH         LINE#         86
+  C:06A4H         LINE#         87
+  C:06A4H         LINE#         94
+  C:06A7H         LINE#         95
+  C:06ADH         LINE#         96
+  C:06B3H         LINE#         97
+  C:06B6H         LINE#         99
+  C:06BBH         LINE#         101
+  C:06BDH         LINE#         103
+  C:06C1H         LINE#         105
+  C:06C5H         LINE#         123
+  C:06C7H         LINE#         124
+  C:06C7H         LINE#         125
+  C:06EBH         LINE#         126
+  C:06EFH         LINE#         136
+  C:06F9H         LINE#         137
   -------         ENDPROC       _SRC_GET_INFO
   -------         PROC          _SRC_GET_PAGE_INFO
   D:003AH         SYMBOL        addr
   D:003DH         SYMBOL        src_page_crc
-  C:039BH         LINE#         149
-  C:03A1H         LINE#         150
-  C:03A1H         LINE#         155
-  C:03A4H         LINE#         156
-  C:03AAH         LINE#         157
-  C:03B0H         LINE#         158
-  C:03B3H         LINE#         160
-  C:03BFH         LINE#         162
-  C:03C1H         LINE#         164
-  C:03C5H         LINE#         166
-  C:03C9H         LINE#         177
-  C:0406H         LINE#         181
-  C:0428H         LINE#         186
-  C:0432H         LINE#         187
+  C:048EH         LINE#         149
+  C:0494H         LINE#         150
+  C:0494H         LINE#         155
+  C:0497H         LINE#         156
+  C:049DH         LINE#         157
+  C:04A3H         LINE#         158
+  C:04A6H         LINE#         160
+  C:04B2H         LINE#         162
+  C:04B4H         LINE#         164
+  C:04B8H         LINE#         166
+  C:04BCH         LINE#         177
+  C:04F9H         LINE#         181
+  C:051BH         LINE#         186
+  C:0525H         LINE#         187
   -------         ENDPROC       _SRC_GET_PAGE_INFO
   -------         PROC          _SRC_GET_PAGE
   D:0001H         SYMBOL        buf
-  C:0714H         LINE#         199
-  C:0714H         LINE#         200
-  C:0714H         LINE#         205
-  C:0717H         LINE#         206
-  C:071DH         LINE#         207
-  C:0723H         LINE#         208
-  C:0726H         LINE#         210
-  C:072DH         LINE#         212
-  C:072FH         LINE#         214
-  C:0733H         LINE#         216
-  C:0737H         LINE#         224
-  C:0744H         LINE#         225
+  C:0802H         LINE#         199
+  C:0802H         LINE#         200
+  C:0802H         LINE#         205
+  C:0805H         LINE#         206
+  C:080BH         LINE#         207
+  C:0811H         LINE#         208
+  C:0814H         LINE#         210
+  C:081BH         LINE#         212
+  C:081DH         LINE#         214
+  C:0821H         LINE#         216
+  C:0825H         LINE#         224
+  C:0832H         LINE#         225
   -------         ENDPROC       _SRC_GET_PAGE
   -------         PROC          _SRC_DISP_TGT_INFO
   D:0007H         SYMBOL        buf_length
@@ -594,126 +609,132 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         DO            
   D:0006H         SYMBOL        index
   -------         ENDDO         
-  C:060CH         LINE#         237
-  C:0612H         LINE#         238
-  C:0612H         LINE#         246
-  C:0615H         LINE#         247
-  C:061BH         LINE#         249
-  C:0622H         LINE#         250
-  C:0622H         LINE#         251
-  C:063DH         LINE#         252
-  C:0640H         LINE#         254
-  C:0649H         LINE#         255
-  C:0649H         LINE#         257
-  C:064CH         LINE#         259
-  C:064EH         LINE#         261
-  C:0652H         LINE#         263
-  C:0656H         LINE#         269
-  C:0660H         LINE#         270
+  C:06FAH         LINE#         237
+  C:0700H         LINE#         238
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 10
+
+
+  C:0700H         LINE#         246
+  C:0703H         LINE#         247
+  C:0709H         LINE#         249
+  C:0710H         LINE#         250
+  C:0710H         LINE#         251
+  C:072BH         LINE#         252
+  C:072EH         LINE#         254
+  C:0737H         LINE#         255
+  C:0737H         LINE#         257
+  C:073AH         LINE#         259
+  C:073CH         LINE#         261
+  C:0740H         LINE#         263
+  C:0744H         LINE#         269
+  C:074EH         LINE#         270
   -------         ENDPROC       _SRC_DISP_TGT_INFO
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 10
-
-
   -------         PROC          _SRC_DISP_INFO_CODE
   D:0007H         SYMBOL        info_code
-  C:0776H         LINE#         282
-  C:0776H         LINE#         283
-  C:0776H         LINE#         289
-  C:0779H         LINE#         290
-  C:077FH         LINE#         291
-  C:0782H         LINE#         292
-  C:0788H         LINE#         293
-  C:0788H         LINE#         295
-  C:078BH         LINE#         297
-  C:078DH         LINE#         299
-  C:0791H         LINE#         301
-  C:0795H         LINE#         307
-  C:079FH         LINE#         308
+  C:0833H         LINE#         282
+  C:0833H         LINE#         283
+  C:0833H         LINE#         289
+  C:0836H         LINE#         290
+  C:083CH         LINE#         291
+  C:083FH         LINE#         292
+  C:0845H         LINE#         293
+  C:0845H         LINE#         295
+  C:0848H         LINE#         297
+  C:084AH         LINE#         299
+  C:084EH         LINE#         301
+  C:0852H         LINE#         307
+  C:085CH         LINE#         308
   -------         ENDPROC       _SRC_DISP_INFO_CODE
-  C:07C9H         SYMBOL        L?0047
+  C:0886H         SYMBOL        L?0047
   -------         PROC          L?0046
   -------         ENDPROC       L?0046
-  C:07C9H         SYMBOL        L?0047
+  C:0886H         SYMBOL        L?0047
   -------         PROC          _SETUP_RX
   D:0006H         SYMBOL        num_bytes
   D:0001H         SYMBOL        buf_ptr
-  C:07D0H         LINE#         320
-  C:07D0H         LINE#         321
-  C:07D0H         LINE#         322
-  C:07D3H         LINE#         323
-  C:07D7H         LINE#         324
-  C:07DCH         LINE#         325
-  C:07E2H         LINE#         326
-  C:07E4H         LINE#         327
+  C:088DH         LINE#         320
+  C:088DH         LINE#         321
+  C:088DH         LINE#         322
+  C:0890H         LINE#         323
+  C:0894H         LINE#         324
+  C:0899H         LINE#         325
+  C:089FH         LINE#         326
+  C:08A1H         LINE#         327
   -------         ENDPROC       _SETUP_RX
   -------         PROC          UART0_ISR
   -------         DO            
   D:0007H         SYMBOL        rx_byte
   -------         ENDDO         
-  C:04BFH         LINE#         340
-  C:04D4H         LINE#         344
-  C:04D7H         LINE#         345
-  C:04D7H         LINE#         346
-  C:04D9H         LINE#         347
-  C:04DBH         LINE#         349
-  C:04DFH         LINE#         350
-  C:04DFH         LINE#         351
-  C:04EAH         LINE#         352
-  C:04EAH         LINE#         353
-  C:04FAH         LINE#         354
-  C:0502H         LINE#         355
-  C:0502H         LINE#         356
-  C:050CH         LINE#         357
-  C:050CH         LINE#         358
-  C:050FH         LINE#         359
-  C:050FH         LINE#         360
-  C:050FH         LINE#         361
-  C:050FH         LINE#         363
-  C:0512H         LINE#         364
-  C:0512H         LINE#         365
-  C:0514H         LINE#         367
-  C:0518H         LINE#         368
-  C:0518H         LINE#         369
-  C:0521H         LINE#         370
-  C:0521H         LINE#         371
-  C:0524H         LINE#         372
-  C:0526H         LINE#         374
-  C:0526H         LINE#         375
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 11
+  C:05B2H         LINE#         340
+  C:05C7H         LINE#         344
+  C:05CAH         LINE#         345
+  C:05CAH         LINE#         346
+  C:05CCH         LINE#         347
+  C:05CEH         LINE#         349
+  C:05D2H         LINE#         350
+  C:05D2H         LINE#         351
+  C:05DDH         LINE#         352
+  C:05DDH         LINE#         353
+  C:05EDH         LINE#         354
+  C:05F5H         LINE#         355
+  C:05F5H         LINE#         356
+  C:05FFH         LINE#         357
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 11
 
 
-  C:0534H         LINE#         376
-  C:0536H         LINE#         377
-  C:0536H         LINE#         378
-  C:0536H         LINE#         379
-  C:0536H         LINE#         380
+  C:05FFH         LINE#         358
+  C:0602H         LINE#         359
+  C:0602H         LINE#         360
+  C:0602H         LINE#         361
+  C:0602H         LINE#         363
+  C:0605H         LINE#         364
+  C:0605H         LINE#         365
+  C:0607H         LINE#         367
+  C:060BH         LINE#         368
+  C:060BH         LINE#         369
+  C:0614H         LINE#         370
+  C:0614H         LINE#         371
+  C:0617H         LINE#         372
+  C:0619H         LINE#         374
+  C:0619H         LINE#         375
+  C:0627H         LINE#         376
+  C:0629H         LINE#         377
+  C:0629H         LINE#         378
+  C:0629H         LINE#         379
+  C:0629H         LINE#         380
   -------         ENDPROC       UART0_ISR
   -------         ENDMOD        F39X_UART
 
   -------         MODULE        F39X_VALIDATION
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:001FH         PUBLIC        Last_Error
-  C:02ECH         PUBLIC        _Validate_TGT_SRC_Match
-  C:0661H         PUBLIC        _SRC_Validate_Response
-  C:088CH         PUBLIC        _TGT_Validate_Response
+  C:03DFH         PUBLIC        _Validate_TGT_SRC_Match
+  C:074FH         PUBLIC        _SRC_Validate_Response
+  C:08F7H         PUBLIC        _TGT_Validate_Response
   C:000EH         PUBLIC        _Validate_Pages_Written
   -------         PROC          _TGT_VALIDATE_RESPONSE
   D:0007H         SYMBOL        response
   D:0005H         SYMBOL        command
-  C:088CH         LINE#         58
-  C:088CH         LINE#         59
-  C:088CH         LINE#         60
-  C:088FH         LINE#         61
-  C:088FH         LINE#         62
-  C:088FH         LINE#         63
-  C:0892H         LINE#         64
-  C:0892H         LINE#         65
-  C:0895H         LINE#         66
-  C:0895H         LINE#         67
-  C:0895H         LINE#         68
-  C:0895H         LINE#         69
-  C:0895H         LINE#         70
-  C:0895H         LINE#         71
+  C:08F7H         LINE#         58
+  C:08F7H         LINE#         59
+  C:08F7H         LINE#         60
+  C:08FEH         LINE#         61
+  C:08FEH         LINE#         62
+  C:08FEH         LINE#         63
+  C:0903H         LINE#         64
+  C:0903H         LINE#         65
+  C:0906H         LINE#         66
+  C:0906H         LINE#         67
+  C:0907H         LINE#         68
+  C:0907H         LINE#         69
+  C:090AH         LINE#         70
+  C:090AH         LINE#         71
+  C:090DH         LINE#         72
+  C:090DH         LINE#         73
+  C:090DH         LINE#         74
+  C:090DH         LINE#         75
+  C:090DH         LINE#         76
+  C:090DH         LINE#         77
   -------         ENDPROC       _TGT_VALIDATE_RESPONSE
   -------         PROC          _SRC_VALIDATE_RESPONSE
   D:0007H         SYMBOL        response
@@ -721,42 +742,42 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         DO            
   D:0006H         SYMBOL        buf_crc
   -------         ENDDO         
-  C:0661H         LINE#         83
-  C:0661H         LINE#         84
-  C:0661H         LINE#         87
-  C:066DH         LINE#         88
-  C:066DH         LINE#         89
-  C:066DH         LINE#         91
-  C:0672H         LINE#         92
-  C:0672H         LINE#         93
-  C:0672H         LINE#         94
-  C:0672H         LINE#         95
-  C:0674H         LINE#         96
-  C:0674H         LINE#         97
-  C:067EH         LINE#         98
-  C:067EH         LINE#         99
-  C:067EH         LINE#         100
-  C:067EH         LINE#         101
-  C:0680H         LINE#         102
-  C:0680H         LINE#         103
-  C:0685H         LINE#         104
-  C:0685H         LINE#         105
-  C:0688H         LINE#         106
-  C:0689H         LINE#         108
-  C:0689H         LINE#         109
-  C:0696H         LINE#         110
-  C:06A0H         LINE#         111
-  C:06A0H         LINE#         112
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 12
+  C:074FH         LINE#         89
+  C:074FH         LINE#         90
+  C:074FH         LINE#         93
+  C:075BH         LINE#         94
+  C:075BH         LINE#         95
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 12
 
 
-  C:06A3H         LINE#         113
-  C:06A3H         LINE#         114
-  C:06A3H         LINE#         115
-  C:06A3H         LINE#         116
-  C:06A3H         LINE#         117
-  C:06A3H         LINE#         118
-  C:06A3H         LINE#         119
+  C:075BH         LINE#         97
+  C:0760H         LINE#         98
+  C:0760H         LINE#         99
+  C:0760H         LINE#         100
+  C:0760H         LINE#         101
+  C:0762H         LINE#         102
+  C:0762H         LINE#         103
+  C:076CH         LINE#         104
+  C:076CH         LINE#         105
+  C:076CH         LINE#         106
+  C:076CH         LINE#         107
+  C:076EH         LINE#         108
+  C:076EH         LINE#         109
+  C:0773H         LINE#         110
+  C:0773H         LINE#         111
+  C:0776H         LINE#         112
+  C:0777H         LINE#         114
+  C:0777H         LINE#         115
+  C:0784H         LINE#         116
+  C:078EH         LINE#         117
+  C:078EH         LINE#         118
+  C:0791H         LINE#         119
+  C:0791H         LINE#         120
+  C:0791H         LINE#         121
+  C:0791H         LINE#         122
+  C:0791H         LINE#         123
+  C:0791H         LINE#         124
+  C:0791H         LINE#         125
   -------         ENDPROC       _SRC_VALIDATE_RESPONSE
   -------         PROC          _VALIDATE_TGT_SRC_MATCH
   D:002DH         SYMBOL        page_addr
@@ -764,98 +785,117 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:0030H         SYMBOL        TGT_app_fw_last_page_start_addr
   D:0034H         SYMBOL        SRC_app_fw_last_page_start_addr
   -------         ENDDO         
-  C:02ECH         LINE#         131
-  C:02F2H         LINE#         132
-  C:02F2H         LINE#         136
-  C:031EH         LINE#         143
-  C:032BH         LINE#         145
-  C:0357H         LINE#         152
-  C:0364H         LINE#         154
-  C:0386H         LINE#         157
-  C:0386H         LINE#         160
-  C:0397H         LINE#         161
-  C:0397H         LINE#         163
-  C:0397H         LINE#         164
-  C:039AH         LINE#         165
-  C:039AH         LINE#         166
+  C:03DFH         LINE#         137
+  C:03E5H         LINE#         138
+  C:03E5H         LINE#         142
+  C:0411H         LINE#         149
+  C:041EH         LINE#         151
+  C:044AH         LINE#         158
+  C:0457H         LINE#         160
+  C:0479H         LINE#         163
+  C:0479H         LINE#         166
+  C:048AH         LINE#         167
+  C:048AH         LINE#         169
+  C:048AH         LINE#         170
+  C:048DH         LINE#         171
+  C:048DH         LINE#         172
   -------         ENDPROC       _VALIDATE_TGT_SRC_MATCH
   -------         PROC          _VALIDATE_PAGES_WRITTEN
   D:0007H         SYMBOL        num_pages_from_source
-  C:000EH         LINE#         178
-  C:000EH         LINE#         179
-  C:000EH         LINE#         180
-  C:001DH         LINE#         181
-  C:001DH         LINE#         182
-  C:0020H         LINE#         183
-  C:0020H         LINE#         184
+  C:000EH         LINE#         184
+  C:000EH         LINE#         185
+  C:000EH         LINE#         186
+  C:001DH         LINE#         187
+  C:001DH         LINE#         188
+  C:0020H         LINE#         189
+  C:0020H         LINE#         190
   -------         ENDPROC       _VALIDATE_PAGES_WRITTEN
   -------         ENDMOD        F39X_VALIDATION
 
   -------         MODULE        F39X_SMB
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:00E6H         PUBLIC        EIE1
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 13
+
+
   B:0020H.0       PUBLIC        SMB_BUSY
-  C:022CH         PUBLIC        SMBUS0_ISR
+  C:031FH         PUBLIC        SMBUS0_ISR
   X:0221H         PUBLIC        SMB_Rx_Buf
   X:0247H         PUBLIC        SMB_Tx_Buf
   B:00C0H.2       PUBLIC        ARBLOST
   B:00C0H.0       PUBLIC        SI
   D:00C1H         PUBLIC        SMB0CF
   D:0018H         PUBLIC        SMB_NUM_BYTES
-  C:0745H         PUBLIC        _TGT_Erase_Page
+  C:063CH         PUBLIC        _TGT_Erase_Page
   D:00C0H         PUBLIC        SMB0CN
   D:0094H         PUBLIC        TMR3
-  C:0821H         PUBLIC        Timer3_Init
-  C:0549H         PUBLIC        _TGT_Write_Flash
+  C:0026H         PUBLIC        TGT_Enter_BL_Mode
+  C:08DEH         PUBLIC        Timer3_Init
+  C:0255H         PUBLIC        _TGT_Write_Flash
   D:0019H         PUBLIC        NUM_ERRORS
   D:0091H         PUBLIC        TMR3CN
-  C:0867H         PUBLIC        _SMB_Read
-  C:0896H         PUBLIC        SMBus_Init
+  C:095AH         PUBLIC        _SMB_Read
+  C:0973H         PUBLIC        SMBus_Init
   D:0092H         PUBLIC        TMR3RL
   D:001BH         PUBLIC        TARGET
   B:00C0H.1       PUBLIC        ACK
-  C:0876H         PUBLIC        _SMB_Write
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 13
-
-
-  C:0858H         PUBLIC        TGT_SW_Reset
+  C:094EH         PUBLIC        _SMB_Write
+  C:093CH         PUBLIC        TGT_SW_Reset
   B:00C0H.5       PUBLIC        STA
   B:0020H.1       PUBLIC        SMB_RW
   D:00C2H         PUBLIC        SMB0DAT
   D:008EH         PUBLIC        CKCON
   B:00C0H.4       PUBLIC        STO
   -------         PROC          SMBUS_INIT
-  C:0896H         LINE#         108
-  C:0896H         LINE#         109
-  C:0896H         LINE#         110
-  C:0899H         LINE#         117
-  C:089CH         LINE#         118
-  C:089FH         LINE#         119
+  C:0973H         LINE#         108
+  C:0973H         LINE#         109
+  C:0973H         LINE#         110
+  C:0976H         LINE#         117
+  C:0979H         LINE#         118
+  C:097CH         LINE#         119
   -------         ENDPROC       SMBUS_INIT
   -------         PROC          TIMER3_INIT
-  C:0821H         LINE#         138
-  C:0821H         LINE#         139
-  C:0821H         LINE#         140
-  C:0824H         LINE#         143
-  C:0827H         LINE#         145
-  C:082DH         LINE#         146
-  C:0833H         LINE#         149
-  C:0836H         LINE#         150
-  C:0839H         LINE#         151
+  C:08DEH         LINE#         138
+  C:08DEH         LINE#         139
+  C:08DEH         LINE#         140
+  C:08E1H         LINE#         143
+  C:08E4H         LINE#         145
+  C:08EAH         LINE#         146
+  C:08F0H         LINE#         149
+  C:08F3H         LINE#         150
+  C:08F6H         LINE#         151
   -------         ENDPROC       TIMER3_INIT
+  -------         PROC          TGT_ENTER_BL_MODE
+  C:0026H         LINE#         164
+  C:0026H         LINE#         165
+  C:0026H         LINE#         169
+  C:002BH         LINE#         172
+  C:002EH         LINE#         173
+  C:0033H         LINE#         178
+  C:0038H         LINE#         179
+  -------         ENDPROC       TGT_ENTER_BL_MODE
   -------         PROC          _TGT_ERASE_PAGE
   D:003AH         SYMBOL        addr
-  C:0745H         LINE#         164
-  C:074DH         LINE#         165
-  C:074DH         LINE#         170
-  C:0753H         LINE#         171
-  C:0757H         LINE#         172
-  C:075BH         LINE#         173
-  C:075EH         LINE#         174
-  C:0766H         LINE#         177
-  C:076BH         LINE#         178
-  C:0770H         LINE#         184
-  C:0775H         LINE#         185
+  C:063CH         LINE#         191
+  C:0644H         LINE#         192
+  C:0644H         LINE#         197
+  C:0667H         LINE#         198
+  C:0667H         LINE#         199
+  C:066DH         LINE#         200
+  C:066FH         LINE#         202
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 14
+
+
+  C:066FH         LINE#         203
+  C:0675H         LINE#         204
+  C:0679H         LINE#         205
+  C:067DH         LINE#         206
+  C:0683H         LINE#         207
+  C:0690H         LINE#         210
+  C:0693H         LINE#         211
+  C:0698H         LINE#         212
+  C:0698H         LINE#         216
+  C:069DH         LINE#         217
   -------         ENDPROC       _TGT_ERASE_PAGE
   -------         PROC          _TGT_WRITE_FLASH
   D:003AH         SYMBOL        buf
@@ -864,32 +904,35 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         DO            
   D:0007H         SYMBOL        i
   -------         ENDDO         
-  C:0549H         LINE#         197
-  C:0557H         LINE#         198
-  C:0557H         LINE#         209
-  C:055DH         LINE#         210
-  C:0561H         LINE#         211
-  C:0565H         LINE#         212
-  C:0568H         LINE#         213
-  C:0570H         LINE#         214
-  C:0574H         LINE#         216
-  C:057FH         LINE#         217
-  C:057FH         LINE#         218
-  C:059AH         LINE#         219
-  C:059DH         LINE#         222
-  C:05A5H         LINE#         223
-  C:05AAH         LINE#         227
-  C:05AFH         LINE#         228
+  C:0255H         LINE#         229
+  C:0263H         LINE#         230
+  C:0263H         LINE#         234
+  C:02B5H         LINE#         237
+  C:02B5H         LINE#         238
+  C:02BBH         LINE#         239
+  C:02BDH         LINE#         241
+  C:02BDH         LINE#         249
+  C:02C3H         LINE#         250
+  C:02C7H         LINE#         251
+  C:02CBH         LINE#         252
+  C:02D1H         LINE#         253
+  C:02DFH         LINE#         254
+  C:02E3H         LINE#         256
+  C:02EEH         LINE#         257
+  C:02EEH         LINE#         258
+  C:0309H         LINE#         259
+  C:030CH         LINE#         262
+  C:0314H         LINE#         263
+  C:0319H         LINE#         264
+  C:0319H         LINE#         268
+  C:031EH         LINE#         269
   -------         ENDPROC       _TGT_WRITE_FLASH
   -------         PROC          TGT_SW_RESET
-  C:0858H         LINE#         242
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 14
-
-
-  C:0858H         LINE#         243
-  C:0858H         LINE#         248
-  C:085DH         LINE#         251
-  C:0862H         LINE#         252
+  C:093CH         LINE#         283
+  C:093CH         LINE#         284
+  C:093CH         LINE#         289
+  C:0941H         LINE#         292
+  C:0946H         LINE#         293
   -------         ENDPROC       TGT_SW_RESET
   -------         PROC          SMBUS0_ISR
   -------         DO            
@@ -897,150 +940,155 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:0016H         SYMBOL        sent_byte_counter
   D:0017H         SYMBOL        rec_byte_counter
   -------         ENDDO         
-  C:022CH         LINE#         270
-  C:0234H         LINE#         272
-  C:0236H         LINE#         278
-  C:023CH         LINE#         279
-  C:023CH         LINE#         281
-  C:024CH         LINE#         282
-  C:024CH         LINE#         284
-  C:024CH         LINE#         285
-  C:0254H         LINE#         286
-  C:0256H         LINE#         287
-  C:0259H         LINE#         288
-  C:025CH         LINE#         289
-  C:025EH         LINE#         292
-  C:025EH         LINE#         293
-  C:0261H         LINE#         294
-  C:0261H         LINE#         295
-  C:0264H         LINE#         296
-  C:0264H         LINE#         297
-  C:026BH         LINE#         298
-  C:026BH         LINE#         300
-  C:0279H         LINE#         301
-  C:027BH         LINE#         302
-  C:027DH         LINE#         304
-  C:027DH         LINE#         305
-  C:027FH         LINE#         306
-  C:0281H         LINE#         307
-  C:0281H         LINE#         308
-  C:0283H         LINE#         309
-  C:0283H         LINE#         313
-  C:0283H         LINE#         315
-  C:0283H         LINE#         316
-  C:0285H         LINE#         317
-  C:0287H         LINE#         318
-  C:028FH         LINE#         319
-  C:028FH         LINE#         320
-  C:0291H         LINE#         323
-  C:0291H         LINE#         324
-  C:029AH         LINE#         325
-  C:029AH         LINE#         326
-  C:02A6H         LINE#         328
-  C:02A8H         LINE#         329
-  C:02AAH         LINE#         330
-  C:02ACH         LINE#         332
-  C:02ACH         LINE#         333
-  C:02B8H         LINE#         335
-  C:02BAH         LINE#         336
-  C:02BCH         LINE#         339
-  C:02BEH         LINE#         340
-  C:02BEH         LINE#         341
-  C:02C0H         LINE#         343
-  C:02C0H         LINE#         344
-  C:02C2H         LINE#         346
-  C:02C4H         LINE#         348
-  C:02C4H         LINE#         349
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 15
+  C:031FH         LINE#         310
+  C:0327H         LINE#         312
+  C:0329H         LINE#         318
+  C:032FH         LINE#         319
+  C:032FH         LINE#         321
+  C:033FH         LINE#         322
+  C:033FH         LINE#         324
+  C:033FH         LINE#         325
+  C:0347H         LINE#         326
+  C:0349H         LINE#         327
+  C:034CH         LINE#         328
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 15
 
 
-  C:02C4H         LINE#         351
-  C:02C4H         LINE#         353
-  C:02C6H         LINE#         354
-  C:02C6H         LINE#         356
-  C:02C9H         LINE#         357
-  C:02C9H         LINE#         358
-  C:02CCH         LINE#         359
-  C:02CFH         LINE#         360
-  C:02D1H         LINE#         361
-  C:02D3H         LINE#         362
-  C:02D5H         LINE#         364
-  C:02D7H         LINE#         366
-  C:02D9H         LINE#         368
-  C:02E1H         LINE#         369
-  C:02E1H         LINE#         371
-  C:02E3H         LINE#         372
+  C:034FH         LINE#         329
+  C:0351H         LINE#         332
+  C:0351H         LINE#         333
+  C:0354H         LINE#         334
+  C:0354H         LINE#         335
+  C:0357H         LINE#         336
+  C:0357H         LINE#         337
+  C:035EH         LINE#         338
+  C:035EH         LINE#         340
+  C:036CH         LINE#         341
+  C:036EH         LINE#         342
+  C:0370H         LINE#         344
+  C:0370H         LINE#         345
+  C:0372H         LINE#         346
+  C:0374H         LINE#         347
+  C:0374H         LINE#         348
+  C:0376H         LINE#         349
+  C:0376H         LINE#         353
+  C:0376H         LINE#         355
+  C:0376H         LINE#         356
+  C:0378H         LINE#         357
+  C:037AH         LINE#         359
+  C:0382H         LINE#         360
+  C:0382H         LINE#         361
+  C:0384H         LINE#         364
+  C:0384H         LINE#         365
+  C:038DH         LINE#         366
+  C:038DH         LINE#         367
+  C:0399H         LINE#         369
+  C:039BH         LINE#         370
+  C:039DH         LINE#         371
+  C:039FH         LINE#         373
+  C:039FH         LINE#         374
+  C:03ABH         LINE#         376
+  C:03ADH         LINE#         377
+  C:03AFH         LINE#         380
+  C:03B1H         LINE#         381
+  C:03B1H         LINE#         382
+  C:03B3H         LINE#         384
+  C:03B3H         LINE#         385
+  C:03B5H         LINE#         387
+  C:03B7H         LINE#         389
+  C:03B7H         LINE#         390
+  C:03B7H         LINE#         392
+  C:03B7H         LINE#         394
+  C:03B9H         LINE#         395
+  C:03B9H         LINE#         397
+  C:03BCH         LINE#         398
+  C:03BCH         LINE#         399
+  C:03BFH         LINE#         400
+  C:03C2H         LINE#         401
+  C:03C4H         LINE#         402
+  C:03C6H         LINE#         403
+  C:03C8H         LINE#         405
+  C:03CAH         LINE#         407
+  C:03CCH         LINE#         409
+  C:03D4H         LINE#         410
+  C:03D4H         LINE#         412
+  C:03D6H         LINE#         413
   -------         ENDPROC       SMBUS0_ISR
+  -------         PROC          L?0043
+  -------         ENDPROC       L?0043
   -------         PROC          _SMB_WRITE
   D:0007H         SYMBOL        nbytes
-  C:0876H         LINE#         388
-  C:0876H         LINE#         389
-  C:0876H         LINE#         390
-  C:0879H         LINE#         391
-  C:087BH         LINE#         392
-  C:087DH         LINE#         393
-  C:087FH         LINE#         394
-  C:0881H         LINE#         395
+  C:094EH         LINE#         429
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 16
+
+
+  C:094EH         LINE#         430
+  C:094EH         LINE#         431
+  C:0951H         LINE#         432
+  C:0953H         LINE#         433
+  C:0955H         LINE#         434
+  C:0957H         LINE#         435
+  C:0959H         LINE#         436
   -------         ENDPROC       _SMB_WRITE
   -------         PROC          _SMB_READ
   D:0007H         SYMBOL        nbytes
-  C:0867H         LINE#         412
-  C:0867H         LINE#         413
-  C:0867H         LINE#         414
-  C:086AH         LINE#         415
-  C:086CH         LINE#         416
-  C:086EH         LINE#         417
-  C:0870H         LINE#         419
-  C:0872H         LINE#         421
-  C:0875H         LINE#         422
+  C:095AH         LINE#         453
+  C:095AH         LINE#         454
+  C:095AH         LINE#         455
+  C:095DH         LINE#         456
+  C:095FH         LINE#         457
+  C:0961H         LINE#         458
+  C:0963H         LINE#         460
+  C:0965H         LINE#         462
+  C:0968H         LINE#         463
   -------         ENDPROC       _SMB_READ
   -------         ENDMOD        F39X_SMB
 
   -------         MODULE        ?C?CLDPTR
-  C:0143H         PUBLIC        ?C?CLDPTR
+  C:016CH         PUBLIC        ?C?CLDPTR
   -------         ENDMOD        ?C?CLDPTR
 
   -------         MODULE        ?C?CLDOPTR
-  C:015CH         PUBLIC        ?C?CLDOPTR
+  C:0185H         PUBLIC        ?C?CLDOPTR
   -------         ENDMOD        ?C?CLDOPTR
 
   -------         MODULE        ?C?CSTOPTR
-  C:0189H         PUBLIC        ?C?CSTOPTR
+  C:01B2H         PUBLIC        ?C?CSTOPTR
   -------         ENDMOD        ?C?CSTOPTR
 
   -------         MODULE        ?C?ISTPTR
-  C:01ABH         PUBLIC        ?C?ISTPTR
+  C:01D4H         PUBLIC        ?C?ISTPTR
   -------         ENDMOD        ?C?ISTPTR
 
   -------         MODULE        ?C?ULCMP
-  C:01CAH         PUBLIC        ?C?ULCMP
+  C:01F3H         PUBLIC        ?C?ULCMP
   -------         ENDMOD        ?C?ULCMP
 
   -------         MODULE        ?C?ULSHR
-  C:01DBH         PUBLIC        ?C?ULSHR
+  C:0204H         PUBLIC        ?C?ULSHR
   -------         ENDMOD        ?C?ULSHR
-BL51 BANKED LINKER/LOCATER V6.22            03/28/2013  16:25:35  PAGE 16
-
-
 
   -------         MODULE        ?C?LSTPTR
-  C:01EEH         PUBLIC        ?C?LSTPTR
+  C:0217H         PUBLIC        ?C?LSTPTR
   -------         ENDMOD        ?C?LSTPTR
 
   -------         MODULE        ?C?LSTIDATA
-  C:0208H         PUBLIC        ?C?LSTIDATA
+  C:0231H         PUBLIC        ?C?LSTIDATA
   -------         ENDMOD        ?C?LSTIDATA
 
   -------         MODULE        ?C?LSTXDATA
-  C:0214H         PUBLIC        ?C?LSTXDATA
+  C:023DH         PUBLIC        ?C?LSTXDATA
   -------         ENDMOD        ?C?LSTXDATA
 
   -------         MODULE        ?C?LSTPDATA
-  C:0220H         PUBLIC        ?C?LSTPDATA
+  C:0249H         PUBLIC        ?C?LSTPDATA
   -------         ENDMOD        ?C?LSTPDATA
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SRC_DISP_TGT_INFO?F39X_UART
+
+BL51 BANKED LINKER/LOCATER V6.22            03/29/2013  19:39:45  PAGE 17
+
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_VALIDATE_TGT_SRC_MATCH?F39X_VALIDATION
@@ -1048,5 +1096,5 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?TIMER3_INIT?F39X_SMB
 
-Program Size: data=67.3 xdata=671 code=2196
+Program Size: data=67.3 xdata=671 code=2420
 LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)

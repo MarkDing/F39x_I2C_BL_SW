@@ -48,7 +48,7 @@
 // Function Prototypes
 //-----------------------------------------------------------------------------
 void SMBus_Init (void);
-
+U8 TGT_Enter_BL_Mode(void);
 U8 TGT_Erase_Page (U32 addr);
 U8 TGT_Write_Flash (U8 *buf, U32 addr, U16 numbytes);
 void TGT_SW_Reset (void);

@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                                    03/28/2013  17:38:34  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                                    03/29/2013  18:12:20  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -31,9 +31,9 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_S
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0005H     UNIT         _DATA_GROUP_
-            DATA    000DH     0003H     UNIT         ?DT?F39X_COMM_SMB0
-                    0010H     0010H                  *** GAP ***
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            DATA    000CH     0003H     UNIT         ?DT?F39X_COMM_SMB0
+                    000FH     0011H                  *** GAP ***
             BIT     0020H.0   0000H.1   UNIT         ?BI?F39X_COMM_SMB0
                     0020H.1   0000H.7                *** GAP ***
             DATA    0021H     0052H     UNIT         ?DT?FXXX_TARGETBL_COMMANDS
@@ -49,42 +49,47 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_S
             CODE    000DH     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_OK?FXXX_TARGETBL_MAIN
                     0011H     0002H                  *** GAP ***
             CODE    0013H     0002H     ABSOLUTE     
-            CODE    0015H     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_PARAMETER_INVALID?FXXX_TARGETBL_MAIN
+            CODE    0015H     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_BL_MODE?FXXX_TARGETBL_MAIN
                     0019H     0002H                  *** GAP ***
             CODE    001BH     0002H     ABSOLUTE     
-            CODE    001DH     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_UNSUPPORTED_CMD?FXXX_TARGETBL_MAIN
+            CODE    001DH     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_PARAMETER_INVALID?FXXX_TARGETBL_MAIN
                     0021H     0002H                  *** GAP ***
             CODE    0023H     0002H     ABSOLUTE     
-            CODE    0025H     0004H     INBLOCK      ?PR?SET_CKCON_008H?F39X_TARGETBL_DEVSPECIFIC
+            CODE    0025H     0004H     INBLOCK      ?PR?SET_TX_TGT_RSP_UNSUPPORTED_CMD?FXXX_TARGETBL_MAIN
                     0029H     0002H                  *** GAP ***
             CODE    002BH     0002H     ABSOLUTE     
-                    002DH     0006H                  *** GAP ***
+            CODE    002DH     0004H     INBLOCK      ?PR?DISABLE_WATCHDOG?F39X_TARGETBL_DEVSPECIFIC
+                    0031H     0002H                  *** GAP ***
             CODE    0033H     0002H     ABSOLUTE     
-                    0035H     0006H                  *** GAP ***
+            CODE    0035H     0004H     INBLOCK      ?PR?SET_VDM0CN_080H?F39X_TARGETBL_DEVSPECIFIC
+                    0039H     0002H                  *** GAP ***
             CODE    003BH     0002H     ABSOLUTE     
             CODE    003DH     000CH     INBLOCK      ?PR?TGT_PRE_FLASH?FXXX_TARGETBL_COMMANDS
                     0049H     0002H                  *** GAP ***
             CODE    004BH     0002H     ABSOLUTE     
-                    004DH     0006H                  *** GAP ***
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 2
+
+
+            CODE    004DH     0004H     INBLOCK      ?PR?SET_RSTSRC_002H?F39X_TARGETBL_DEVSPECIFIC
+                    0051H     0002H                  *** GAP ***
             CODE    0053H     0002H     ABSOLUTE     
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 2
-
-
-                    0055H     0006H                  *** GAP ***
+            CODE    0055H     0004H     INBLOCK      ?PR?SET_SMB0CF_095H?F39X_TARGETBL_DEVSPECIFIC
+                    0059H     0002H                  *** GAP ***
             CODE    005BH     0002H     ABSOLUTE     
-                    005DH     0006H                  *** GAP ***
+            CODE    005DH     0004H     INBLOCK      ?PR?SET_CKCON_008H?F39X_TARGETBL_DEVSPECIFIC
+                    0061H     0002H                  *** GAP ***
             CODE    0063H     0002H     ABSOLUTE     
             CODE    0065H     000AH     INBLOCK      ?PR?_SMB0_OP?F39X_COMM_SMB0
-                    006FH     0004H                  *** GAP ***
+            CODE    006FH     0004H     INBLOCK      ?PR?SET_TMOD_020H?F39X_TARGETBL_DEVSPECIFIC
             CODE    0073H     0002H     ABSOLUTE     
             CODE    0075H     006BH     INBLOCK      ?PR?SMBUS_HANDLER?F39X_COMM_SMB0
-            CODE    00E0H     005DH     INBLOCK      ?PR?TGT_WRITE_FLASH?FXXX_TARGETBL_COMMANDS
-            CODE    013DH     003FH     INBLOCK      ?PR?MAIN?FXXX_TARGETBL_MAIN
-            CODE    017CH     0029H     INBLOCK      ?PR?TGT_ERASE_PAGE?FXXX_TARGETBL_COMMANDS
-            CODE    01A5H     001CH     INBLOCK      ?PR?TGT_READ_FLASH?FXXX_TARGETBL_COMMANDS
-            CODE    01C1H     001CH     INBLOCK      ?PR?INIT_DEVICE?F39X_TARGETBL_DEVSPECIFIC
-            CODE    01DDH     0016H     INBLOCK      ?PR?_FLASH_MODIFY?F39X_FLASH
-            CODE    01F3H     0009H     INBLOCK      ?PR?CONFIGURE_TIMER1?F39X_TARGETBL_DEVSPECIFIC
+            CODE    00E0H     0051H     INBLOCK      ?PR?MAIN?FXXX_TARGETBL_MAIN
+            CODE    0131H     0030H     INBLOCK      ?PR?TGT_WRITE_FLASH?FXXX_TARGETBL_COMMANDS
+            CODE    0161H     001CH     INBLOCK      ?PR?TGT_READ_FLASH?FXXX_TARGETBL_COMMANDS
+            CODE    017DH     0017H     INBLOCK      ?PR?INIT_DEVICE?F39X_TARGETBL_DEVSPECIFIC
+            CODE    0194H     0016H     INBLOCK      ?PR?_FLASH_MODIFY?F39X_FLASH
+            CODE    01AAH     0011H     INBLOCK      ?PR?TGT_ERASE_PAGE?FXXX_TARGETBL_COMMANDS
+            CODE    01BBH     0009H     INBLOCK      ?PR?CONFIGURE_TIMER1?F39X_TARGETBL_DEVSPECIFIC
 
 
 
@@ -104,40 +109,37 @@ SEGMENT                                            DATA_GROUP
   +--> ?PR?SET_TX_TGT_RSP_OK?FXXX_TARGETBL_MAIN
   +--> ?PR?TGT_ERASE_PAGE?FXXX_TARGETBL_COMM...
   +--> ?PR?TGT_WRITE_FLASH?FXXX_TARGETBL_COM...
-  +--> ?PR?TGT_READ_FLASH?FXXX_TARGETBL_COMM...
+  +--> ?PR?SET_TX_TGT_RSP_BL_MODE?FXXX_TARGE...
   +--> ?PR?SET_TX_TGT_RSP_UNSUPPORTED_CMD?FX...
 
 ?PR?INIT_DEVICE?F39X_TARGETBL_DEVSPEC...         -----    -----
+  +--> ?PR?DISABLE_WATCHDOG?F39X_TARGETBL_DE...
+  +--> ?PR?SET_VDM0CN_080H?F39X_TARGETBL_DEV...
+  +--> ?PR?SET_RSTSRC_002H?F39X_TARGETBL_DEV...
+  +--> ?PR?SET_SMB0CF_095H?F39X_TARGETBL_DEV...
   +--> ?PR?SET_CKCON_008H?F39X_TARGETBL_DEVS...
+  +--> ?PR?SET_TMOD_020H?F39X_TARGETBL_DEVSP...
   +--> ?PR?CONFIGURE_TIMER1?F39X_TARGETBL_DE...
 
-?PR?_SMB0_OP?F39X_COMM_SMB0                      000CH    0001H
+?PR?_SMB0_OP?F39X_COMM_SMB0                      0008H    0001H
   +--> ?PR?SMBUS_HANDLER?F39X_COMM_SMB0
 
-?PR?TGT_ERASE_PAGE?FXXX_TARGETBL_COMM...         0008H    0001H
-  +--> ?PR?SET_TX_TGT_RSP_PARAMETER_INVALID?...
+?PR?TGT_ERASE_PAGE?FXXX_TARGETBL_COMM...         -----    -----
   +--> ?PR?TGT_PRE_FLASH?FXXX_TARGETBL_COMMANDS
   +--> ?PR?_FLASH_MODIFY?F39X_FLASH
   +--> ?PR?SET_TX_TGT_RSP_OK?FXXX_TARGETBL_MAIN
-  +--> ?PR?_SMB0_OP?F39X_COMM_SMB0
 
 ?PR?TGT_WRITE_FLASH?FXXX_TARGETBL_COM...         0008H    0004H
-  +--> ?PR?SET_TX_TGT_RSP_PARAMETER_INVALID?...
   +--> ?PR?TGT_PRE_FLASH?FXXX_TARGETBL_COMMANDS
   +--> ?PR?_FLASH_MODIFY?F39X_FLASH
   +--> ?PR?SET_TX_TGT_RSP_OK?FXXX_TARGETBL_MAIN
-  +--> ?PR?_SMB0_OP?F39X_COMM_SMB0
 
-?PR?TGT_READ_FLASH?FXXX_TARGETBL_COMM...         -----    -----
-  +--> ?PR?TGT_PRE_FLASH?FXXX_TARGETBL_COMMANDS
-  +--> ?PR?_SMB0_OP?F39X_COMM_SMB0
+
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 3
 
 
 
 SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL_SW\TargetBootloader\F39x_I2C_TargetBL (?C_STARTUP
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 3
-
-
 >> )
 
   VALUE           TYPE          NAME
@@ -193,19 +195,19 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   -------         MODULE        FXXX_TARGETBL_COMMANDS
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:008FH         PUBLIC        PSCTL
-  C:01A5H         PUBLIC        TGT_Read_Flash
-  C:017CH         PUBLIC        TGT_Erase_Page
+  C:0161H         PUBLIC        TGT_Read_Flash
+  C:01AAH         PUBLIC        TGT_Erase_Page
   D:0021H         PUBLIC        Flash_Key0
   D:0022H         PUBLIC        Flash_Key1
-  C:00E0H         PUBLIC        TGT_Write_Flash
+  C:0131H         PUBLIC        TGT_Write_Flash
   D:0023H         PUBLIC        Rx_Buf
   C:003DH         PUBLIC        TGT_Pre_Flash
   D:004BH         PUBLIC        Tx_Buf
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 4
+
+
   -------         PROC          TGT_PRE_FLASH
   C:003DH         LINE#         75
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 4
-
-
   C:003DH         LINE#         76
   C:003DH         LINE#         78
   C:0040H         LINE#         79
@@ -215,22 +217,15 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   -------         ENDPROC       TGT_PRE_FLASH
   -------         PROC          TGT_ERASE_PAGE
   -------         DO            
-  D:0008H         SYMBOL        AddrMSB
+  D:0007H         SYMBOL        AddrMSB
   -------         ENDDO         
-  C:017CH         LINE#         93
-  C:017CH         LINE#         94
-  C:017CH         LINE#         106
-  C:017FH         LINE#         108
-  C:018DH         LINE#         109
-  C:018DH         LINE#         111
-  C:018FH         LINE#         112
-  C:0191H         LINE#         114
-  C:0191H         LINE#         116
-  C:0193H         LINE#         118
-  C:0196H         LINE#         119
-  C:019FH         LINE#         120
-  C:01A1H         LINE#         122
-  C:01A1H         LINE#         124
+  C:01AAH         LINE#         93
+  C:01AAH         LINE#         94
+  C:01AAH         LINE#         106
+  C:01ACH         LINE#         110
+  C:01AEH         LINE#         112
+  C:01B1H         LINE#         113
+  C:01B9H         LINE#         114
   -------         ENDPROC       TGT_ERASE_PAGE
   -------         PROC          TGT_WRITE_FLASH
   -------         DO            
@@ -238,28 +233,21 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   D:000AH         SYMBOL        numbytes
   D:000BH         SYMBOL        Rx_Buf_ptr
   -------         ENDDO         
-  C:00E0H         LINE#         136
-  C:00E0H         LINE#         137
-  C:00E0H         LINE#         157
-  C:00E3H         LINE#         159
-  C:00E6H         LINE#         160
-  C:00E9H         LINE#         161
-  C:00ECH         LINE#         165
-  C:0111H         LINE#         166
-  C:0111H         LINE#         168
-  C:0113H         LINE#         169
-  C:0115H         LINE#         171
-  C:0115H         LINE#         173
-  C:0117H         LINE#         175
-  C:011EH         LINE#         176
-  C:011EH         LINE#         177
-  C:0121H         LINE#         178
-  C:012BH         LINE#         179
-  C:012DH         LINE#         180
-  C:0135H         LINE#         181
-  C:0137H         LINE#         182
-  C:0139H         LINE#         183
-  C:0139H         LINE#         185
+  C:0131H         LINE#         126
+  C:0131H         LINE#         127
+  C:0131H         LINE#         147
+  C:0134H         LINE#         149
+  C:0137H         LINE#         150
+  C:013AH         LINE#         151
+  C:013DH         LINE#         155
+  C:013FH         LINE#         157
+  C:0146H         LINE#         158
+  C:0146H         LINE#         159
+  C:0149H         LINE#         160
+  C:0153H         LINE#         161
+  C:0155H         LINE#         162
+  C:015DH         LINE#         163
+  C:015FH         LINE#         164
   -------         ENDPROC       TGT_WRITE_FLASH
   -------         PROC          TGT_READ_FLASH
   -------         DO            
@@ -267,88 +255,103 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   D:0005H         SYMBOL        Tx_Buf_ptr
   D:0004H         SYMBOL        numbytes
   -------         ENDDO         
-  C:01A5H         LINE#         197
-  C:01A5H         LINE#         198
-  C:01A5H         LINE#         215
-  C:01A7H         LINE#         216
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 5
-
-
-  C:01A9H         LINE#         219
-  C:01ABH         LINE#         221
-  C:01B4H         LINE#         224
-  C:01B4H         LINE#         225
-  C:01B9H         LINE#         226
-  C:01BAH         LINE#         227
-  C:01BBH         LINE#         228
-  C:01BDH         LINE#         232
+  C:0161H         LINE#         176
+  C:0161H         LINE#         177
+  C:0161H         LINE#         194
+  C:0163H         LINE#         195
+  C:0165H         LINE#         198
+  C:0167H         LINE#         200
+  C:0170H         LINE#         203
+  C:0170H         LINE#         204
+  C:0175H         LINE#         205
+  C:0176H         LINE#         206
+  C:0177H         LINE#         207
+  C:0179H         LINE#         211
   -------         ENDPROC       TGT_READ_FLASH
   -------         ENDMOD        FXXX_TARGETBL_COMMANDS
 
   -------         MODULE        FXXX_TARGETBL_MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 5
+
+
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:013DH         PUBLIC        main
+  C:00E0H         PUBLIC        main
   B:0090H.0       PUBLIC        BL_Override_Pin
-  C:0015H         PUBLIC        Set_TX_TGT_RSP_PARAMETER_INVALID
+  C:001DH         PUBLIC        Set_TX_TGT_RSP_PARAMETER_INVALID
+  C:0015H         PUBLIC        Set_TX_TGT_RSP_BL_MODE
   C:000DH         PUBLIC        Set_TX_TGT_RSP_OK
   D:00EFH         PUBLIC        RSTSRC
-  C:001DH         PUBLIC        Set_TX_TGT_RSP_UNSUPPORTED_CMD
+  C:0025H         PUBLIC        Set_TX_TGT_RSP_UNSUPPORTED_CMD
   -------         PROC          MAIN
-  C:013DH         LINE#         53
-  C:013DH         LINE#         54
-  C:013DH         LINE#         58
-  C:0140H         LINE#         59
-  C:0140H         LINE#         61
-  C:0142H         LINE#         62
-  C:0142H         LINE#         67
-  C:0144H         LINE#         73
-  C:0144H         LINE#         74
-  C:0144H         LINE#         76
-  C:0148H         LINE#         78
-  C:0158H         LINE#         79
-  C:0158H         LINE#         80
-  C:0158H         LINE#         81
-  C:015AH         LINE#         82
-  C:015EH         LINE#         83
-  C:0161H         LINE#         84
-  C:0163H         LINE#         86
-  C:0163H         LINE#         87
-  C:0165H         LINE#         88
-  C:0167H         LINE#         90
-  C:0167H         LINE#         91
-  C:0169H         LINE#         92
-  C:016BH         LINE#         94
-  C:016BH         LINE#         95
-  C:016DH         LINE#         96
-  C:016FH         LINE#         98
-  C:016FH         LINE#         99
-  C:0171H         LINE#         100
-  C:0175H         LINE#         101
-  C:0175H         LINE#         102
-  C:0175H         LINE#         105
-  C:0178H         LINE#         106
-  C:017AH         LINE#         107
+  -------         DO            
+  D:0007H         SYMBOL        device_mode
+  -------         ENDDO         
+  C:00E0H         LINE#         61
+  C:00E0H         LINE#         62
+  C:00E0H         LINE#         63
+  C:00E2H         LINE#         67
+  C:00EFH         LINE#         68
+  C:00EFH         LINE#         69
+  C:00F1H         LINE#         70
+  C:00F1H         LINE#         72
+  C:00F4H         LINE#         73
+  C:00F4H         LINE#         75
+  C:00F6H         LINE#         76
+  C:00F6H         LINE#         81
+  C:00F8H         LINE#         87
+  C:00F8H         LINE#         88
+  C:00F8H         LINE#         90
+  C:00FCH         LINE#         92
+  C:010DH         LINE#         93
+  C:010DH         LINE#         94
+  C:010DH         LINE#         95
+  C:010FH         LINE#         96
+  C:0113H         LINE#         97
+  C:0116H         LINE#         98
+  C:0118H         LINE#         100
+  C:0118H         LINE#         101
+  C:011AH         LINE#         102
+  C:011CH         LINE#         104
+  C:011CH         LINE#         105
+  C:011EH         LINE#         106
+  C:0120H         LINE#         107
+  C:0120H         LINE#         108
+  C:0122H         LINE#         109
+  C:0124H         LINE#         110
+  C:0124H         LINE#         111
+  C:0126H         LINE#         112
+  C:0126H         LINE#         113
+  C:0126H         LINE#         116
+  C:012AH         LINE#         118
+  C:012DH         LINE#         119
+  C:012FH         LINE#         120
   -------         ENDPROC       MAIN
   -------         PROC          SET_TX_TGT_RSP_OK
-  C:000DH         LINE#         119
-  C:000DH         LINE#         120
-  C:000DH         LINE#         121
-  C:0010H         LINE#         122
+  C:000DH         LINE#         132
+  C:000DH         LINE#         133
+  C:000DH         LINE#         134
+  C:0010H         LINE#         135
   -------         ENDPROC       SET_TX_TGT_RSP_OK
+  -------         PROC          SET_TX_TGT_RSP_BL_MODE
+  C:0015H         LINE#         146
+  C:0015H         LINE#         147
+  C:0015H         LINE#         148
+  C:0018H         LINE#         149
+  -------         ENDPROC       SET_TX_TGT_RSP_BL_MODE
   -------         PROC          SET_TX_TGT_RSP_PARAMETER_INVALID
-  C:0015H         LINE#         133
-  C:0015H         LINE#         134
-  C:0015H         LINE#         135
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 6
 
 
-  C:0018H         LINE#         136
+  C:001DH         LINE#         161
+  C:001DH         LINE#         162
+  C:001DH         LINE#         163
+  C:0020H         LINE#         164
   -------         ENDPROC       SET_TX_TGT_RSP_PARAMETER_INVALID
   -------         PROC          SET_TX_TGT_RSP_UNSUPPORTED_CMD
-  C:001DH         LINE#         147
-  C:001DH         LINE#         148
-  C:001DH         LINE#         149
-  C:0020H         LINE#         150
+  C:0025H         LINE#         175
+  C:0025H         LINE#         176
+  C:0025H         LINE#         177
+  C:0028H         LINE#         178
   -------         ENDPROC       SET_TX_TGT_RSP_UNSUPPORTED_CMD
   -------         ENDMOD        FXXX_TARGETBL_MAIN
 
@@ -356,71 +359,106 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:008FH         PUBLIC        PSCTL
   D:00FFH         PUBLIC        VDM0CN
-  C:01DDH         PUBLIC        _FLASH_Modify
+  C:0194H         PUBLIC        _FLASH_Modify
   D:00EFH         PUBLIC        RSTSRC
   D:00B7H         PUBLIC        FLKEY
   -------         PROC          _FLASH_MODIFY
   D:0082H         SYMBOL        addr
   D:0005H         SYMBOL        byte
-  C:01DDH         LINE#         79
-  C:01E1H         LINE#         80
-  C:01E1H         LINE#         88
-  C:01E4H         LINE#         89
-  C:01E7H         LINE#         91
-  C:01EAH         LINE#         92
-  C:01EDH         LINE#         93
-  C:01EFH         LINE#         94
-  C:01F2H         LINE#         95
+  C:0194H         LINE#         79
+  C:0198H         LINE#         80
+  C:0198H         LINE#         91
+  C:019BH         LINE#         92
+  C:019EH         LINE#         94
+  C:01A1H         LINE#         95
+  C:01A4H         LINE#         96
+  C:01A6H         LINE#         97
+  C:01A9H         LINE#         98
   -------         ENDPROC       _FLASH_MODIFY
   -------         ENDMOD        F39X_FLASH
 
   -------         MODULE        F39X_TARGETBL_DEVSPECIFIC
   C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0055H         PUBLIC        Set_SMB0CF_095h
   D:00D9H         PUBLIC        PCA0MD
+  C:0035H         PUBLIC        Set_VDM0CN_080h
   D:00E1H         PUBLIC        XBR0
   D:00C1H         PUBLIC        SMB0CF
   D:00E2H         PUBLIC        XBR1
+  C:006FH         PUBLIC        Set_TMOD_020h
   D:00FFH         PUBLIC        VDM0CN
   D:0089H         PUBLIC        TMOD
   D:00D4H         PUBLIC        P0SKIP
-  C:01F3H         PUBLIC        Configure_Timer1
-  C:01C1H         PUBLIC        Init_Device
+  C:01BBH         PUBLIC        Configure_Timer1
+  C:017DH         PUBLIC        Init_Device
+  C:004DH         PUBLIC        Set_RSTSRC_002h
   D:008DH         PUBLIC        TH1
+  C:002DH         PUBLIC        Disable_Watchdog
   D:008BH         PUBLIC        TL1
   B:0088H.6       PUBLIC        TR1
-  C:0025H         PUBLIC        Set_CKCON_008h
+  C:005DH         PUBLIC        Set_CKCON_008h
   D:00EFH         PUBLIC        RSTSRC
   D:008EH         PUBLIC        CKCON
+  -------         PROC          DISABLE_WATCHDOG
+  C:002DH         LINE#         65
+  C:002DH         LINE#         66
+  C:002DH         LINE#         67
+  C:0030H         LINE#         68
+  -------         ENDPROC       DISABLE_WATCHDOG
+  -------         PROC          SET_VDM0CN_080H
+  C:0035H         LINE#         69
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 7
+
+
+  C:0035H         LINE#         70
+  C:0035H         LINE#         71
+  C:0038H         LINE#         72
+  -------         ENDPROC       SET_VDM0CN_080H
+  -------         PROC          SET_RSTSRC_002H
+  C:004DH         LINE#         74
+  C:004DH         LINE#         75
+  C:004DH         LINE#         76
+  C:0050H         LINE#         77
+  -------         ENDPROC       SET_RSTSRC_002H
+  -------         PROC          SET_SMB0CF_095H
+  C:0055H         LINE#         79
+  C:0055H         LINE#         80
+  C:0055H         LINE#         81
+  C:0058H         LINE#         88
+  -------         ENDPROC       SET_SMB0CF_095H
   -------         PROC          SET_CKCON_008H
-  C:0025H         LINE#         71
-  C:0025H         LINE#         72
-  C:0025H         LINE#         73
-  C:0028H         LINE#         74
+  C:005DH         LINE#         92
+  C:005DH         LINE#         93
+  C:005DH         LINE#         94
+  C:0060H         LINE#         95
   -------         ENDPROC       SET_CKCON_008H
+  -------         PROC          SET_TMOD_020H
+  C:006FH         LINE#         105
+  C:006FH         LINE#         106
+  C:006FH         LINE#         107
+  C:0072H         LINE#         108
+  -------         ENDPROC       SET_TMOD_020H
   -------         PROC          CONFIGURE_TIMER1
-  C:01F3H         LINE#         85
-  C:01F3H         LINE#         86
-  C:01F3H         LINE#         87
-  C:01F6H         LINE#         88
-  C:01F9H         LINE#         89
-  C:01FBH         LINE#         90
+  C:01BBH         LINE#         111
+  C:01BBH         LINE#         112
+  C:01BBH         LINE#         113
+  C:01BEH         LINE#         114
+  C:01C1H         LINE#         115
+  C:01C3H         LINE#         116
   -------         ENDPROC       CONFIGURE_TIMER1
   -------         PROC          INIT_DEVICE
-  C:01C1H         LINE#         106
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 7
-
-
-  C:01C1H         LINE#         107
-  C:01C1H         LINE#         108
-  C:01C4H         LINE#         113
-  C:01C7H         LINE#         114
-  C:01CAH         LINE#         117
-  C:01CDH         LINE#         118
-  C:01D0H         LINE#         119
-  C:01D3H         LINE#         122
-  C:01D6H         LINE#         135
-  C:01D8H         LINE#         140
-  C:01DBH         LINE#         142
+  C:017DH         LINE#         132
+  C:017DH         LINE#         133
+  C:017DH         LINE#         134
+  C:017FH         LINE#         139
+  C:0181H         LINE#         140
+  C:0183H         LINE#         143
+  C:0186H         LINE#         144
+  C:0189H         LINE#         145
+  C:018CH         LINE#         148
+  C:018EH         LINE#         161
+  C:0190H         LINE#         166
+  C:0192H         LINE#         168
   -------         ENDPROC       INIT_DEVICE
   -------         ENDMOD        F39X_TARGETBL_DEVSPECIFIC
 
@@ -428,7 +466,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   C:0000H         SYMBOL        _ICE_DUMMY_
   B:00C0H.2       PUBLIC        ARBLOST
   B:00C0H.0       PUBLIC        SI
-  D:000FH         PUBLIC        SMB_NUM_BYTES
+  D:000EH         PUBLIC        SMB_NUM_BYTES
   D:00C0H         PUBLIC        SMB0CN
   C:0065H         PUBLIC        _SMB0_Op
   B:0020H.0       PUBLIC        SMB_DATA_READY
@@ -437,8 +475,11 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   D:00C2H         PUBLIC        SMB0DAT
   C:0075H         PUBLIC        SMBus_Handler
   B:00C0H.4       PUBLIC        STO
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 8
+
+
   -------         PROC          _SMB0_OP
-  D:000CH         SYMBOL        SMB0_Num_Bytes
+  D:0008H         SYMBOL        SMB0_Num_Bytes
   C:0065H         LINE#         84
   C:0067H         LINE#         85
   C:0067H         LINE#         87
@@ -449,8 +490,8 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   -------         ENDPROC       _SMB0_OP
   -------         PROC          SMBUS_HANDLER
   -------         DO            
-  D:000DH         SYMBOL        Rx_Buf_ptr
-  D:000EH         SYMBOL        Tx_Buf_ptr
+  D:000CH         SYMBOL        Rx_Buf_ptr
+  D:000DH         SYMBOL        Tx_Buf_ptr
   -------         ENDDO         
   C:0075H         LINE#         109
   C:0075H         LINE#         110
@@ -475,9 +516,6 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   C:00ABH         LINE#         138
   C:00ABH         LINE#         139
   C:00ADH         LINE#         141
-BL51 BANKED LINKER/LOCATER V6.22                                                                  03/28/2013  17:38:34  PAGE 8
-
-
   C:00ADH         LINE#         142
   C:00AFH         LINE#         143
   C:00AFH         LINE#         144
@@ -505,6 +543,9 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   C:00D6H         LINE#         187
   C:00D6H         LINE#         188
   C:00D8H         LINE#         189
+BL51 BANKED LINKER/LOCATER V6.22                                                                  03/29/2013  18:12:20  PAGE 9
+
+
   C:00D8H         LINE#         190
   C:00DAH         LINE#         191
   C:00DAH         LINE#         192
@@ -517,5 +558,11 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_
   -------         ENDPROC       SMBUS_HANDLER
   -------         ENDMOD        F39X_COMM_SMB0
 
-Program Size: data=99.1 xdata=0 code=462
-LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TGT_READ_FLASH?FXXX_TARGETBL_COMMANDS
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SET_TX_TGT_RSP_PARAMETER_INVALID?FXXX_TARGETBL_MAIN
+
+Program Size: data=98.1 xdata=0 code=430
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

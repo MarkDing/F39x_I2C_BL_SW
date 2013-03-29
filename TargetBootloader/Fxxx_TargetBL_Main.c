@@ -47,18 +47,32 @@
 //-----------------------------------------------------------------------------
 SBIT(BL_Override_Pin, SFR_P1, 0);
 
+#define APP_MODE        0
+#define BOOTLOADER_MODE 1
+
+// Bit masks for the RSTSRC SFR
+#define PORSF  0x02
+#define FERROR 0x40
+
+
 //=============================================================================
 // Main Routine
 //=============================================================================
 void main (void)
 {
+   U8 device_mode = APP_MODE; 
    //---------------------------------------
    // Check the override pin.
    //---------------------------------------
-   if (BL_Override_Pin)
+   if ((!BL_Override_Pin) || (((RSTSRC & PORSF) == 0) && ((RSTSRC & FERROR) != 0)))
+   {
+      device_mode = BOOTLOADER_MODE;
+   }
+
+   if(device_mode == APP_MODE)
    {
       // If not in BL Override, jump to application
-      START_APPLICATION ();
+      START_APPLICATION();
    }
 
    //-------------------------------------------
@@ -74,7 +88,7 @@ void main (void)
    {
       // Wait until a command is received
       SMB0_Op (6);
-
+  
       switch (Rx_Buf[0])
       {
          case TGT_CMD_RESET_MCU:
@@ -90,17 +104,16 @@ void main (void)
          case TGT_CMD_WRITE_FLASH_BYTES:
             TGT_Write_Flash ();
             break;
-
-         case TGT_CMD_READ_FLASH_BYTES:
-            TGT_Read_Flash ();
-            break;
-
+		 case TGT_CMD_ENTER_BL_MODE:
+             Set_TX_TGT_RSP_BL_MODE();
+			 break;
          default:
             Set_TX_TGT_RSP_UNSUPPORTED_CMD ();
-            SMB0_Op (1);
             break;
       }
 
+      // Send response
+      SMB0_Op (1);
       // Set flash keys to 0
       Flash_Key0 = 0;
       Flash_Key1 = 0;
@@ -120,6 +133,21 @@ void Set_TX_TGT_RSP_OK (void)
 {
    Tx_Buf[0] = TGT_RSP_OK;
 }
+
+//-----------------------------------------------------------------------------
+// Set_TX_TGT_RSP_BL_MODE
+//-----------------------------------------------------------------------------
+//
+// Return Value:  None
+// Parameters:    None
+//
+// Sets TX response code to TGT_RSP_BL_MODE.
+//-----------------------------------------------------------------------------
+void Set_TX_TGT_RSP_BL_MODE (void)
+{
+   Tx_Buf[0] = TGT_RSP_BL_MODE;
+}
+
 
 //-----------------------------------------------------------------------------
 // Set_TX_TGT_RSP_PARAMETER_INVALID
@@ -148,6 +176,7 @@ void Set_TX_TGT_RSP_UNSUPPORTED_CMD (void)
 {
    Tx_Buf[0] = TGT_RSP_UNSUPPORTED_CMD;
 }
+
 
 //-----------------------------------------------------------------------------
 // End Of File
