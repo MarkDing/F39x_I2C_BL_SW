@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -40,20 +40,20 @@
 // Returns a 16-bit CRC of the contents of a buffer.
 //
 //-----------------------------------------------------------------------------
-U16 Get_Buf_CRC (U8 *ptr, U16 numbytes)
+U16 Get_Buf_CRC(U8 *ptr, U16 numbytes)
 {
-   U16 i, CRC;
+    U16 i, CRC;
 
-   CRC = 0x0000;
+    CRC = 0x0000;
 
-   // Process each byte in the buffer into the running CRC
-   for( i = 0; i < numbytes; i++)
-   {
-      CRC = Update_CRC (CRC, *ptr);
-      ptr++;
-   }
+    // Process each byte in the buffer into the running CRC
+    for (i = 0; i < numbytes; i++)
+    {
+        CRC = Update_CRC(CRC, *ptr);
+        ptr++;
+    }
 
-   return CRC;
+    return CRC;
 }
 
 //-----------------------------------------------------------------------------
@@ -67,27 +67,26 @@ U16 Get_Buf_CRC (U8 *ptr, U16 numbytes)
 // updated CRC value; Does not use a CRC Lookup Table.
 //
 //-----------------------------------------------------------------------------
-U16 Update_CRC (U16 crc, U8 newbyte)
+U16 Update_CRC(U16 crc, U8 newbyte)
 {
-   U8 i;                               // loop counter
+    U8 i; // loop counter
 
-   #define POLY 0x8408                 // CRC16-CCITT FCS (X^16+X^12+X^5+1)
+#define POLY 0x8408                 // CRC16-CCITT FCS (X^16+X^12+X^5+1)
+    crc = crc ^ newbyte;
 
-   crc = crc ^ newbyte;
-
-   for (i = 0; i < 8; i++)
-   {
-      if (crc & 0x01)
-      {
-         crc = crc >> 1;
-         crc ^= POLY;
-      }
-      else
-      {
-         crc = crc >> 1;
-      }
-   }
-   return crc;
+    for (i = 0; i < 8; i++)
+    {
+        if (crc & 0x01)
+        {
+            crc = crc >> 1;
+            crc ^= POLY;
+        }
+        else
+        {
+            crc = crc >> 1;
+        }
+    }
+    return crc;
 }
 
 //-----------------------------------------------------------------------------

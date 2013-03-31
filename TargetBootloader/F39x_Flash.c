@@ -26,6 +26,8 @@
 // Command Line:   None
 //
 //
+// Release 1.1 / 31Mar2013 (MarkD)
+//    -F390 SMBUS Revision
 // Release 1.0 / 01SEP2010 (PKC)
 //    -Initial Revision
 //
@@ -36,7 +38,7 @@
 //-----------------------------------------------------------------------------
 #include <compiler_defs.h>
 #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
-                                       // real MCU register definition file
+// real MCU register definition file
 
 #include "Fxxx_Target_Config.h"
 #include "Fxxx_Target_Interface.h"
@@ -46,7 +48,6 @@
 //-----------------------------------------------------------------------------
 // Global CONSTANTS
 //-----------------------------------------------------------------------------
-
 
 
 //-----------------------------------------------------------------------------
@@ -76,25 +77,25 @@
 // This routine erases the FLASH page containing the linear FLASH address is
 // PSCTL == 3.
 //-----------------------------------------------------------------------------
-void FLASH_Modify (U16 addr, U8 byte)
+void FLASH_Modify(U16 addr, U8 byte)
 {
 
-   // *** Device-Specific *** 
-   // ** IMPORTANT ** When modifying flash primitive functions to fit in this 
-   // template, it is important to remove the literal flash key values and use 
-   // the global variables Flash_Key0 and Flash_Key1 instead.  
+    // *** Device-Specific ***
+    // ** IMPORTANT ** When modifying flash primitive functions to fit in this
+    // template, it is important to remove the literal flash key values and use
+    // the global variables Flash_Key0 and Flash_Key1 instead.
 
-//   if((addr > APP_FW_END_ADDR) || (addr < APP_FW_START_ADDR))
-//   {
-//      return 1;
-//   }
-   VDM0CN = 0xA0;                      // Enable VDD monitor and high threshold
-   RSTSRC = 0x02;                      // Enable VDD monitor as a reset source
- 
-   FLKEY  = Flash_Key0;                // Key Sequence 1
-   FLKEY  = Flash_Key1;                // Key Sequence 2
-   *((U8 xdata *) addr) = byte;
-   PSCTL &= ~0x03;                     // PSWE = 0 which disable writes
+    //   if((addr > APP_FW_END_ADDR) || (addr < APP_FW_START_ADDR))
+    //   {
+    //      return 1;
+    //   }
+    VDM0CN = 0xA0; // Enable VDD monitor and high threshold
+    RSTSRC = 0x02; // Enable VDD monitor as a reset source
+
+    FLKEY = Flash_Key0; // Key Sequence 1
+    FLKEY = Flash_Key1; // Key Sequence 2
+    *((U8 xdata *) addr) = byte;
+    PSCTL &= ~0x03; // PSWE = 0 which disable writes
 }
 
 //-----------------------------------------------------------------------------

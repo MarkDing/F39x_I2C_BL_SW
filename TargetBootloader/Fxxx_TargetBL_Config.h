@@ -13,6 +13,8 @@
 // Command Line:   None
 //
 //
+// Release 1.1 / 31Mar2013 (MarkD)
+//    -F390 SMBUS Revision
 // Release 1.0 / 01SEP2010 (PKC)
 //    -Initial Revision
 //

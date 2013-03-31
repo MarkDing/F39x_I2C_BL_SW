@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -28,46 +28,44 @@
 //-----------------------------------------------------------------------------
 // Structures, Unions, Enums & Typedefs
 //-----------------------------------------------------------------------------
-enum Target_Info_Rsp
-{
-   TGT_Info_Rsp_Length = 0,
-   TGT_BL_FW_Ver_Low,
-   TGT_BL_FW_Ver_High,
-   TGT_MCU_Code,
-   TGT_BL_Type,
-   TGT_Flash_Page_Size_Code,
-   TGT_BL_Buffer_Size_Code,
-   TGT_CRC_Type,
-   TGT_Encryption_Type,
-   TGT_App_FW_Start_Addr0,
-   TGT_App_FW_Start_Addr1,
-   TGT_App_FW_Start_Addr2,
-   TGT_App_FW_End_Addr0,
-   TGT_App_FW_End_Addr1,
-   TGT_App_FW_End_Addr2,
-   TGT_CAN_Device_Addr,
-   TGT_App_FW_Ver_Low,
-   TGT_App_FW_Ver_High,
-   TGT_Enum_End_Value
-} ;
+enum Target_Info_Rsp {
+    TGT_Info_Rsp_Length = 0,
+    TGT_BL_FW_Ver_Low,
+    TGT_BL_FW_Ver_High,
+    TGT_MCU_Code,
+    TGT_BL_Type,
+    TGT_Flash_Page_Size_Code,
+    TGT_BL_Buffer_Size_Code,
+    TGT_CRC_Type,
+    TGT_Encryption_Type,
+    TGT_App_FW_Start_Addr0,
+    TGT_App_FW_Start_Addr1,
+    TGT_App_FW_Start_Addr2,
+    TGT_App_FW_End_Addr0,
+    TGT_App_FW_End_Addr1,
+    TGT_App_FW_End_Addr2,
+    TGT_SMB_Device_Addr,
+    TGT_App_FW_Ver_Low,
+    TGT_App_FW_Ver_High,
+    TGT_Enum_End_Value
+};
 
-enum Source_Info_Rsp
-{
-   SRC_Info_Rsp_Length = 0,
-   SRC_MCU_Code,
-   SRC_BL_Type,
-   SRC_Flash_Page_Size_Code,
-   SRC_App_FW_Ver_Low,
-   SRC_App_FW_Ver_High,
-   SRC_SMBUS_Device_Addr,
-   SRC_App_FW_Start_Addr0,
-   SRC_App_FW_Start_Addr1,
-   SRC_App_FW_Start_Addr2,
-   SRC_App_FW_End_Addr0,
-   SRC_App_FW_End_Addr1,
-   SRC_App_FW_End_Addr2,
-   SRC_Enum_End_Value
-} ;
+enum Source_Info_Rsp {
+    SRC_Info_Rsp_Length = 0,
+    SRC_MCU_Code,
+    SRC_BL_Type,
+    SRC_Flash_Page_Size_Code,
+    SRC_App_FW_Ver_Low,
+    SRC_App_FW_Ver_High,
+    SRC_SMBUS_Device_Addr,
+    SRC_App_FW_Start_Addr0,
+    SRC_App_FW_Start_Addr1,
+    SRC_App_FW_Start_Addr2,
+    SRC_App_FW_End_Addr0,
+    SRC_App_FW_End_Addr1,
+    SRC_App_FW_End_Addr2,
+    SRC_Enum_End_Value
+};
 
 //-----------------------------------------------------------------------------
 // Global CONSTANTS
@@ -105,7 +103,6 @@ enum Source_Info_Rsp
 #define SRC_RSP_DATA_END         0x72
 #define SRC_RSP_UNKNOWN_CMD      0x73
 
-
 // ---------------------------------
 // Target BL Command Codes
 // ---------------------------------
@@ -124,7 +121,6 @@ enum Source_Info_Rsp
 #define TGT_RSP_BL_MODE             0x03
 #define TGT_RSP_ERROR               0x80
 
-
 //---------------------------------------------
 // Error Codes
 //---------------------------------------------
@@ -139,7 +135,6 @@ enum Source_Info_Rsp
 
 #define ERR_TGT_SRC_INFO_MISMATCH   0x20
 #define ERR_NUM_PAGES_MISMATCH      0x21
-
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

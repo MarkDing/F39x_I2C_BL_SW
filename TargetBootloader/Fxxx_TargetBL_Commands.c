@@ -18,6 +18,8 @@
 // Command Line:   None
 //
 //
+// Release 1.1 / 31Mar2013 (MarkD)
+//    -F390 SMBUS Revision
 // Release 1.0 / 01SEP2010 (PKC)
 //    -Initial Revision
 //
@@ -28,7 +30,7 @@
 //-----------------------------------------------------------------------------
 #include <compiler_defs.h>
 #include "Fxxx_SFR_Defs_Wrapper.h"     // This header file will include the
-                                       // real MCU register definition file
+// real MCU register definition file
 
 #include "Fxxx_Target_Config.h"
 #include "Fxxx_Target_Interface.h"
@@ -36,12 +38,11 @@
 #include "Fxxx_TargetBL_Config.h"
 #include "Fxxx_TargetBL_Interface.h"
 
-#include "Fxxx_BL131_SMB0_Interface.h"
+#include "Fxxx_BL132_SMB0_Interface.h"
 
 //-----------------------------------------------------------------------------
 // Global CONSTANTS
 //-----------------------------------------------------------------------------
-
 
 
 //-----------------------------------------------------------------------------
@@ -72,13 +73,13 @@ U8 Flash_Key1;
 // Gets the FLKEY code out of Rx_Buf and clears Rx_Buf to help prevent flash
 // corruption.
 //-----------------------------------------------------------------------------
-void TGT_Pre_Flash (void)
+void TGT_Pre_Flash(void)
 {
-   // Store relevant information
-   Flash_Key0 = Rx_Buf[1];
-   Flash_Key1 = Rx_Buf[2];
-   Rx_Buf[1] = 0;
-   Rx_Buf[2] = 0;
+    // Store relevant information
+    Flash_Key0 = Rx_Buf[1];
+    Flash_Key1 = Rx_Buf[2];
+    Rx_Buf[1] = 0;
+    Rx_Buf[2] = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -90,28 +91,28 @@ void TGT_Pre_Flash (void)
 //
 // Erases one page of flash.
 //-----------------------------------------------------------------------------
-void TGT_Erase_Page (void)
+void TGT_Erase_Page(void)
 {
-   // Command Format:
-   // [0] Command
-   // [1] flash key code0
-   // [2] flash key code1
-   // [3] addr0 (LSB)
-   // [4] addr1 (MSB)
-   // [5] N/A
+    // Command Format:
+    // [0] Command
+    // [1] flash key code0
+    // [2] flash key code1
+    // [3] addr0 (LSB)
+    // [4] addr1 (MSB)
+    // [5] N/A
 
-   // Response:
-   // [0] Response code
+    // Response:
+    // [0] Response code
 
-   U8 AddrMSB = Rx_Buf[4];
+    U8 AddrMSB = Rx_Buf[4];
 
-      // Address out-of-bounds
+    // Address out-of-bounds
     // Setup for flash operation
-    TGT_Pre_Flash ();
+    TGT_Pre_Flash();
 
     PSCTL |= 0x03;
-    FLASH_Modify ((AddrMSB << 8), 0x00);
-	Set_TX_TGT_RSP_OK ();
+    FLASH_Modify((AddrMSB << 8), 0x00);
+    Set_TX_TGT_RSP_OK();
 }
 
 //-----------------------------------------------------------------------------
@@ -123,92 +124,44 @@ void TGT_Erase_Page (void)
 //
 // Writes 1 - 32 bytes of flash.
 //-----------------------------------------------------------------------------
-void TGT_Write_Flash (void)
+void TGT_Write_Flash(void)
 {
-   // Command Format:
-   // [0] Command
-   // [1] flash key code0
-   // [2] flash key code1
-   // [3] addr0 (LSB)
-   // [4] addr1 (MSB)
-   // [5] numbytes
-   
-   // Bytes to write:
-   // [0] byte0
-   // [1] byte1
-   // [.] ...
-   // [numbytes-1] byte(numbytes-1)
+    // Command Format:
+    // [0] Command
+    // [1] flash key code0
+    // [2] flash key code1
+    // [3] addr0 (LSB)
+    // [4] addr1 (MSB)
+    // [5] numbytes
 
-   // Response:
-   // [0] Response code
+    // Bytes to write:
+    // [0] byte0
+    // [1] byte1
+    // [.] ...
+    // [numbytes-1] byte(numbytes-1)
 
-   UU16 start_addr;
-   U8 numbytes;
-   U8 data * Rx_Buf_ptr = &Rx_Buf[6];
+    // Response:
+    // [0] Response code
 
-   start_addr.U8[LSB] = Rx_Buf[3];
-   start_addr.U8[MSB] = Rx_Buf[4];
-   numbytes = Rx_Buf[5];
+    UU16 start_addr;
+    U8 numbytes;
+    U8 data * Rx_Buf_ptr = &Rx_Buf[6];
 
-      
-   // Setup for flash operation
-   TGT_Pre_Flash ();
+    start_addr.U8[LSB] = Rx_Buf[3];
+    start_addr.U8[MSB] = Rx_Buf[4];
+    numbytes = Rx_Buf[5];
 
-   while (numbytes--)
-   {
-     PSCTL |= 0x01;
-     FLASH_Modify (start_addr.U16, *(Rx_Buf_ptr));
-     Rx_Buf_ptr++;
-     start_addr.U16++;
-   }      
-   Set_TX_TGT_RSP_OK ();
-}
+    // Setup for flash operation
+    TGT_Pre_Flash();
 
-//-----------------------------------------------------------------------------
-// TGT_Read_Flash
-//-----------------------------------------------------------------------------
-//
-// Return Value:  None
-// Parameters:    None
-//
-// Reads 1 - 32 bytes of flash.
-//-----------------------------------------------------------------------------
-void TGT_Read_Flash (void)
-{
-   // Command Format:
-   // [0] Command
-   // [1] N/A
-   // [2] N/A
-   // [3] addr0 (LSB)
-   // [4] addr1 (MSB)
-   // [5] numbytes
-   
-   // Response:
-   // [0] Response code
-   // [1] Flash byte 0
-   // [2] Flash byte 1
-   // ...
-   // [numbytes] Flash byte numbytes - 1
-
-   U8 code * start_addr;
-   U8 data * Tx_Buf_ptr = &Tx_Buf[0];
-   U8 numbytes = Rx_Buf[5];
-
-   // Setup for flash operation
-   TGT_Pre_Flash ();
-
-   start_addr = ((Rx_Buf[4] << 8) | Rx_Buf[3]);
-
-   do
-   {
-      *(Tx_Buf_ptr) = *start_addr;
-      start_addr++;
-      Tx_Buf_ptr++;
-   } while (--numbytes);
-
-
-   // Send the response code and flash bytes
-   SMB0_Op (Rx_Buf[5]);
+    while (numbytes--)
+    {
+        PSCTL |= 0x01;
+        FLASH_Modify(start_addr.U16, *(Rx_Buf_ptr));
+        Rx_Buf_ptr++;
+        start_addr.U16++;
+    }
+    Set_TX_TGT_RSP_OK();
 }
 
 //-----------------------------------------------------------------------------

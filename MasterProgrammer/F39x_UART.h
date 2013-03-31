@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -35,11 +35,11 @@
 //-----------------------------------------------------------------------------
 // Function Prototypes (Global)
 //-----------------------------------------------------------------------------
-U8 SRC_Get_Info (U8 *src_info);
-U8 SRC_Get_Page_Info (U32 *addr, U16 *src_page_crc);
-U8 SRC_Get_Page (U8 *buf);
-U8 SRC_Disp_TGT_Info (U8 buf_length, U8 *buf);
-U8 SRC_Disp_Info_Code (U8 info_code);
+U8 SRC_Get_Info(U8 *src_info);
+U8 SRC_Get_Page_Info(U32 *addr, U16 *src_page_crc);
+U8 SRC_Get_Page(U8 *buf);
+U8 SRC_Disp_TGT_Info(U8 buf_length, U8 *buf);
+U8 SRC_Disp_Info_Code(U8 info_code);
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

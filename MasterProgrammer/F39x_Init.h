@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -30,14 +30,13 @@
 // Global CONSTANTS
 //-----------------------------------------------------------------------------
 #define SYSCLK           49000000/2      // SYSCLK frequency in Hz
-
 // LED / Timer0 - Constants:
 
 #define LED_SLOW_RATE   2              // Rate of LED blinks per sec.
-                                       // Minimum value is 1
+// Minimum value is 1
 
 #define LED_FAST_RATE   10             // Rate of LED blinks per sec.
-                                       // Minimum value is 1
+// Minimum value is 1
 
 // Reload value for Timer0 assuming a 1:48 scaling factor for Timer0 clock
 #define TIMER0_RL_SLOW_HIGH  (0xFFFF -((SYSCLK/48/LED_SLOW_RATE >> 8) & 0x00FF))
@@ -50,7 +49,7 @@
 //-----------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------
-void Device_Init (void);
+void Device_Init(void);
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

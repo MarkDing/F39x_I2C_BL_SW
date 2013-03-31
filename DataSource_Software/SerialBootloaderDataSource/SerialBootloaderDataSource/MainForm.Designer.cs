@@ -337,6 +337,7 @@
             this.UpdateAppFWButton.TabIndex = 5;
             this.UpdateAppFWButton.Text = "Update Application Firmware";
             this.UpdateAppFWButton.UseVisualStyleBackColor = true;
+            this.UpdateAppFWButton.Visible = false;
             this.UpdateAppFWButton.Click += new System.EventHandler(this.UpdateAppFWButton_Click);
             // 
             // MainForm

@@ -20,40 +20,37 @@
 
 #include <compiler_defs.h>
 #include <C8051F390_defs.h>            // SFR declarations
-
 //-----------------------------------------------------------------------------
 // Global Constants
 //-----------------------------------------------------------------------------
 
 #define  SYSCLK         49000000/2     // System clock frequency in Hz
-
 #define  SMB_FREQUENCY  77044          // Target SMBus frequency
-                                       // This example supports between 10kHz
-                                       // and 100kHz
+// This example supports between 10kHz
+// and 100kHz
 
 #define  WRITE          0x00           // SMBus WRITE command
 #define  READ           0x01           // SMBus READ command
-
 #define  SLAVE_ADDR     0x20           // Device addresses (7 bits,
-                                       // lsb is a don't care)
+// lsb is a don't care)
 
 // Status vector - top 4 bits only
 #define  SMB_SRADD      0x20           // (SR) slave address received
-                                       //    (also could be a lost
-                                       //    arbitration)
+//    (also could be a lost
+//    arbitration)
 #define  SMB_SRSTO      0x10           // (SR) STOP detected while SR or ST,
-                                       //    or lost arbitration
+//    or lost arbitration
 #define  SMB_SRDB       0x00           // (SR) data byte received, or
-                                       //    lost arbitration
+//    lost arbitration
 #define  SMB_STDB       0x40           // (ST) data byte transmitted
 #define  SMB_STSTO      0x50           // (ST) STOP detected during a
-                                       //    transaction; bus error
+//    transaction; bus error
 // End status vector definition
 
 #define  NUM_BYTES_WR   6              // Number of bytes to write
-                                       // Slave <- Master
+// Slave <- Master
 #define  NUM_BYTES_RD   6              // Number of bytes to read
-                                       // Slave -> Master
+// Slave -> Master
 
 //-----------------------------------------------------------------------------
 // Global VARIABLES
@@ -69,11 +66,10 @@ U8 SMB_DATA_IN[NUM_BYTES_WR];
 // NUM_BYTES_RD used because an SMBus read is Slave->Master
 U8 SMB_DATA_OUT[NUM_BYTES_RD];
 
-bit DATA_READY = 0;                    // Set to '1' by the SMBus ISR
-                                       // when a new data byte has been
-                                       // received.
-
-SBIT (LED, SFR_P1, 1);                 // LED==1 means ON
+bit DATA_READY = 0; // Set to '1' by the SMBus ISR
+// when a new data byte has been
+// received.
+SBIT (LED, SFR_P1, 1); // LED==1 means ON
 SBIT (P1_0_SWITCH, SFR_P1, 0);
 
 #define TGT_CMD_ENTER_BL_MODE       0x05
@@ -82,13 +78,13 @@ SBIT (P1_0_SWITCH, SFR_P1, 0);
 // Function PROTOTYPES
 //-----------------------------------------------------------------------------
 
-void Timer2_Init (int counts);
-void Timer2_ISR (void);
-void SMBus_Init (void);
-void Timer1_Init (void);
-void Timer3_Init (void);
-void Port_Init (void);
-U8 Enter_BL_Mode (void);
+void Timer2_Init(int counts);
+void Timer2_ISR(void);
+void SMBus_Init(void);
+void Timer1_Init(void);
+void Timer3_Init(void);
+void Port_Init(void);
+U8 Enter_BL_Mode(void);
 INTERRUPT_PROTO (TIMER3_ISR, INTERRUPT_TIMER3);
 INTERRUPT_PROTO (SMBUS0_ISR, INTERRUPT_SMBUS0);
 
@@ -100,60 +96,61 @@ INTERRUPT_PROTO (SMBUS0_ISR, INTERRUPT_SMBUS0);
 // communication.
 //
 //-----------------------------------------------------------------------------
-void main (void)
+void main(void)
 {
-   U8 i;
+    U8 i;
 
-   PCA0MD &= ~0x40;                    // WDTE = 0 (Disable watchdog
-                                       // timer)
+    PCA0MD &= ~0x40; // WDTE = 0 (Disable watchdog
+    // timer)
 
 
-   OSCICN |= 0x03;                     // Set internal oscillator to
-                                       // 24.5 MHz
+    OSCICN |= 0x03; // Set internal oscillator to
+    // 24.5 MHz
 
-   Port_Init();                        // Initialize Crossbar and GPIO
-//   while(P1_0_SWITCH);
-   Timer1_Init();                      // Configure Timer1 for use
-                                       // with SMBus baud rate
-   Timer2_Init (65535 );  				   // Init Timer2 to generate
+    Port_Init(); // Initialize Crossbar and GPIO
+    //   while(P1_0_SWITCH);
+    Timer1_Init(); // Configure Timer1 for use
+    // with SMBus baud rate
+    Timer2_Init(65535); // Init Timer2 to generate
 
-   Timer3_Init ();                     // Configure Timer3 for use with
-                                       // SCL low timeout detect
+    Timer3_Init(); // Configure Timer3 for use with
+    // SCL low timeout detect
 
-   SMBus_Init ();                      // Configure and enable SMBus
+    SMBus_Init(); // Configure and enable SMBus
 
-   EIE1 |= 0x01;                       // Enable the SMBus interrupt
+    EIE1 |= 0x01; // Enable the SMBus interrupt
 
-   LED = 0;
+    LED = 0;
 
-   EA = 1;                             // Global interrupt enable
+    EA = 1; // Global interrupt enable
 
-   // Initialize the outgoing data array in case a read is done before a
-   // write
-   for (i = 0; i < NUM_BYTES_RD; i++)
-   {
-      SMB_DATA_OUT[i] = 0xFD;
-   }
+    // Initialize the outgoing data array in case a read is done before a
+    // write
+    for (i = 0; i < NUM_BYTES_RD; i++)
+    {
+        SMB_DATA_OUT[i] = 0xFD;
+    }
 
-   while(1)
-   {
-	   for (i = 0; i < NUM_BYTES_RD; i++)
-	   {
-	      SMB_DATA_IN[i] = 0xFD;
-	   }
-	  while(!DATA_READY);              // New SMBus data received?
-      DATA_READY = 0;
+    while (1)
+    {
+        for (i = 0; i < NUM_BYTES_RD; i++)
+        {
+            SMB_DATA_IN[i] = 0xFD;
+        }
+        while (!DATA_READY)
+            ; // New SMBus data received?
+        DATA_READY = 0;
 
-      // Copy the data from the input array to the output array
-      for (i = 0; i < NUM_BYTES_RD; i++)
-      {
-         SMB_DATA_OUT[i] = SMB_DATA_IN[i];
-      }
-	  if(SMB_DATA_IN[0] == TGT_CMD_ENTER_BL_MODE)
-	  {
-	      i = Enter_BL_Mode();
-	  }
-   }
+        // Copy the data from the input array to the output array
+        for (i = 0; i < NUM_BYTES_RD; i++)
+        {
+            SMB_DATA_OUT[i] = SMB_DATA_IN[i];
+        }
+        if (SMB_DATA_IN[0] == TGT_CMD_ENTER_BL_MODE)
+        {
+            i = Enter_BL_Mode();
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -176,17 +173,17 @@ void main (void)
 // - Bus Free and SCL Low timeout detection enabled
 //
 //-----------------------------------------------------------------------------
-void SMBus_Init (void)
+void SMBus_Init(void)
 {
-   SMB0CF = 0x1D;                      // Use Timer1 overflows as SMBus clock
-                                       // source;
-                                       // Enable slave mode;
-                                       // Enable setup & hold time
-                                       // extensions;
-                                       // Enable SMBus Free timeout detect;
-                                       // Enable SCL low timeout detect;
+    SMB0CF = 0x1D; // Use Timer1 overflows as SMBus clock
+    // source;
+    // Enable slave mode;
+    // Enable setup & hold time
+    // extensions;
+    // Enable SMBus Free timeout detect;
+    // Enable SCL low timeout detect;
 
-   SMB0CF |= 0x80;                     // Enable SMBus;
+    SMB0CF |= 0x80; // Enable SMBus;
 }
 
 //-----------------------------------------------------------------------------
@@ -204,29 +201,29 @@ void SMBus_Init (void)
 // - Timer1 enabled
 //
 //-----------------------------------------------------------------------------
-void Timer1_Init (void)
+void Timer1_Init(void)
 {
 
-// Make sure the Timer can produce the appropriate frequency in 8-bit mode
-// Supported SMBus Frequencies range from 10kHz to 100kHz.  The CKCON register
-// settings may need to change for frequencies outside this range.
+    // Make sure the Timer can produce the appropriate frequency in 8-bit mode
+    // Supported SMBus Frequencies range from 10kHz to 100kHz.  The CKCON register
+    // settings may need to change for frequencies outside this range.
 #if ((SYSCLK/SMB_FREQUENCY/3) < 255)
-   #define SCALE 1
-      CKCON |= 0x08;                   // Timer1 clock source = SYSCLK
+#define SCALE 1
+    CKCON |= 0x08; // Timer1 clock source = SYSCLK
 #elif ((SYSCLK/SMB_FREQUENCY/4/3) < 255)
-   #define SCALE 4
-      CKCON |= 0x01;
-      CKCON &= ~0x0A;                  // Timer1 clock source = SYSCLK / 4
+#define SCALE 4
+    CKCON |= 0x01;
+    CKCON &= ~0x0A; // Timer1 clock source = SYSCLK / 4
 #endif
 
-   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
+    TMOD = 0x20; // Timer1 in 8-bit auto-reload mode
 
-   // Timer1 configured to overflow at 1/3 the rate defined by SMB_FREQUENCY
-   TH1 = -(SYSCLK/SMB_FREQUENCY/SCALE/3);
+    // Timer1 configured to overflow at 1/3 the rate defined by SMB_FREQUENCY
+    TH1 = -(SYSCLK / SMB_FREQUENCY / SCALE / 3);
 
-   TL1 = TH1;                          // Init Timer1
+    TL1 = TH1; // Init Timer1
 
-   TR1 = 1;                            // Timer1 enabled
+    TR1 = 1; // Timer1 enabled
 }
 
 //-----------------------------------------------------------------------------
@@ -245,19 +242,19 @@ void Timer1_Init (void)
 // - Timer3 enabled
 //
 //-----------------------------------------------------------------------------
-void Timer3_Init (void)
+void Timer3_Init(void)
 {
-   TMR3CN = 0x00;                      // Timer3 configured for 16-bit auto-
-                                       // reload, low-byte interrupt disabled
+    TMR3CN = 0x00; // Timer3 configured for 16-bit auto-
+    // reload, low-byte interrupt disabled
 
-   CKCON &= ~0x40;                     // Timer3 uses SYSCLK/12
+    CKCON &= ~0x40; // Timer3 uses SYSCLK/12
 
-   TMR3RL = -(SYSCLK/12/40);           // Timer3 configured to overflow after
-   TMR3 = TMR3RL;                      // ~25ms (for SMBus low timeout detect):
-                                       // 1/.025 = 40
+    TMR3RL = -(SYSCLK / 12 / 40); // Timer3 configured to overflow after
+    TMR3 = TMR3RL; // ~25ms (for SMBus low timeout detect):
+    // 1/.025 = 40
 
-   EIE1 |= 0x80;                       // Timer3 interrupt enable
-   TMR3CN |= 0x04;                     // Start Timer3
+    EIE1 |= 0x80; // Timer3 interrupt enable
+    TMR3CN |= 0x04; // Start Timer3
 }
 
 //-----------------------------------------------------------------------------
@@ -277,12 +274,12 @@ void Timer3_Init (void)
 // all other port pins unused
 //
 //-----------------------------------------------------------------------------
-void PORT_Init (void)
+void PORT_Init(void)
 {
-   P1MDOUT |= 0x02;                    // Make the LED (P1.1) a push-pull
-   P0SKIP = 0x03;
-   XBR0 = 0x04;                        // Route SMBus signals to port pins
-   XBR1 = 0x40;                        // Enable crossbar
+    P1MDOUT |= 0x02; // Make the LED (P1.1) a push-pull
+    P0SKIP = 0x03;
+    XBR0 = 0x04; // Route SMBus signals to port pins
+    XBR1 = 0x40; // Enable crossbar
 }
 //-----------------------------------------------------------------------------
 // Timer2_Init
@@ -291,18 +288,17 @@ void PORT_Init (void)
 // Configure Timer2 to 16-bit auto-reload and generate an interrupt at
 // interval specified by <counts> using SYSCLK/48 as its time base.
 //
-void Timer2_Init (int counts)
+void Timer2_Init(int counts)
 {
-   TMR2CN  = 0x00;                        // Stop Timer2; Clear TF2;
-                                          // use SYSCLK/12 as timebase
-   CKCON  &= ~0x60;                       // Timer2 clocked based on T2XCLK;
+    TMR2CN = 0x00; // Stop Timer2; Clear TF2;
+    // use SYSCLK/12 as timebase
+    CKCON &= ~0x60; // Timer2 clocked based on T2XCLK;
 
-   TMR2RL  = -counts;                     // Init reload values
-   TMR2    = 0xffff;                      // set to reload immediately
-   ET2     = 1;                           // enable Timer2 interrupts
-   TR2     = 1;                           // start Timer2
+    TMR2RL = -counts; // Init reload values
+    TMR2 = 0xffff; // set to reload immediately
+    ET2 = 1; // enable Timer2 interrupts
+    TR2 = 1; // start Timer2
 }
-
 
 //-----------------------------------------------------------------------------
 // Enter_BL_Mode
@@ -314,15 +310,13 @@ void Timer2_Init (int counts)
 // This function will cause a Flash Error Reset to enter BL mode.
 //
 //-----------------------------------------------------------------------------
-U8 Enter_BL_Mode (void)
+U8 Enter_BL_Mode(void)
 {
-   // The return value is just to prevent the compiler from optimizing out
-   // the code read
+    // The return value is just to prevent the compiler from optimizing out
+    // the code read
 
-   return *(U8 code*)(RESERVED_SPACE_ADDR);
+return *(U8 code*)(RESERVED_SPACE_ADDR);
 }
-
-
 
 //-----------------------------------------------------------------------------
 // Interrupt Service Routines
@@ -341,117 +335,123 @@ U8 Enter_BL_Mode (void)
 //-----------------------------------------------------------------------------
 INTERRUPT(SMBUS0_ISR, INTERRUPT_SMBUS0)
 {
-   static U8 sent_byte_counter;
-   static U8 rec_byte_counter;
+    static U8 sent_byte_counter;
+    static U8 rec_byte_counter;
 
-   if (ARBLOST == 0)
-   {
-      switch (SMB0CN & 0xF0)           // Decode the SMBus status vector
-      {
-         // Slave Receiver: Start+Address received
-         case  SMB_SRADD:
+    if (ARBLOST == 0)
+    {
+        switch (SMB0CN & 0xF0) // Decode the SMBus status vector
 
-            STA = 0;                   // Clear STA bit
+        {
+            // Slave Receiver: Start+Address received
+            case SMB_SRADD:
 
-            sent_byte_counter = 1;     // Reinitialize the data counters
+            STA = 0; // Clear STA bit
+
+            sent_byte_counter = 1; // Reinitialize the data counters
             rec_byte_counter = 1;
 
             if((SMB0DAT&0xFE) == (SLAVE_ADDR&0xFE)) // Decode address
-            {                          // If the received address matches,
-               ACK = 1;                // ACK the received slave address
 
-               if((SMB0DAT&0x01) == READ) // If the transfer is a master READ,
-               {
-                  // Prepare outgoing byte
-                  SMB0DAT = SMB_DATA_OUT[sent_byte_counter-1];
-                  sent_byte_counter++;
-               }
+            { // If the received address matches,
+                ACK = 1; // ACK the received slave address
+
+                if((SMB0DAT&0x01) == READ) // If the transfer is a master READ,
+
+                {
+                    // Prepare outgoing byte
+                    SMB0DAT = SMB_DATA_OUT[sent_byte_counter-1];
+                    sent_byte_counter++;
+                }
             }
-            else                       // If received slave address does not
-            {                          // match,
-               ACK = 0;                // NACK received address
+            else // If received slave address does not
+
+            { // match,
+                ACK = 0; // NACK received address
             }
             break;
 
-         // Slave Receiver: Data received
-         case  SMB_SRDB:
+            // Slave Receiver: Data received
+            case SMB_SRDB:
 
             if (rec_byte_counter < NUM_BYTES_WR)
             {
-               // Store incoming data
-               SMB_DATA_IN[rec_byte_counter-1] = SMB0DAT;
-               rec_byte_counter++;
+                // Store incoming data
+                SMB_DATA_IN[rec_byte_counter-1] = SMB0DAT;
+                rec_byte_counter++;
 
-               ACK = 1;                // ACK received data
+                ACK = 1; // ACK received data
             }
             else
             {
-               // Store incoming data
-               SMB_DATA_IN[rec_byte_counter-1] = SMB0DAT;
+                // Store incoming data
+                SMB_DATA_IN[rec_byte_counter-1] = SMB0DAT;
 
-               DATA_READY = 1;         // Indicate new data fully received
-               ACK = 1;                // ACK received data
+                DATA_READY = 1; // Indicate new data fully received
+                ACK = 1; // ACK received data
             }
 
             break;
 
-         // Slave Receiver: Stop received while either a Slave Receiver or
-         // Slave Transmitter
-         case  SMB_SRSTO:
+            // Slave Receiver: Stop received while either a Slave Receiver or
+            // Slave Transmitter
+            case SMB_SRSTO:
 
-            DATA_READY = 1;         // Indicate new data fully received
-            STO = 0;                   // STO must be cleared by software when
-                                       // a STOP is detected as a slave
+            DATA_READY = 1; // Indicate new data fully received
+            STO = 0; // STO must be cleared by software when
+            // a STOP is detected as a slave
             break;
 
-         // Slave Transmitter: Data byte transmitted
-         case  SMB_STDB:
+            // Slave Transmitter: Data byte transmitted
+            case SMB_STDB:
 
-            if (ACK == 1)              // If Master ACK's, send the next byte
+            if (ACK == 1) // If Master ACK's, send the next byte
+
             {
-               if (sent_byte_counter <= NUM_BYTES_RD)
-               {
-                  // Prepare next outgoing byte
-                  SMB0DAT = SMB_DATA_OUT[sent_byte_counter-1];
-                  sent_byte_counter++;
-               }
-            }                          // Otherwise, do nothing
+                if (sent_byte_counter <= NUM_BYTES_RD)
+                {
+                    // Prepare next outgoing byte
+                    SMB0DAT = SMB_DATA_OUT[sent_byte_counter-1];
+                    sent_byte_counter++;
+                }
+            } // Otherwise, do nothing
             break;
 
-         // Slave Transmitter: Arbitration lost, Stop detected
-         //
-         // This state will only be entered on a bus error condition.
-         // In normal operation, the slave is no longer sending data or has
-         // data pending when a STOP is received from the master, so the TXMODE
-         // bit is cleared and the slave goes to the SRSTO state.
-         case  SMB_STSTO:
-			DATA_READY = 1;
-            STO = 0;                   // STO must be cleared by software when
-                                       // a STOP is detected as a slave
+            // Slave Transmitter: Arbitration lost, Stop detected
+            //
+            // This state will only be entered on a bus error condition.
+            // In normal operation, the slave is no longer sending data or has
+            // data pending when a STOP is received from the master, so the TXMODE
+            // bit is cleared and the slave goes to the SRSTO state.
+            case SMB_STSTO:
+            DATA_READY = 1;
+            STO = 0; // STO must be cleared by software when
+            // a STOP is detected as a slave
             break;
 
-         // Default: all other cases undefined
-         default:
+            // Default: all other cases undefined
+            default:
 
-            SMB0CF &= ~0x80;           // Reset communication
+            SMB0CF &= ~0x80; // Reset communication
             SMB0CF |= 0x80;
             STA = 0;
             STO = 0;
-			DATA_READY = 1;
+            DATA_READY = 1;
             ACK = 0;
             break;
-      }
-   }
-   // ARBLOST = 1, Abort failed transfer
-   else
-   {
-      STA = 0;
-      STO = 0;
-      ACK = 0;
-	  DATA_READY = 1;
-   }
+        }
+    }
+    // ARBLOST = 1, Abort failed transfer
 
-   SI = 0;                             // Clear SMBus interrupt flag
+    else
+    {
+        STA = 0;
+        STO = 0;
+        ACK = 0;
+        DATA_READY = 1;
+    }
+
+    SI = 0; // Clear SMBus interrupt flag
 }
 
 //-----------------------------------------------------------------------------
@@ -464,9 +464,9 @@ INTERRUPT(SMBUS0_ISR, INTERRUPT_SMBUS0)
 //-----------------------------------------------------------------------------
 INTERRUPT(TIMER3_ISR, INTERRUPT_TIMER3)
 {
-   SMB0CF &= ~0x80;                    // Disable SMBus
-   SMB0CF |= 0x80;                     // Re-enable SMBus
-   TMR3CN &= ~0x80;                    // Clear Timer3 interrupt-pending flag
+    SMB0CF &= ~0x80; // Disable SMBus
+    SMB0CF |= 0x80; // Re-enable SMBus
+    TMR3CN &= ~0x80; // Clear Timer3 interrupt-pending flag
 }
 
 //-----------------------------------------------------------------------------
@@ -474,15 +474,16 @@ INTERRUPT(TIMER3_ISR, INTERRUPT_TIMER3)
 //-----------------------------------------------------------------------------
 // This routine changes the state of the LED whenever Timer2 overflows.
 //
-void Timer2_ISR (void) interrupt 5
+void Timer2_ISR(void)
+interrupt 5
 {
-   static count = 0;
-   TF2H = 0;                              // clear Timer2 interrupt flag
-   if(count++ > 10)
-   {
-   	  count = 0;
-      LED = ~LED;                            // change state of LED
-   }
+    static count = 0;
+    TF2H = 0; // clear Timer2 interrupt flag
+    if(count++ > 10)
+    {
+        count = 0;
+        LED = ~LED; // change state of LED
+    }
 }
 
 //-----------------------------------------------------------------------------

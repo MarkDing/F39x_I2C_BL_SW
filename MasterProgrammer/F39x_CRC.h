@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -34,8 +34,8 @@
 //-----------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------
-U16 Get_Buf_CRC (U8 *ptr, U16 numbytes);
-U16 Update_CRC (U16 crc, U8 newbyte);
+U16 Get_Buf_CRC(U8 *ptr, U16 numbytes);
+U16 Update_CRC(U16 crc, U8 newbyte);
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

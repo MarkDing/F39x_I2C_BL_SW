@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -38,10 +38,10 @@ extern U8 Last_Error;
 //-----------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------
-void TGT_Validate_Response (U8 response, U8 command);
-void SRC_Validate_Response (U8 response, U8 command);
-void Validate_TGT_SRC_Match (U32 *page_addr);
-void Validate_Pages_Written (U8 num_pages_from_source);
+void TGT_Validate_Response(U8 response, U8 command);
+void SRC_Validate_Response(U8 response, U8 command);
+void Validate_TGT_SRC_Match(U32 *page_addr);
+void Validate_Pages_Written(U8 num_pages_from_source);
 
 //-----------------------------------------------------------------------------
 // Header File Preprocessor Directive

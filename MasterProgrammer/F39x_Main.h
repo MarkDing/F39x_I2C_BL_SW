@@ -6,7 +6,7 @@
 //
 // Program Description:
 //
-// This program performs as the Master for the CAN bootloader.
+// This program performs as the Master for the SMB bootloader.
 // PC (Data Source) <--> UART <--> MCU (Master) <--> SMBUS <--> MCU (Target)
 //
 //
@@ -35,7 +35,6 @@
 #define LED_BLINK_SLOW  0x02
 #define LED_BLINK_FAST  0x03
 
-
 //-----------------------------------------------------------------------------
 // Global Variables - Externs
 //-----------------------------------------------------------------------------
@@ -47,9 +46,9 @@ extern U8 Pages_Written;
 
 extern U8 LED_State;
 
-SEGMENT_VARIABLE (Page_Buf[PAGE_SIZE+2], extern U8, SEG_XDATA);
-SEGMENT_VARIABLE (TGT_Info[TGT_Enum_End_Value], extern U8, SEG_XDATA);
-SEGMENT_VARIABLE (SRC_Info[SRC_Enum_End_Value], extern U8, SEG_XDATA);
+SEGMENT_VARIABLE( Page_Buf[PAGE_SIZE + 2], extern U8, SEG_XDATA);
+SEGMENT_VARIABLE( TGT_Info[TGT_Enum_End_Value], extern U8, SEG_XDATA);
+SEGMENT_VARIABLE( SRC_Info[SRC_Enum_End_Value], extern U8, SEG_XDATA);
 
 //-----------------------------------------------------------------------------
 // Function Prototypes
