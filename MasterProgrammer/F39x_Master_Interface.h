@@ -75,7 +75,7 @@ enum Source_Info_Rsp {
 
 // User applicate code
 #define APP_FW_START_ADDR        0x0200
-#define APP_FW_END_ADDR          0x3FFF
+#define APP_FW_END_ADDR          0x3DFF
 
 // Signature Bytes
 #define SIG_BYTE0             0x3D

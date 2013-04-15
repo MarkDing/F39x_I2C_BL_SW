@@ -37,16 +37,10 @@
 
 #define TGT_PRODUCT_CODE         0x00  // Company-specific product ID
 #define TGT_BL_TYPE              0x84  // BL Type = I2C
-// => "Fxxx_BL131_I2C_Interface.h" should be included.
+// => "Fxxx_BL132_SMB0_Interface.h" should be included.
 
 #define TGT_FLASH_PAGE_SIZE      512   // Number of bytes per flash page
 #define TGT_FLASH_PAGE_SIZE_CODE 9     // Code=9 => Page size = 2^9 = 512 bytes.
-#define TGT_BL_BUF_SIZE          40    // Size of bootloader RX buffer (bytes; should be powers of 2)
-// min: 2^5 = 32; max: 2^14 = 16384; 2^15 = RESERVED.
-
-#define TGT_BL_BUF_SIZE_CODE     0x05  // BL Buffer Size Code. 
-// If TGT_BL_BUF_SIZE is 2^n, TGT_BL_BUF_SIZE_CODE is n.
-// See documentation for encoding details.
 
 
 // Note: For serial streams like UART where "packets" are not applicable, the packet size 
@@ -66,7 +60,7 @@
 
 // Specify 24-bit linear addresses here (do not use banked 16-bit addresses)
 #define APP_FW_START_ADDR        0x0200
-#define APP_FW_END_ADDR          0x3FFF
+#define APP_FW_END_ADDR          0x3DFF
 
 #define APP_FW_SIG0_ADDR         APP_FW_END_ADDR
 
@@ -78,6 +72,8 @@
 //   at the comm protocol level. 
 #define TGT_DEVICE_SERIAL0       0x01     
 #define TGT_DEVICE_SERIAL1       0x00        
+
+
 
 //-----------------------------------------------------------------------------
 // Header file include-once preprocessor directive

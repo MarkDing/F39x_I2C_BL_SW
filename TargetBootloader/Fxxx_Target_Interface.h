@@ -63,6 +63,12 @@
 // -----------------------------------
 #define TGT_BL_VER                  0x10
 
+// Signature Bytes
+#define SIG_BYTE0             0x3D
+#define SIG_BYTE1             0xC2
+#define SIG_BYTE2             0xA5
+#define SIG_BYTE3             0x1B
+
 //-----------------------------------------------------------------------------
 // Header file include-once preprocessor directive
 //-----------------------------------------------------------------------------

@@ -82,7 +82,6 @@ SEGMENT_VARIABLE(TGT_BL_InfoBlock[TGT_BL_FW_INFOBLOCK_LENGTH], const U8, SEG_COD
    TGT_BL_FW_INFOBLOCK_LENGTH
 };
 
-
 //-----------------------------------------------------------------------------
 // End Of File
 //-----------------------------------------------------------------------------

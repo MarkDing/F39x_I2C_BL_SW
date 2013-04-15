@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22              03/31/2013  14:49:15  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22              04/15/2013  10:47:51  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -67,7 +67,7 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
             DATA    0038H     000BH     UNIT         _DATA_GROUP_
             IDATA   0043H     0001H     UNIT         ?STACK
 
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 2
 
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
@@ -135,7 +135,7 @@ LINK MAP OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2C_BL
 >> INIT
             CODE    0989H     000AH     UNIT         ?PR?SMBUS_INIT?F39X_SMB
 
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 3
 
 
 
@@ -203,7 +203,7 @@ SEGMENT                                             BIT_GROUP          DATA_GR
 
 ?PR?_SRC_GET_PAGE_INFO?F39X_UART                 -----    -----      003AH    
 >> 0006H
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 4
 
 
   +--> ?PR?_SETUP_RX?F39X_UART
@@ -271,7 +271,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:085DH         LINE#         71
   C:085DH         LINE#         75
   C:0860H         LINE#         77
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 5
 
 
   C:0862H         LINE#         78
@@ -339,7 +339,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:0927H         LINE#         113
   C:092AH         LINE#         114
   C:092DH         LINE#         115
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 6
 
 
   C:0930H         LINE#         116
@@ -407,7 +407,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:07D1H         PUBLIC        _Set_LED_State
   B:0090H.1       PUBLIC        P1_1_LED
   D:008CH         PUBLIC        TH0
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 7
 
 
   D:008AH         PUBLIC        TL0
@@ -475,7 +475,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:013FH         LINE#         153
   C:013FH         LINE#         157
   C:0146H         LINE#         160
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 8
 
 
   C:0149H         LINE#         162
@@ -543,7 +543,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:088DH         PUBLIC        _Setup_Rx
   D:0024H         PUBLIC        Rx_Complete_Flag
   D:0025H         PUBLIC        Rx_Num_Bytes
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 9
 
 
   D:0027H         PUBLIC        Tx_Complete_Flag
@@ -611,7 +611,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:0832H         LINE#         230
   -------         ENDPROC       _SRC_GET_PAGE
   -------         PROC          _SRC_DISP_TGT_INFO
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 10
 
 
   D:0007H         SYMBOL        buf_length
@@ -679,7 +679,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:05CCH         LINE#         355
   C:05CEH         LINE#         357
   C:05D2H         LINE#         359
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 11
 
 
   C:05D2H         LINE#         360
@@ -747,7 +747,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   D:0007H         SYMBOL        response
   D:0005H         SYMBOL        command
   -------         DO            
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 12
 
 
   D:0006H         SYMBOL        buf_crc
@@ -815,7 +815,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:001DH         LINE#         180
   C:001DH         LINE#         181
   C:0020H         LINE#         182
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 13
 
 
   C:0020H         LINE#         183
@@ -883,7 +883,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   -------         ENDPROC       TGT_ENTER_BL_MODE
   -------         PROC          _TGT_ERASE_PAGE
   D:003AH         SYMBOL        addr
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 14
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 14
 
 
   C:063CH         LINE#         188
@@ -951,7 +951,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:0327H         LINE#         305
   C:0329H         LINE#         311
   C:032FH         LINE#         313
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 15
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 15
 
 
   C:032FH         LINE#         315
@@ -1019,7 +1019,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:03CCH         LINE#         409
   C:03D4H         LINE#         410
   C:03D4H         LINE#         412
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 16
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 16
 
 
   C:03D6H         LINE#         413
@@ -1087,7 +1087,7 @@ SYMBOL TABLE OF MODULE:  C:\Users\mading\SkyDrive\Work\F390-bootloader\F39x_I2
   C:023DH         PUBLIC        ?C?LSTXDATA
   -------         ENDMOD        ?C?LSTXDATA
 
-BL51 BANKED LINKER/LOCATER V6.22            03/31/2013  14:49:15  PAGE 17
+BL51 BANKED LINKER/LOCATER V6.22            04/15/2013  10:47:51  PAGE 17
 
 
   -------         MODULE        ?C?LSTPDATA

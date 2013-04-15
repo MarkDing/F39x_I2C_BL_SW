@@ -127,7 +127,8 @@ namespace SerialBootloaderDataSource
                             mAppFWstartAddr = mLowestSpecifiedAddr;
 
                             // Add number of signature/CRC bytes to highest specified addr to get app FW end addr
-                            mAppFWendAddr = mHighestSpecifiedAddr + (int)AppFWimageInfoBlock.sigByte3 + 1; // Add 1 because enum starts at 0
+//                            mAppFWendAddr = mHighestSpecifiedAddr + (int)AppFWimageInfoBlock.sigByte3 + 1; // Add 1 because enum starts at 0
+                            mAppFWendAddr = mHighestSpecifiedAddr; 
 
                             InitHexImageInfo(ref mHexImage);
 

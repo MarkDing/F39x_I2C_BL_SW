@@ -64,7 +64,7 @@ void Device_Init(void)
 
     UART0_Init(); // Init UART0 & Timer1 (Data source comm)
 
-    SMBus_Init(); // Init SMB0 (Target MCU comm) Mark.Ding
+    SMBus_Init(); // Init SMB0 (Target MCU comm) 
 
     TIMER0_Init(); // Init Timer0 for LED blinks
 }

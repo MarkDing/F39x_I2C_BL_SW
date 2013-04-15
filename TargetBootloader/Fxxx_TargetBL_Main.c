@@ -54,15 +54,37 @@ SBIT(BL_Override_Pin, SFR_P1, 0);
 //=============================================================================
 void main(void)
 {
-    U8 device_mode = APP_MODE;
+    U8 device_mode = BOOTLOADER_MODE;
+	U8 code* codeptr;
     //---------------------------------------
-    // Check the override pin.
+    // Check the bootloader consition.
     //---------------------------------------
+    codeptr = (U8 code*)(APP_FW_SIG0_ADDR);
+   // The Signature (in Flash) should be valid to allow application FW execution.
+   // This is written at the end of the bootloading process by the bootloader.
+	if (*codeptr == SIG_BYTE0)
+    {
+		*codeptr--;
+    	if (*codeptr == SIG_BYTE1)
+     	{
+			*codeptr--;
+        	if (*codeptr == SIG_BYTE2)
+        	{
+				*codeptr--;
+            	if (*codeptr == SIG_BYTE3)
+		        {
+	                // All signature bytes match. 
+					device_mode = APP_MODE;
+      		    }
+        	}
+      	}
+	}
     if ((!BL_Override_Pin) || (((RSTSRC & PORSF) == 0) && ((RSTSRC & FERROR)
             != 0)))
     {
         device_mode = BOOTLOADER_MODE;
     }
+
 
     if (device_mode == APP_MODE)
     {
@@ -150,9 +172,23 @@ void Set_TX_TGT_RSP_BL_MODE(void)
 //
 // Sets TX response code to TGT_RSP_PARAMETER_INVALID.
 //-----------------------------------------------------------------------------
-void Set_TX_TGT_RSP_UNSUPPORTED_CMD(void)
+void Set_TX_TGT_RSP_PARAMETER_INVALID (void)
 {
-    Tx_Buf[0] = TGT_RSP_UNSUPPORTED_CMD;
+   Tx_Buf[0] = TGT_RSP_PARAMETER_INVALID;
+}
+
+//-----------------------------------------------------------------------------
+// Set_TX_TGT_RSP_UNSUPPORTED_CMD
+//-----------------------------------------------------------------------------
+//
+// Return Value:  None
+// Parameters:    None
+//
+// Sets TX response code to Set_TX_TGT_RSP_UNSUPPORTED_CMD.
+//-----------------------------------------------------------------------------
+void Set_TX_TGT_RSP_UNSUPPORTED_CMD (void)
+{
+   Tx_Buf[0] = TGT_RSP_UNSUPPORTED_CMD;
 }
 
 //-----------------------------------------------------------------------------

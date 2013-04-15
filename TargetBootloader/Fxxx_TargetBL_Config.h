@@ -40,8 +40,20 @@
 // Target BL Config Options
 // ---------------------------------
 
-#define TGT_BL_FW_VERSION_LOW    0x00
-#define TGT_BL_FW_VERSION_HIGH   0x01
+#define FLASH_C2_ACCESS_LOCK_BYTE  0xFF
+#define TGT_BL_FW_INFOBLOCK_LENGTH 16
+#define TGT_CRC_TYPE               0x01  // CRC Type = CRC-16-CCITT
+#define TGT_ENCRYPTION_TYPE        0x00  // None
+
+#define TGT_BL_FW_VERSION_LOW      0x00
+#define TGT_BL_FW_VERSION_HIGH     0x01
+
+#define TGT_BL_BUF_SIZE          40    // Size of bootloader RX buffer (bytes; should be powers of 2)
+// min: 2^5 = 32; max: 2^14 = 16384; 2^15 = RESERVED.
+
+#define TGT_BL_BUF_SIZE_CODE     0x05  // BL Buffer Size Code. 
+// If TGT_BL_BUF_SIZE is 2^n, TGT_BL_BUF_SIZE_CODE is n.
+// See documentation for encoding details.
 
 //-----------------------------------------------------------------------------
 // Enums, Structs, Unions and Typedefs - Available to all modules

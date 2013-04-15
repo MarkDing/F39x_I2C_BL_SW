@@ -9,7 +9,7 @@
 // This file contains a set of bytes that will be placed as the last bytes of
 // the App FW. The locating is done by using the linker command line.
 //
-// Locate starting at address (16*1024-7-4)=0X3FF5  (63*1024-512-7-4) = 0xF9F5
+// Locate starting at address (16*1024-512-7-4)=0X3DF5  
 //
 // Target:         C8051F390
 // Tool chain:     Keil C51 9.02 / Keil EVAL C51
@@ -44,7 +44,7 @@ Byte offset (from last byte) - Field
 -7	Flash Page Size Code
 -8	Application FW Version Low (0)
 -9	Application FW Version High (1)
--10	BL-specific byte (0) - CAN Device Addr - Not used for read by FW (only present for hex file image)
+-10	BL-specific byte (0) - SMBus Device Addr - Not used for read by FW (only present for hex file image)
 *****************************************/
 
 // Defines for use in the InfoBlock
@@ -56,6 +56,11 @@ Byte offset (from last byte) - Field
 #define APP_FW_VERSION_HIGH      0x01
 #define APP_FW_VERSION_LOW       0x01
 #define SMBUS_DEVICE_ADDR        0x20
+// Signature Bytes
+#define SIG_BYTE0             0x3D
+#define SIG_BYTE1             0xC2
+#define SIG_BYTE2             0xA5
+#define SIG_BYTE3             0x1B
 
 
 // Reverse byte order for Keil:
@@ -67,7 +72,11 @@ SEGMENT_VARIABLE(TGT_App_InfoBlock[], const U8, SEG_CODE) =
 	TGT_FLASH_PAGE_SIZE_CODE,
 	TGT_BL_TYPE,
 	TGT_MCU_CODE,
-	TGT_APP_INFOBLOCK_LENGTH
+	TGT_APP_INFOBLOCK_LENGTH,
+	SIG_BYTE3,
+	SIG_BYTE2,
+	SIG_BYTE1,
+	SIG_BYTE0,
 };
 
 

@@ -157,7 +157,7 @@ void main(void)
                 Validate_Pages_Written((U8)(Page_Addr & 0xFF));
 
                 // Reset target
-                TGT_SW_Reset(); // Mark.Ding hide it for test
+                TGT_SW_Reset(); 
 
                 Set_LED_State(LED_ON);
                 // TODO: Send message to PC to indicate successful completion

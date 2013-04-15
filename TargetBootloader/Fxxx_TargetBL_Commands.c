@@ -111,8 +111,8 @@ void TGT_Erase_Page(void)
     TGT_Pre_Flash();
 
     PSCTL |= 0x03;
-    FLASH_Modify((AddrMSB << 8), 0x00);
     Set_TX_TGT_RSP_OK();
+    FLASH_Modify((AddrMSB << 8), 0x00);
 }
 
 //-----------------------------------------------------------------------------
@@ -154,6 +154,7 @@ void TGT_Write_Flash(void)
     // Setup for flash operation
     TGT_Pre_Flash();
 
+    Set_TX_TGT_RSP_OK();
     while (numbytes--)
     {
         PSCTL |= 0x01;
@@ -161,7 +162,6 @@ void TGT_Write_Flash(void)
         Rx_Buf_ptr++;
         start_addr.U16++;
     }
-    Set_TX_TGT_RSP_OK();
 }
 
 //-----------------------------------------------------------------------------
